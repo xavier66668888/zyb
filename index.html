@@ -1,0 +1,1501 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PDS 产品需求管理｜业务确认原型</title>
+</head>
+<body style="margin:0;background:#f3f6f9">
+<section id="pds-demand-prototype" aria-label="PDS 产品需求管理原型">
+  <style>
+    #pds-demand-prototype {
+      --navy: light-dark(#173f60, #0f2b43);
+      --blue: light-dark(#1f73b8, #4c9fe2);
+      --blue-soft: light-dark(#e7f1fa, #193a57);
+      --canvas: light-dark(#f3f6f9, #101923);
+      --surface: light-dark(#ffffff, #172331);
+      --ink: light-dark(#173d5c, #e6eff7);
+      --muted: light-dark(#5c7890, #9fb3c4);
+      --line: light-dark(#d5e1eb, #31475a);
+      --green-bg: light-dark(#e1f2e8, #1d4937);
+      --green: light-dark(#27814e, #8fdbaf);
+      --amber-bg: light-dark(#fbf0dc, #4e3814);
+      --amber: light-dark(#a66c00, #f1c66a);
+      --red-bg: light-dark(#fbe8e8, #552527);
+      --red: light-dark(#bb3a3f, #ff9b9b);
+      min-width: 760px; background: var(--surface); color: var(--ink);
+      font-family: "Microsoft YaHei", "Segoe UI", sans-serif; border: 1px solid var(--line);
+    }
+    #pds-demand-prototype * { box-sizing: border-box; }
+    #pds-demand-prototype .pds-demo-note { padding: 10px 20px; background: #fff6df; color: #805300; border-bottom: 1px solid #eedaa6; font-size: 13px; }
+    #pds-demand-prototype button, #pds-demand-prototype input, #pds-demand-prototype select, #pds-demand-prototype textarea { font: inherit; }
+    #pds-demand-prototype .pds-topbar { height: 72px; background: var(--navy); color: #fff; display: flex; align-items: center; padding: 0 30px; }
+    #pds-demand-prototype .pds-brand { font-weight: 700; font-size: 29px; letter-spacing: -1px; margin-right: 34px; }
+    #pds-demand-prototype .pds-topbar .pds-top-item { color: #fff; font-size: 16px; padding: 10px 9px; }
+    #pds-demand-prototype .pds-user { margin-left: auto; font-size: 15px; }
+    #pds-demand-prototype .pds-app { display: grid; grid-template-columns: 178px minmax(0, 1fr); min-height: 650px; }
+    #pds-demand-prototype .pds-sidebar { background: var(--surface); border-right: 1px solid var(--line); padding: 21px 13px; }
+    #pds-demand-prototype .pds-sidebar button { width: 100%; padding: 13px 12px; text-align: left; border: 0; border-radius: 7px; background: transparent; color: var(--ink); margin-bottom: 6px; font-size: 15px; }
+    #pds-demand-prototype .pds-sidebar button[aria-current="page"] { background: var(--blue-soft); color: var(--blue); font-weight: 700; }
+    #pds-demand-prototype .pds-main { padding: 24px 25px 28px; background: var(--canvas); min-width: 0; }
+    #pds-demand-prototype .pds-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+    #pds-demand-prototype h2 { margin: 0 0 7px; font-size: 28px; letter-spacing: -.7px; line-height: 1.18; }
+    #pds-demand-prototype h3 { margin: 0; font-size: 18px; line-height: 1.35; }
+    #pds-demand-prototype p { margin: 0; }
+    #pds-demand-prototype .pds-sub { color: var(--muted); font-size: 15px; }
+    #pds-demand-prototype .pds-primary, #pds-demand-prototype .pds-secondary, #pds-demand-prototype .pds-link {
+      min-height: 40px; border-radius: 6px; padding: 0 14px; font-size: 14px; white-space: nowrap;
+    }
+    #pds-demand-prototype .pds-primary { background: var(--blue); color: #fff; border: 1px solid var(--blue); font-weight: 700; }
+    #pds-demand-prototype .pds-secondary { color: var(--ink); background: var(--surface); border: 1px solid var(--line); }
+    #pds-demand-prototype .pds-link { color: var(--blue); background: transparent; border: 0; padding-left: 0; padding-right: 0; }
+    #pds-demand-prototype .pds-actions { display: flex; gap: 9px; flex-wrap: wrap; justify-content: flex-end; }
+    #pds-demand-prototype .pds-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; margin-bottom: 14px; }
+    #pds-demand-prototype .pds-kpi { border: 1px solid var(--line); border-radius: 7px; background: var(--surface); padding: 14px 15px 12px; color: var(--muted); font-size: 14px; }
+    #pds-demand-prototype .pds-kpi strong { display: block; color: var(--ink); font-size: 29px; margin-top: 7px; line-height: 1; }
+    #pds-demand-prototype .pds-ai-callout { display: flex; align-items: center; gap: 13px; border: 1px solid #cfe1ef; background: var(--blue-soft); border-radius: 7px; padding: 12px 14px; margin-bottom: 14px; }
+    #pds-demand-prototype .pds-ai-callout i { color: var(--blue); } #pds-demand-prototype .pds-ai-callout strong { display: block; font-size: 14px; margin-bottom: 2px; } #pds-demand-prototype .pds-ai-callout span { color: var(--muted); font-size: 13px; }
+    #pds-demand-prototype .pds-ai-callout .pds-link { margin-left: auto; }
+    #pds-demand-prototype .pds-filter { display: grid; grid-template-columns: minmax(180px, 1.5fr) repeat(3, minmax(115px, .72fr)) auto; gap: 10px; align-items: end; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); padding: 13px; margin-bottom: 14px; }
+    #pds-demand-prototype .pds-control label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 5px; }
+    #pds-demand-prototype .pds-control input, #pds-demand-prototype .pds-control select, #pds-demand-prototype .pds-form-field input, #pds-demand-prototype .pds-form-field select, #pds-demand-prototype .pds-form-field textarea { width: 100%; min-height: 36px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 7px 9px; }
+    #pds-demand-prototype .pds-control input:focus, #pds-demand-prototype .pds-control select:focus, #pds-demand-prototype .pds-form-field input:focus, #pds-demand-prototype .pds-form-field select:focus, #pds-demand-prototype .pds-form-field textarea:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+    #pds-demand-prototype .pds-table-card, #pds-demand-prototype .pds-card { border: 1px solid var(--line); border-radius: 7px; background: var(--surface); }
+    #pds-demand-prototype .pds-table-card { overflow: hidden; }
+    #pds-demand-prototype .pds-table-tools { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px 8px; }
+    #pds-demand-prototype .pds-table-tools span { color: var(--muted); font-size: 13px; }
+    #pds-demand-prototype .pds-table-wrap { overflow-x: auto; }
+    #pds-demand-prototype table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 14px; }
+    #pds-demand-prototype .pds-demand-table { min-width: 1040px; }
+    #pds-demand-prototype th, #pds-demand-prototype td { padding: 12px 11px; text-align: left; vertical-align: middle; border-top: 1px solid var(--line); }
+    #pds-demand-prototype th { color: var(--muted); font-weight: 500; background: color-mix(in srgb, var(--canvas) 75%, var(--surface)); }
+    #pds-demand-prototype .pds-demand-name { color: var(--ink); font-weight: 500; } #pds-demand-prototype .pds-code { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+    #pds-demand-prototype .pds-status { display: inline-block; border-radius: 999px; padding: 5px 8px; font-size: 12px; white-space: nowrap; }
+    #pds-demand-prototype .status-blue { background: var(--blue-soft); color: var(--blue); } #pds-demand-prototype .status-green { background: var(--green-bg); color: var(--green); } #pds-demand-prototype .status-amber { background: var(--amber-bg); color: var(--amber); } #pds-demand-prototype .status-red { background: var(--red-bg); color: var(--red); }
+    #pds-demand-prototype .pds-view { display: none; } #pds-demand-prototype .pds-view.is-visible { display: block; }
+    #pds-demand-prototype .pds-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 15px; } #pds-demand-prototype .pds-flow-step { font-size: 13px; padding: 8px 10px; background: var(--surface); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; } #pds-demand-prototype .pds-flow-step.active { background: var(--blue); border-color: var(--blue); color: #fff; } #pds-demand-prototype .pds-flow-arrow { color: var(--muted); }
+    #pds-demand-prototype .pds-form-card { border: 1px solid var(--line); background: var(--surface); border-radius: 7px; padding: 17px; margin-bottom: 14px; }
+    #pds-demand-prototype .pds-form-card h3 { margin-bottom: 14px; }
+    #pds-demand-prototype .pds-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    #pds-demand-prototype .pds-form-field label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 13px; } #pds-demand-prototype .pds-form-field.wide { grid-column: 1 / -1; } #pds-demand-prototype .pds-form-field textarea { resize: vertical; min-height: 72px; }
+    #pds-demand-prototype .pds-multi-dropdown { position: relative; }
+    #pds-demand-prototype .pds-multi-trigger { width: 100%; min-height: 36px; padding: 7px 31px 7px 9px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--muted); text-align: left; cursor: pointer; position: relative; }
+    #pds-demand-prototype .pds-multi-trigger.has-selection { color: var(--ink); }
+    #pds-demand-prototype .pds-multi-trigger::after { content: "⌄"; position: absolute; right: 11px; top: 5px; color: var(--muted); font-size: 18px; }
+    #pds-demand-prototype .pds-multi-trigger:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+    #pds-demand-prototype .pds-multi-menu { position: absolute; z-index: 10; top: calc(100% + 4px); left: 0; right: 0; max-height: 216px; overflow-y: auto; padding: 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); box-shadow: 0 9px 22px #173d5c22; }
+    #pds-demand-prototype .pds-multi-option { display: flex; align-items: center; gap: 8px; margin: 0; padding: 8px; border-radius: 4px; color: var(--ink); font-size: 14px; cursor: pointer; }
+    #pds-demand-prototype .pds-multi-option:hover { background: var(--blue-soft); }
+    #pds-demand-prototype .pds-form-field .pds-multi-option input { width: 16px; height: 16px; min-height: 16px; padding: 0; accent-color: var(--blue); flex: none; }
+    #pds-demand-prototype .pds-form-field input[readonly] { background: var(--canvas); color: var(--muted); }
+    #pds-demand-prototype .pds-required-mark { color: var(--red); font-weight: 700; }
+    #pds-demand-prototype .pds-upload-field input[type="file"] { min-height: 48px; padding: 7px; border-style: dashed; cursor: pointer; }
+    #pds-demand-prototype .pds-upload-field input[type="file"]::file-selector-button { border: 0; border-radius: 4px; background: var(--blue-soft); color: var(--blue); padding: 7px 11px; margin-right: 12px; cursor: pointer; }
+    #pds-demand-prototype .pds-upload-selected { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; color: var(--muted); font-size: 12px; }
+    #pds-demand-prototype .pds-upload-selected span { display: inline-block; padding: 4px 8px; border-radius: 4px; background: var(--blue-soft); color: var(--ink); }
+    #pds-demand-prototype .pds-upload-hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+    #pds-demand-prototype .pds-source-line { display: flex; gap: 9px; align-items: center; background: var(--blue-soft); color: var(--ink); padding: 10px 12px; border-radius: 6px; margin: 0 0 14px; font-size: 13px; }
+    #pds-demand-prototype .pds-detail-grid { display: grid; grid-template-columns: 1.45fr .9fr; gap: 14px; }
+    #pds-demand-prototype .pds-card { padding: 16px; } #pds-demand-prototype .pds-card h3 { margin-bottom: 12px; } #pds-demand-prototype .pds-info-list { margin: 0; padding: 0; list-style: none; }
+    #pds-demand-prototype .pds-info-list li { display: grid; grid-template-columns: 108px 1fr; gap: 10px; border-top: 1px solid var(--line); padding: 11px 0; font-size: 14px; } #pds-demand-prototype .pds-info-list li:first-child { border-top: 0; padding-top: 0; } #pds-demand-prototype .pds-info-list span { color: var(--muted); }
+    #pds-demand-prototype .pds-screening { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } #pds-demand-prototype .pds-check { border: 1px solid var(--line); border-radius: 6px; padding: 12px; min-height: 84px; } #pds-demand-prototype .pds-check strong { display: block; font-size: 14px; margin-bottom: 7px; } #pds-demand-prototype .pds-check span { color: var(--muted); font-size: 13px; }
+    #pds-demand-prototype .pds-decision { margin-top: 14px; display: flex; gap: 9px; flex-wrap: wrap; }
+    #pds-demand-prototype .pds-timeline { padding: 0; margin: 0; list-style: none; } #pds-demand-prototype .pds-timeline li { border-left: 2px solid var(--line); padding: 0 0 17px 13px; margin-left: 5px; font-size: 14px; } #pds-demand-prototype .pds-timeline li:last-child { padding-bottom: 0; } #pds-demand-prototype .pds-timeline strong { display: block; margin-bottom: 3px; } #pds-demand-prototype .pds-timeline span { color: var(--muted); font-size: 13px; }
+    #pds-demand-prototype .pds-empty-note { margin-top: 12px; color: var(--muted); font-size: 13px; }
+    #pds-demand-prototype .pds-selection-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 15px; border-top: 1px solid var(--line); background: var(--blue-soft); font-size: 14px; }
+    #pds-demand-prototype .pds-selection-bar strong { color: var(--ink); }
+    #pds-demand-prototype .pds-selection-bar span { color: var(--muted); flex: 1; }
+    #pds-demand-prototype .pds-selection-bar .pds-primary:disabled { opacity: .5; cursor: not-allowed; }
+    #pds-demand-prototype .pds-check-box { width: 18px; height: 18px; accent-color: var(--blue); }
+    #pds-demand-prototype .pds-source-list { margin: 0; padding: 0; list-style: none; }
+    #pds-demand-prototype .pds-source-list li { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); padding: 10px 0; font-size: 13px; }
+    #pds-demand-prototype .pds-source-list li:first-child { border-top: 0; }
+    #pds-demand-prototype .pds-source-list span { color: var(--muted); }
+    #pds-demand-prototype .pds-workbench-tabs { display:flex; gap:8px; flex-wrap:wrap; margin:18px 0 14px; }
+    #pds-demand-prototype .pds-workbench-tabs button { padding:10px 16px; border:1px solid var(--line); border-radius:6px; background:var(--surface); color:var(--muted); cursor:pointer; }
+    #pds-demand-prototype .pds-workbench-tabs button[aria-selected="true"] { background:var(--blue-soft); color:var(--blue); border-color:var(--blue); font-weight:600; }
+    #pds-demand-prototype .pds-inbox-filter { grid-template-columns: 2fr 1fr 1fr auto; }
+    #pds-demand-prototype .pds-message-card { margin-bottom:16px; border-left:4px solid var(--blue); }
+    #pds-demand-prototype .pds-message-card p { margin:8px 0; line-height:1.7; }
+    #pds-demand-prototype .pds-message-card[hidden] { display:none; }
+    #pds-demand-prototype .pds-review-context { margin-bottom:14px; padding:16px 18px; border:1px solid var(--line); border-radius:8px; background:var(--blue-soft); line-height:1.8; }
+    #pds-demand-prototype .pds-review-context strong { display:block; font-size:17px; }
+    #pds-demand-prototype .pds-review-context p { margin:5px 0 0; color:var(--muted); }
+    #pds-demand-prototype .pds-inbox-table { min-width:1100px; }
+    #pds-demand-prototype .pds-inbox-table td { vertical-align:top; }
+    #pds-demand-prototype .pds-inbox-table .pds-link { display:block; margin:0 0 8px; white-space:nowrap; }
+    #pds-demand-prototype .pds-review-note { margin:14px 0; }
+    #pds-demand-prototype .pds-inline-actions { margin:16px 0; border-top:3px solid var(--blue); }
+    #pds-demand-prototype .pds-review-dialog { width:min(560px, calc(100vw - 48px)); box-sizing:border-box; padding:24px; border:1px solid var(--line); border-radius:12px; background:var(--surface); color:var(--ink); box-shadow:0 20px 70px #173f6033; max-height:85vh; overflow:auto; }
+    #pds-demand-prototype .pds-review-dialog::backdrop { background:rgba(16,35,53,.42); }
+    #pds-demand-prototype .pds-intel-drawer { position:fixed; inset:0 0 0 auto; margin:0 0 0 auto; width:min(680px,94vw); height:100dvh; max-height:100dvh; box-sizing:border-box; overflow:auto; padding:24px; border:1px solid var(--line); border-radius:12px 0 0 12px; background:var(--surface); color:var(--ink); box-shadow:-12px 0 50px #173f6030; }
+    #pds-demand-prototype .pds-intel-drawer::backdrop { background:rgba(16,35,53,.35); }
+    #pds-demand-prototype .pds-intel-header { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom:18px; }
+    #pds-demand-prototype .pds-intel-body { line-height:1.75; }
+    #pds-demand-prototype .pds-intel-body h4 { margin:22px 0 8px; font-size:16px; }
+    #pds-demand-prototype .pds-intel-body blockquote { margin:8px 0; padding:14px; border-left:3px solid var(--blue); background:var(--blue-soft); white-space:pre-wrap; }
+    #pds-demand-prototype .pds-intel-body a { color:var(--blue); }
+    #pds-demand-prototype .pds-source-summary { margin:7px 0; color:var(--ink); }
+    #pds-demand-prototype .pds-source-buttons { display:flex; gap:16px; align-items:center; margin-top:10px; flex-wrap:wrap; }
+    #pds-demand-prototype .pds-source-buttons a { color:var(--blue); font-size:13px; }
+    #pds-demand-prototype .pds-review-dialog h3 { margin:0 0 8px; font-size:21px; }
+    #pds-demand-prototype .pds-review-dialog .pds-actions { justify-content:flex-end; margin-top:22px; }
+    #pds-demand-prototype .pds-review-dialog [hidden] { display:none; }
+    #pds-demand-prototype .pds-inline-actions .pds-decision { flex-wrap:wrap; align-items:center; }
+    #pds-demand-prototype .pds-merge-toolbar { display:flex; gap:14px; align-items:center; flex-wrap:wrap; padding:14px 16px; background:var(--blue-soft); border-bottom:1px solid var(--line); }
+    #pds-demand-prototype .pds-merge-table { min-width:850px; }
+    #pds-demand-prototype .pds-merge-table td { vertical-align:top; max-width:350px; overflow-wrap:anywhere; }
+    #pds-demand-prototype .pds-merge-table select { width:100%; max-width:360px; padding:9px; border:1px solid var(--line); border-radius:5px; background:var(--surface); color:var(--ink); }
+    #pds-demand-prototype .pds-merge-table textarea { display:block; box-sizing:border-box; width:100%; min-width:260px; min-height:80px; margin-top:8px; padding:10px; border:1px solid var(--line); border-radius:5px; background:var(--surface); color:var(--ink); font:inherit; line-height:1.65; resize:vertical; }
+    #pds-demand-prototype .pds-merge-table textarea:focus { outline:2px solid var(--blue); outline-offset:1px; }
+    #pds-demand-prototype .pds-merge-trace details { margin-top:12px; padding:12px; border:1px solid var(--line); border-radius:6px; }
+    #pds-demand-prototype .pds-merge-trace summary { cursor:pointer; color:var(--blue); font-weight:600; }
+    #pds-demand-prototype .pds-merge-trace p { line-height:1.7; overflow-wrap:anywhere; }
+    #pds-demand-prototype .pds-review-note textarea { width:100%; box-sizing:border-box; min-height:90px; margin-top:8px; border:1px solid var(--line); border-radius:6px; padding:10px; font:inherit; color:var(--ink); background:var(--surface); }
+    #pds-detail-sources li, #pds-detail-history li { display: block !important; line-height: 1.65; }
+    #pds-detail-sources strong, #pds-detail-history strong { display: block; margin-bottom: 5px; }
+    #pds-detail-sources span, #pds-detail-history span { display: block; overflow-wrap: anywhere; }
+    #pds-demand-prototype .pds-source-warning { color: var(--amber); font-size: 13px; margin-top: 9px; }
+    #pds-demand-prototype .pds-form-card details { margin-top: 4px; }
+    #pds-demand-prototype .pds-form-card summary { color: var(--blue); font-weight: 500; cursor: pointer; margin-bottom: 12px; }
+    #pds-demand-prototype .pds-detail-supplement { align-self: start; }
+    #pds-demand-prototype .pds-detail-supplement summary { color: var(--blue); cursor: pointer; font-weight: 600; }
+    #pds-demand-prototype .pds-detail-supplement[open] summary { margin-bottom: 14px; }
+    #pds-demand-prototype .pds-forecast-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
+    #pds-demand-prototype .pds-forecast-table { min-width: 2100px; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+    #pds-demand-prototype .pds-forecast-table th, #pds-demand-prototype .pds-forecast-table td { border: 1px solid var(--line); padding: 0; height: 49px; }
+    #pds-demand-prototype .pds-forecast-table th { height: 47px; background: #f7f8fa; color: var(--ink); font-weight: 600; font-size: 14px; padding: 0 9px; white-space: nowrap; }
+    #pds-demand-prototype .pds-forecast-table th:first-child, #pds-demand-prototype .pds-forecast-table td:first-child { width: 44px; text-align: center; padding: 0; }
+    #pds-demand-prototype .pds-forecast-table th:nth-child(2), #pds-demand-prototype .pds-forecast-table td:nth-child(2) { width: 52px; text-align: center; padding: 0; }
+    #pds-demand-prototype .pds-forecast-table th:nth-child(3), #pds-demand-prototype .pds-forecast-table td:nth-child(3) { width: 180px; }
+    #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) th:nth-child(-n+3), #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) td:nth-child(-n+3) { position: sticky; z-index: 1; background: var(--surface); }
+    #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) th:nth-child(-n+3) { z-index: 2; background: #f7f8fa; }
+    #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) th:first-child, #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) td:first-child { left: 0; }
+    #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) th:nth-child(2), #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) td:nth-child(2) { left: 44px; }
+    #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) th:nth-child(3), #pds-demand-prototype .pds-forecast-table:not(.pds-forecast-readonly) td:nth-child(3) { left: 96px; box-shadow: 3px 0 6px -5px #66819c; }
+    #pds-demand-prototype .pds-forecast-table input:not([type="checkbox"]), #pds-demand-prototype .pds-forecast-table select { display: block; width: 100%; min-height: 48px; padding: 0 9px; border: 0; border-radius: 0; background: transparent; color: var(--ink); outline: none; }
+    #pds-demand-prototype .pds-forecast-table input:not([type="checkbox"]):focus { box-shadow: inset 0 0 0 2px var(--blue); background: var(--blue-soft); }
+    #pds-demand-prototype .pds-forecast-table input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--blue); vertical-align: middle; }
+    #pds-demand-prototype .pds-forecast-table.pds-forecast-readonly th, #pds-demand-prototype .pds-forecast-table.pds-forecast-readonly td { padding: 10px 14px; }
+    #pds-demand-prototype .pds-forecast-table.pds-forecast-readonly th:nth-child(2), #pds-demand-prototype .pds-forecast-table.pds-forecast-readonly td:nth-child(2) { width: auto; text-align: left; padding: 10px 14px; }
+    #pds-demand-prototype .pds-forecast-index { color: var(--ink); }
+    #pds-demand-prototype .pds-forecast-actions { display: flex; align-items: center; gap: 9px; margin-top: 12px; }
+    #pds-demand-prototype .pds-forecast-actions .pds-muted-inline { margin-right: auto; }
+    #pds-demand-prototype .pds-forecast-actions button:disabled { opacity: .5; cursor: not-allowed; }
+    #pds-demand-prototype .pds-forecast-empty { text-align: center !important; color: var(--muted); padding: 16px !important; }
+    #pds-demand-prototype .pds-error { display: none; color: var(--red); font-size: 13px; margin: 0 0 12px; }
+    #pds-demand-prototype .pds-error.show { display: block; }
+    #pds-demand-prototype .pds-muted-inline { color: var(--muted); font-size: 12px; }
+    #pds-demand-prototype [hidden] { display: none !important; }
+    #pds-demand-prototype .pds-toast { display: none; margin: 0 0 14px; background: var(--green-bg); color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 30%, var(--line)); border-radius: 6px; padding: 10px 12px; font-size: 14px; } #pds-demand-prototype .pds-toast.show { display: block; }
+    @media (max-width: 860px) { #pds-demand-prototype { min-width: 0; } #pds-demand-prototype .pds-app { grid-template-columns: 150px minmax(0, 1fr); } #pds-demand-prototype .pds-main { padding: 19px 16px; } #pds-demand-prototype .pds-topbar { padding: 0 18px; } #pds-demand-prototype .pds-brand { margin-right:17px; font-size:25px; } #pds-demand-prototype .pds-topbar .pds-top-item { padding:8px 5px; } #pds-demand-prototype .pds-kpis { grid-template-columns: repeat(2, 1fr); } #pds-demand-prototype .pds-filter { grid-template-columns: 1fr 1fr; } #pds-demand-prototype .pds-detail-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <div class="pds-demo-note">业务确认用演示原型｜页面内容均为示例数据；不连接实际 PDS、CRM 或 OA，填写内容仅在当前页面临时展示。</div>
+  <header class="pds-topbar"><span class="pds-brand">Windchill</span><span class="pds-top-item">产品中心</span><span class="pds-top-item">项目</span><span class="pds-top-item">文档</span><span class="pds-top-item">部件</span><span class="pds-user">张工　⌄</span></header>
+  <div class="pds-app">
+    <aside class="pds-sidebar" aria-label="PDS 需求管理菜单">
+      <button type="button" data-view-target="pool" aria-current="page">需求池</button>
+      <button type="button" data-view-target="screening">我的筛选</button>
+      <button type="button" data-view-target="intelligence">AI 情报</button>
+      <button type="button" data-view-target="oa">OA 审批记录</button>
+      <button type="button" data-view-target="settings">字段与规则</button>
+    </aside>
+
+    <main class="pds-main">
+      <div class="pds-toast" aria-live="polite"></div>
+
+      <section class="pds-view is-visible" data-view="pool">
+        <div class="pds-heading"><div><h2>产品需求池</h2><p class="pds-sub">一条产品需求可汇集多条 AI 情报，也可由业务直接录入</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="intelligence">从 AI 情报选取</button><button class="pds-primary" type="button" data-view-target="form" data-source-mode="manual">＋ 直接新建需求</button></div></div>
+        <div class="pds-kpis"><div class="pds-kpi">待初筛<strong>12</strong></div><div class="pds-kpi">待补充<strong>5</strong></div><div class="pds-kpi">已受理<strong>18</strong></div><div class="pds-kpi">OA 审批中<strong>3</strong></div></div>
+        <div class="pds-ai-callout"><i data-lucide="sparkles" aria-hidden="true"></i><div><strong>AI 情报已接入需求管理</strong><span>勾选多条相似情报，汇总为一条产品需求；每条原始描述、数量和金额继续单独留存。</span></div><button class="pds-link" type="button" data-view-target="intelligence">去选取</button></div>
+        <div class="pds-filter"><div class="pds-control"><label for="pds-search">搜索</label><input id="pds-search" type="search" placeholder="需求编号、名称、客户或申请人"></div><div class="pds-control"><label for="pds-status-filter">状态</label><select id="pds-status-filter"><option value="">全部状态</option><option>待初筛</option><option>待补充</option><option>已受理</option><option>OA 审批中</option></select></div><div class="pds-control"><label for="pds-source-filter">来源</label><select id="pds-source-filter"><option value="">全部来源</option><option>AI 情报合并</option><option>直接填写</option></select></div><div class="pds-control"><label for="pds-category-filter">产品类别</label><select id="pds-category-filter"><option value="">全部类别</option><option>园林工具</option><option>手持工具</option><option>清洗设备</option></select></div><button class="pds-secondary" type="button" id="pds-reset-filter">重置</button></div>
+        <div class="pds-table-card"><div class="pds-table-tools"><h3>需求列表</h3><span id="pds-result-count">共 4 条</span></div><div class="pds-table-wrap"><table class="pds-demand-table"><thead><tr><th>产品需求</th><th>来源</th><th>申请人</th><th>销售地区</th><th>销售渠道</th><th>三年销量预测</th><th>目标价</th><th>状态</th><th></th></tr></thead><tbody id="pds-demand-rows">
+          <tr data-status="待初筛" data-source="AI 情报合并" data-category="园林工具"><td><span class="pds-demand-name">北美商用割草机平台</span><span class="pds-code">PD-2026-018</span></td><td>AI 情报合并<br><span class="pds-muted-inline">关联 2 条</span></td><td>李强</td><td>北美</td><td>专业经销商</td><td>待确认</td><td>待确认</td><td><span class="pds-status status-blue">待初筛</span></td><td><button class="pds-link" type="button" data-view-target="detail">查看</button></td></tr>
+          <tr data-status="待补充" data-source="直接填写" data-category="手持工具"><td><span class="pds-demand-name">手持工具平台升级</span><span class="pds-code">PD-2026-017</span></td><td>直接填写</td><td>陈敏</td><td>欧洲</td><td>零售</td><td>—</td><td>—</td><td><span class="pds-status status-amber">待补充</span></td><td><button class="pds-link" type="button" data-view-target="detail">查看</button></td></tr>
+          <tr data-status="已受理" data-source="AI 情报合并" data-category="清洗设备"><td><span class="pds-demand-name">澳洲高压清洗机升级</span><span class="pds-code">PD-2026-014</span></td><td>AI 情报合并<br><span class="pds-muted-inline">关联 2 条</span></td><td>赵宁</td><td>澳洲</td><td>经销商</td><td>500 台</td><td>待确认</td><td><span class="pds-status status-green">已受理</span></td><td><button class="pds-link" type="button" data-view-target="detail">查看</button></td></tr>
+          <tr data-status="OA 审批中" data-source="直接填写" data-category="园林工具"><td><span class="pds-demand-name">欧洲新渠道套装</span><span class="pds-code">PD-2026-011</span></td><td>直接填写</td><td>王琳</td><td>欧洲</td><td>电商</td><td>2,500 套</td><td>EUR 92 万</td><td><span class="pds-status status-blue">OA 审批中</span></td><td><button class="pds-link" type="button" data-view-target="oa">查看</button></td></tr>
+        </tbody></table></div></div>
+      </section>
+
+      <section class="pds-view" data-view="intelligence">
+        <div class="pds-heading"><div><h2>AI 情报筛选</h2><p class="pds-sub">从 PDS CRM 情报池多选相似需求，汇总生成一条产品需求</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="pool">返回需求池</button><button class="pds-primary" type="button" data-view-target="form" data-source-mode="manual">＋ 直接填写需求</button></div></div>
+        <div class="pds-kpis"><div class="pds-kpi">本周新增情报<strong>26</strong></div><div class="pds-kpi">待人工判断<strong>8</strong></div><div class="pds-kpi">可选情报<strong>4</strong></div><div class="pds-kpi">已关联需求<strong>11</strong></div></div>
+        <div class="pds-table-card"><div class="pds-table-tools"><h3>情报池</h3><span>AI 负责收录和整理；是否属于同一产品需求由业务人员确认</span></div><div class="pds-table-wrap"><table><thead><tr><th><input class="pds-check-box" type="checkbox" id="pds-select-all" aria-label="全选可见情报"></th><th>情报编号 / 标题</th><th>来源</th><th>市场 / 类别</th><th>数量与金额原话</th><th>负责人</th><th>状态</th></tr></thead><tbody id="pds-intelligence-rows">
+          <tr data-id="IN-2026-243" data-title="北美经销商商用割草机需求" data-market="北美" data-category="园林工具" data-owner="李强" data-quote="要 500 台，预算约 200 万美金" data-origin="企微语音" data-attachment="经销商沟通纪要.pdf"><td><input class="pds-check-box pds-intel-select" type="checkbox" aria-label="选择 IN-2026-243"></td><td><span class="pds-demand-name">北美经销商商用割草机需求</span><span class="pds-code">IN-2026-243</span></td><td>企微语音</td><td>北美 / 园林工具</td><td>“要 500 台，预算约 200 万美金”</td><td>李强</td><td><span class="pds-status status-blue">待产品筛选</span></td></tr>
+          <tr data-id="IN-2026-238" data-title="54 英寸零转向割草机渠道反馈" data-market="北美" data-category="园林工具" data-owner="陈敏" data-quote="2027 年预计 800 台" data-origin="企微文字" data-attachment="渠道反馈.xlsx"><td><input class="pds-check-box pds-intel-select" type="checkbox" aria-label="选择 IN-2026-238"></td><td><span class="pds-demand-name">54 英寸零转向割草机渠道反馈</span><span class="pds-code">IN-2026-238</span></td><td>企微文字</td><td>北美 / 园林工具</td><td>“2027 年预计 800 台”</td><td>陈敏</td><td><span class="pds-status status-blue">待产品筛选</span></td></tr>
+          <tr data-id="IN-2026-229" data-title="美国专业园林客户商用机需求" data-market="北美" data-category="园林工具" data-owner="李强" data-quote="首批约 300 台，价格待谈" data-origin="AI 采集" data-attachment="客户网页情报.pdf"><td><input class="pds-check-box pds-intel-select" type="checkbox" aria-label="选择 IN-2026-229"></td><td><span class="pds-demand-name">美国专业园林客户商用机需求</span><span class="pds-code">IN-2026-229</span></td><td>AI 采集</td><td>北美 / 园林工具</td><td>“首批约 300 台，价格待谈”</td><td>李强</td><td><span class="pds-status status-blue">待产品筛选</span></td></tr>
+          <tr data-id="IN-2026-221" data-title="澳洲高压清洗机采购需求" data-market="澳洲" data-category="清洗设备" data-owner="赵宁" data-quote="500 台，预算 180 万澳元" data-origin="企微文件" data-attachment="采购需求.pdf"><td><input class="pds-check-box pds-intel-select" type="checkbox" aria-label="选择 IN-2026-221"></td><td><span class="pds-demand-name">澳洲高压清洗机采购需求</span><span class="pds-code">IN-2026-221</span></td><td>企微文件</td><td>澳洲 / 清洗设备</td><td>“500 台，预算 180 万澳元”</td><td>赵宁</td><td><span class="pds-status status-green">线索评审通过</span></td></tr>
+        </tbody></table></div><div class="pds-selection-bar"><strong id="pds-selected-count">已选 0 条</strong><span id="pds-selection-hint">勾选相似情报后，可合并转为一条产品需求</span><button class="pds-primary" type="button" id="pds-batch-convert" disabled>合并转产品需求</button></div></div>
+      </section>
+
+      <section class="pds-view" data-view="form">
+        <div class="pds-heading"><div><h2>新建产品需求</h2><p class="pds-sub" id="pds-form-mode">从已选 AI 情报整理为一条产品需求</p></div><div class="pds-actions"><button class="pds-secondary" type="button" id="pds-form-back">返回</button><button class="pds-primary" type="button" id="pds-submit-demand">提交初筛</button></div></div>
+        <div class="pds-error" id="pds-form-error" role="alert"></div>
+        <div class="pds-source-line" id="pds-source-line"><i data-lucide="sparkles" aria-hidden="true"></i><span id="pds-source-summary">来源：AI 情报</span></div>
+        <div class="pds-form-card" id="pds-source-card"><h3>关联的原始情报</h3><ul class="pds-source-list" id="pds-selected-sources"></ul><p class="pds-source-warning">数量、金额按各条原话保存；如果客户或机会重叠，请在下方填写确认后的预测，不自动相加。</p></div>
+        <div class="pds-form-card"><h3>需求申请信息</h3><div class="pds-form-grid">
+          <div class="pds-form-field"><label for="pds-demand-name">需求名称 *</label><input id="pds-demand-name" value="北美商用割草机平台"></div>
+          <div class="pds-form-field"><label for="pds-demand-source">需求来源 *</label><select id="pds-demand-source"><option>AI 情报合并</option><option>直接填写</option></select></div>
+          <div class="pds-form-field"><label for="pds-created-at">创建日期 *</label><input id="pds-created-at" type="date" readonly></div>
+          <div class="pds-form-field"><label for="pds-applicant">申请人 *</label><input id="pds-applicant" placeholder="例如：李强"></div>
+          <div class="pds-form-field"><label for="pds-department">申请部门 *</label><input id="pds-department" placeholder="例如：北美区域公司"></div>
+          <div class="pds-form-field"><label for="pds-category">产品类别 *</label><select id="pds-category"><option value="">请选择类别</option><option>园林工具</option><option>手持工具</option><option>清洗设备</option></select></div>
+          <div class="pds-form-field"><label for="pds-reviewer">对应产品经理 *</label><select id="pds-reviewer"><option value="王琳">王琳 · 园林 / 手持工具</option><option value="张晨">张晨 · 清洗设备</option></select><span class="pds-muted-inline">按产品类别带入，可调整；提交后向该产品经理发送企微待办留言（演示）。</span></div>
+          <div class="pds-form-field"><label for="pds-region">销售地区 *</label><input id="pds-region" value="北美"></div>
+          <div class="pds-form-field"><label for="pds-brand">品牌 *</label><input id="pds-brand" placeholder="例如：SENIX"></div>
+          <div class="pds-form-field"><label for="pds-positioning">产品定位 *</label><select id="pds-positioning"><option value="">请选择定位</option><option>OPP</option><option>MPP</option><option>HPP</option></select></div>
+          <div class="pds-form-field"><label for="pds-channel">销售渠道 *</label><div class="pds-multi-dropdown"><button type="button" class="pds-multi-trigger" id="pds-channel" aria-expanded="false" aria-controls="pds-channel-menu">请选择渠道</button><div class="pds-multi-menu" id="pds-channel-menu" role="group" aria-label="销售渠道选项" hidden><label class="pds-multi-option"><input type="checkbox" value="Dealers 经销商">Dealers 经销商</label><label class="pds-multi-option"><input type="checkbox" value="Retail 零售">Retail 零售</label><label class="pds-multi-option"><input type="checkbox" value="E-Comm 电商">E-Comm 电商</label></div></div></div>
+          <div class="pds-form-field"><label for="pds-compliance">认证要求 *</label><div class="pds-multi-dropdown"><button type="button" class="pds-multi-trigger" id="pds-compliance" aria-expanded="false" aria-controls="pds-compliance-menu">请选择认证</button><div class="pds-multi-menu" id="pds-compliance-menu" role="group" aria-label="认证要求选项" hidden><label class="pds-multi-option"><input type="checkbox" value="UL">UL</label><label class="pds-multi-option"><input type="checkbox" value="CE">CE</label><label class="pds-multi-option"><input type="checkbox" value="ETL">ETL</label><label class="pds-multi-option"><input type="checkbox" value="CSA">CSA</label><label class="pds-multi-option"><input type="checkbox" value="FCC">FCC</label><label class="pds-multi-option"><input type="checkbox" value="RoHS">RoHS</label><label class="pds-multi-option"><input type="checkbox" value="其他（请在特殊要求中说明）">其他（请在特殊要求中说明）</label></div></div></div>
+          <div class="pds-form-field wide"><label for="pds-reason">需求原因 *</label><textarea id="pds-reason">北美经销商多次提出 54 英寸商用割草机需求。</textarea></div>
+          <div class="pds-form-field wide"><label for="pds-value">商业价值 *</label><textarea id="pds-value">补齐商用产品段，进入专业园林渠道。</textarea></div>
+          <div class="pds-form-field"><label for="pds-target-users">目标人群 *</label><input id="pds-target-users" placeholder="例如：专业园林维护人员"></div>
+          <div class="pds-form-field"><label for="pds-target-customers">目标客户</label><input id="pds-target-customers" placeholder="例如：专业经销商"></div>
+          <div class="pds-form-field"><label for="pds-environment">使用环境 *</label><input id="pds-environment" placeholder="例如：室外、雨后草坪"></div>
+          <div class="pds-form-field"><label for="pds-basic-params">基本参数 *</label><input id="pds-basic-params" placeholder="例如：54 英寸、续航 90 分钟"></div>
+          <div class="pds-form-field wide"><label for="pds-scene">使用场景 *</label><input id="pds-scene" placeholder="例如：高频割草"></div>
+        </div></div>
+        <div class="pds-form-card"><h3>市场判断与预测依据</h3><div class="pds-form-grid">
+          <div class="pds-form-field wide"><label for="pds-basis">预测依据</label><textarea id="pds-basis" placeholder="例如：经销商年度采购计划、历史销量"></textarea></div>
+        </div></div>
+        <div class="pds-form-card"><h3>三年销量预测 <span class="pds-required-mark">*</span></h3>
+          <p class="pds-empty-note">至少填写一行；有内容的行需补齐标 * 列。可横向滚动填写价格、配置及上市信息。</p>
+          <div class="pds-forecast-wrap"><table class="pds-forecast-table" id="pds-forecast-table"><thead><tr>
+            <th><input type="checkbox" id="pds-forecast-select-all" aria-label="全选销量预测行"></th><th>序号</th>
+            <th>销售区域或国家 *</th><th>承诺人 *</th><th>第一年 *</th><th>第二年 *</th><th>第三年 *</th>
+            <th>FOB(代理商) *</th><th>CFI(RU) *</th><th>DDP *</th><th>MAP *</th><th>MSRP *</th>
+            <th>产品配置 *</th><th>上市时间 *</th><th>目标价格</th><th>币种</th>
+          </tr></thead><tbody id="pds-forecast-rows"></tbody></table></div>
+          <div class="pds-forecast-actions"><span class="pds-muted-inline" id="pds-forecast-count">共 3 行；请人工确认各区域销量及价格</span><button class="pds-secondary" type="button" id="pds-forecast-delete" disabled>删除所选</button><button class="pds-primary" type="button" id="pds-forecast-add">＋ 添加一行</button></div>
+        </div>
+        <div class="pds-form-card"><h3>产品特征与要求</h3><div class="pds-form-grid">
+          <div class="pds-form-field"><label for="pds-selling-points">主要卖点 *</label><input id="pds-selling-points" placeholder="例如：长续航、低噪声"></div>
+          <div class="pds-form-field"><label for="pds-accessories">配件 *</label><input id="pds-accessories" placeholder="例如：电池、充电器"></div>
+          <div class="pds-form-field"><label for="pds-packaging">包装要求 *</label><input id="pds-packaging" placeholder="例如：纸箱"></div>
+          <div class="pds-form-field"><label for="pds-manual">说明书要求 *</label><input id="pds-manual" placeholder="例如：英文版"></div>
+          <div class="pds-form-field"><label for="pds-warranty">质保年限 *</label><input id="pds-warranty" placeholder="例如：3 年"></div>
+          <div class="pds-form-field"><label for="pds-special-requirements">其他特殊要求 *</label><input id="pds-special-requirements" placeholder="例如：防水等级"></div>
+          <div class="pds-form-field"><label for="pds-feature-1">主要特征-1 *</label><textarea id="pds-feature-1" placeholder="第一项核心特征"></textarea></div>
+          <div class="pds-form-field"><label for="pds-feature-2">主要特征-2 *</label><textarea id="pds-feature-2" placeholder="第二项核心特征"></textarea></div>
+          <div class="pds-form-field pds-upload-field"><label for="pds-product-image">产品图片 *</label><input id="pds-product-image" type="file" accept="image/*" multiple><div class="pds-upload-selected" id="pds-product-image-selected" aria-live="polite">尚未选择文件</div></div>
+        </div></div>
+        <div class="pds-form-card"><h3>竞品信息</h3><div class="pds-form-grid">
+          <div class="pds-form-field"><label for="pds-competitor-brand">竞品品牌 *</label><input id="pds-competitor-brand" placeholder="例如：品牌名称"></div>
+          <div class="pds-form-field"><label for="pds-competitor-model">竞品型号 *</label><input id="pds-competitor-model" placeholder="例如：A1"></div>
+          <div class="pds-form-field"><label for="pds-competitor-price">竞品售价 *</label><input id="pds-competitor-price" placeholder="请注明币种"></div>
+          <div class="pds-form-field"><label for="pds-competitor-warranty">竞品质保 *</label><input id="pds-competitor-warranty" placeholder="例如：2 年"></div>
+          <div class="pds-form-field"><label for="pds-competitor-configuration">竞品配置 *</label><input id="pds-competitor-configuration" placeholder="例如：双电池"></div>
+          <div class="pds-form-field"><label for="pds-competitor-channel">竞品销售渠道 *</label><input id="pds-competitor-channel" placeholder="例如：Dealers"></div>
+          <div class="pds-form-field"><label for="pds-sample-available">是否提供样品 *</label><select id="pds-sample-available"><option value="">请选择</option><option>是</option><option>否</option></select></div>
+          <div class="pds-form-field"><label for="pds-competitor-specs">竞品基本参数 *</label><input id="pds-competitor-specs" placeholder="例如：52 英寸"></div>
+          <div class="pds-form-field wide"><label for="pds-competitor-link">竞品链接 *</label><input id="pds-competitor-link" type="url" placeholder="https://"></div>
+          <div class="pds-form-field wide"><label for="pds-competitor-advantages">竞品优势分析</label><textarea id="pds-competitor-advantages" placeholder="说明竞品优势及差异"></textarea></div>
+          <div class="pds-form-field pds-upload-field"><label for="pds-competitor-image">竞品图片 *</label><input id="pds-competitor-image" type="file" accept="image/*" multiple><div class="pds-upload-selected" id="pds-competitor-image-selected" aria-live="polite">尚未选择文件</div></div>
+        </div></div>
+        <div class="pds-form-card"><h3>参考资料与附件</h3><div class="pds-form-grid">
+          <div class="pds-form-field pds-upload-field"><label for="pds-reference">参考资料</label><input id="pds-reference" type="file" multiple><div class="pds-upload-selected" id="pds-reference-selected" aria-live="polite">尚未选择文件</div></div>
+          <div class="pds-form-field pds-upload-field"><label for="pds-attachment">上传需求附件 *</label><input id="pds-attachment" type="file" multiple><div class="pds-upload-selected" id="pds-attachment-selected" aria-live="polite">尚未选择文件</div></div>
+          <p class="pds-upload-hint" style="grid-column:1/-1">可一次选择多个文件；演示页仅显示文件名，不会真正上传或保存文件。</p>
+        </div></div>
+      </section>
+
+      <section class="pds-view" data-view="detail">
+        <div class="pds-heading"><div><h2 id="pds-detail-title">PD-2026-018｜北美商用割草机平台</h2><p class="pds-sub" id="pds-detail-subtitle">当前状态：待初筛　　来源：AI 情报合并</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="pool" id="pds-detail-back">返回需求池</button></div></div>
+        <div class="pds-review-context"><strong id="pds-detail-assignment"></strong><p id="pds-detail-notification"></p></div>
+        <section class="pds-card pds-merge-trace" id="pds-detail-merge-trace" hidden><h3>需求合并与追溯</h3><p id="pds-detail-merge-summary"></p><div id="pds-detail-merge-records"></div></section>
+        <div class="pds-flow" aria-label="需求流转状态"><span class="pds-flow-step active" id="pds-detail-origin-step">AI 情报汇总</span><span class="pds-flow-arrow">→</span><span class="pds-flow-step active">产品需求</span><span class="pds-flow-arrow">→</span><span class="pds-flow-step">产品初筛</span><span class="pds-flow-arrow">→</span><span class="pds-flow-step">OA 审批</span></div>
+        <div class="pds-detail-grid"><section class="pds-card"><h3>需求信息</h3><ul class="pds-info-list">
+          <li><span>需求来源</span><strong><button type="button" class="pds-link" id="pds-detail-source">AI 情报合并</button></strong></li>
+          <li><span>创建日期</span><strong id="pds-detail-created-at">—</strong></li>
+          <li><span>申请人</span><strong id="pds-detail-applicant">李强</strong></li>
+          <li><span>申请部门</span><strong id="pds-detail-department">北美区域公司</strong></li>
+          <li><span>产品类别</span><strong id="pds-detail-category">园林工具</strong></li>
+          <li><span>品牌</span><strong id="pds-detail-brand">—</strong></li>
+          <li><span>产品定位</span><strong id="pds-detail-positioning">—</strong></li>
+          <li><span>销售地区</span><strong id="pds-detail-region">北美</strong></li>
+          <li><span>销售渠道</span><strong id="pds-detail-channel">Dealers 经销商</strong></li>
+          <li><span>需求原因</span><strong id="pds-detail-reason">—</strong></li>
+          <li><span>目标人群</span><strong id="pds-detail-target-users">—</strong></li>
+          <li><span>目标客户</span><strong id="pds-detail-target-customers">—</strong></li>
+          <li><span>使用环境</span><strong id="pds-detail-environment">—</strong></li>
+          <li><span>基本参数</span><strong id="pds-detail-basic-params">—</strong></li>
+          <li><span>使用场景</span><strong id="pds-detail-scene">—</strong></li>
+          <li><span>商业价值</span><strong id="pds-detail-value">补齐 54 英寸商用产品段，进入专业园林渠道。</strong></li>
+        </ul></section><aside><section class="pds-card" id="pds-related-intelligence" tabindex="-1"><h3>关联 AI 情报</h3><ul class="pds-source-list" id="pds-detail-sources"></ul><p class="pds-empty-note">查看情报展示转成产品需求时的快照；最新原情报另页打开。各条数量与金额按原话保留，不自动相加。</p></section><section class="pds-card" style="margin-top:14px"><h3>处理记录</h3><ul class="pds-source-list" id="pds-detail-history"></ul><p class="pds-empty-note" id="pds-detail-next"></p><p class="pds-empty-note">样例中的客户、预测、竞品及附件名称仅用于页面演示；附件未上传实际文件。</p></section></aside></div>
+        <div class="pds-detail-grid" style="margin-top:14px"><section class="pds-card"><h3>市场判断</h3><ul class="pds-info-list">
+          <li><span>预测依据</span><strong id="pds-detail-basis">—</strong></li>
+        </ul></section><details class="pds-card pds-detail-supplement" id="pds-detail-supplement"><summary>补充资料（尚未填写）</summary><ul class="pds-info-list">
+          <li><span>主要卖点</span><strong id="pds-detail-selling-points">—</strong></li>
+          <li><span>认证要求</span><strong id="pds-detail-compliance">—</strong></li>
+          <li><span>配件</span><strong id="pds-detail-accessories">—</strong></li>
+          <li><span>其他特殊要求</span><strong id="pds-detail-special-requirements">—</strong></li>
+          <li><span>主要特征-1</span><strong id="pds-detail-feature-1">—</strong></li>
+          <li><span>主要特征-2</span><strong id="pds-detail-feature-2">—</strong></li>
+          <li><span>产品图片</span><strong id="pds-detail-product-image">—</strong></li>
+          <li><span>竞品品牌</span><strong id="pds-detail-competitor-brand">—</strong></li>
+          <li><span>竞品型号</span><strong id="pds-detail-competitor-model">—</strong></li>
+          <li><span>竞品售价</span><strong id="pds-detail-competitor-price">—</strong></li>
+          <li><span>竞品质保</span><strong id="pds-detail-competitor-warranty">—</strong></li>
+          <li><span>竞品配置</span><strong id="pds-detail-competitor-configuration">—</strong></li>
+          <li><span>竞品销售渠道</span><strong id="pds-detail-competitor-channel">—</strong></li>
+          <li><span>是否提供样品</span><strong id="pds-detail-sample-available">—</strong></li>
+          <li><span>竞品基本参数</span><strong id="pds-detail-competitor-specs">—</strong></li>
+          <li><span>竞品链接</span><strong id="pds-detail-competitor-link">—</strong></li>
+          <li><span>竞品优势分析</span><strong id="pds-detail-competitor-advantages">—</strong></li>
+          <li><span>竞品图片</span><strong id="pds-detail-competitor-image">—</strong></li>
+          <li><span>包装要求</span><strong id="pds-detail-packaging">—</strong></li>
+          <li><span>说明书要求</span><strong id="pds-detail-manual">—</strong></li>
+          <li><span>质保年限</span><strong id="pds-detail-warranty">—</strong></li>
+          <li><span>参考资料</span><strong id="pds-detail-reference">—</strong></li>
+          <li><span>上传需求附件</span><strong id="pds-detail-attachment">—</strong></li>
+        </ul></details></div>
+        <div class="pds-form-card" style="margin-top:14px"><h3>三年销量预测</h3><p class="pds-empty-note">向右滚动查看各区域价格、配置和上市时间。</p><div class="pds-forecast-wrap"><table class="pds-forecast-table pds-forecast-readonly"><thead><tr><th>序号</th><th>销售区域或国家</th><th>承诺人</th><th>第一年</th><th>第二年</th><th>第三年</th><th>FOB(代理商)</th><th>CFI(RU)</th><th>DDP</th><th>MAP</th><th>MSRP</th><th>产品配置</th><th>上市时间</th><th>目标价格</th><th>币种</th></tr></thead><tbody id="pds-detail-forecast"><tr><td class="pds-forecast-empty" colspan="15">尚未录入</td></tr></tbody></table></div></div>
+        <section class="pds-card pds-inline-actions" aria-label="需求筛选操作"><h3>需求筛选</h3><p class="pds-empty-note" id="pds-review-permission"></p><div class="pds-decision"><button class="pds-primary" type="button" id="pds-accept">受理</button><button class="pds-secondary" type="button" id="pds-request-more">退回补充</button><button class="pds-secondary" type="button" id="pds-hold">暂缓</button><button class="pds-secondary" type="button" id="pds-send-oa" disabled>发起 OA 审批</button><span>当前结论：<strong id="pds-screening-result"></strong></span></div></section>
+        <dialog class="pds-review-dialog" id="pds-review-dialog" aria-labelledby="pds-review-dialog-title" aria-describedby="pds-review-dialog-context"><h3 id="pds-review-dialog-title">受理需求</h3><p class="pds-empty-note" id="pds-review-dialog-context"></p><div class="pds-review-note"><label for="pds-review-comment" id="pds-review-comment-label">受理意见（选填）</label><textarea id="pds-review-comment"></textarea></div><div class="pds-control" id="pds-review-date-group" hidden><label for="pds-review-date">复核日期 *</label><input id="pds-review-date" type="date"></div><p class="pds-empty-note" id="pds-review-feedback" role="status"></p><div class="pds-actions"><button class="pds-secondary" type="button" id="pds-review-cancel">取消</button><button class="pds-primary" type="button" id="pds-review-confirm">确认受理</button></div></dialog>
+      </section>
+
+      <section class="pds-view" data-view="screening">
+        <div class="pds-heading"><div><h2>我的筛选</h2><p class="pds-sub">分配给我的产品需求 · 从企微留言进入，查看完整申请并完成初筛</p></div><div class="pds-control"><label for="pds-inbox-manager">当前产品经理（演示切换）</label><select id="pds-inbox-manager"><option>王琳</option><option>张晨</option></select></div></div>
+        <div class="pds-kpis"><div class="pds-kpi">待我筛选<strong id="pds-inbox-pending">0</strong></div><div class="pds-kpi">业务待补充<strong id="pds-inbox-supplement">0</strong></div><div class="pds-kpi">已受理待转 OA<strong id="pds-inbox-accepted">0</strong></div><div class="pds-kpi">OA 审批中<strong id="pds-inbox-oa">0</strong></div></div>
+        <div class="pds-review-context"><strong id="pds-inbox-owner">王琳的需求待办</strong><p>业务提交申请 → 企微留言提醒对应产品经理 → 打开需求详情 → 记录初筛结论。每条留言都关联具体需求编号。</p></div>
+        <div class="pds-workbench-tabs" role="tablist" aria-label="筛选任务范围"><button type="button" role="tab" data-inbox-tab="待初筛" aria-selected="true">待我筛选</button><button type="button" role="tab" data-inbox-tab="待补充" aria-selected="false">待业务补充</button><button type="button" role="tab" data-inbox-tab="processed" aria-selected="false">已处理</button><button type="button" role="tab" data-inbox-tab="all" aria-selected="false">全部分配</button></div>
+        <div class="pds-filter pds-inbox-filter"><div class="pds-control"><label for="pds-inbox-search">搜索需求</label><input id="pds-inbox-search" type="search" placeholder="需求编号、名称、申请人或销售地区"></div><div class="pds-control"><label for="pds-inbox-category">产品类别</label><select id="pds-inbox-category"><option value="">全部类别</option><option>园林工具</option><option>手持工具</option><option>清洗设备</option></select></div><div class="pds-control"><label for="pds-inbox-read">阅读状态</label><select id="pds-inbox-read"><option value="">全部</option><option value="unread">未查看</option><option value="read">已查看</option></select></div><button type="button" class="pds-secondary" id="pds-inbox-reset">重置</button></div>
+        <section class="pds-card pds-message-card" id="pds-inbox-message" hidden aria-live="polite"><h3>企业微信留言预览</h3><p class="pds-empty-note">通知样例，仅在原型展示，未实际发送企微消息。</p><p id="pds-message-recipient"></p><p id="pds-message-content"></p><p id="pds-message-time" class="pds-empty-note"></p><div class="pds-actions"><button class="pds-primary" type="button" id="pds-message-open">打开对应需求</button><button class="pds-secondary" type="button" id="pds-message-close">收起</button></div></section>
+        <div class="pds-table-card"><div class="pds-table-tools"><h3>分配给我的需求</h3><span id="pds-inbox-count"></span></div><div class="pds-merge-toolbar"><span id="pds-inbox-selected">已选 0 条</span><button class="pds-primary" type="button" id="pds-inbox-merge" disabled>合并所选需求</button><span class="pds-muted-inline">选择同类别的两条及以上需求；已进入 OA、已合并和已关闭的需求不可合并。</span></div><div class="pds-table-wrap"><table class="pds-inbox-table"><thead><tr><th><input type="checkbox" id="pds-inbox-select-all" aria-label="全选当前可合并需求"></th><th>产品需求 / 产品类别</th><th>申请人 / 部门</th><th>销售地区 / 来源</th><th>提交时间</th><th>要求完成时间</th><th>当前状态</th><th>企微提醒 / 阅读状态</th><th>操作</th></tr></thead><tbody id="pds-inbox-rows"></tbody></table></div></div>
+      </section>
+
+      <section class="pds-view" data-view="merge">
+        <div class="pds-heading"><div><h2>合并产品需求</h2><p class="pds-sub">确定主需求，核对字段差异，保留全部原始申请与附件</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="screening">取消并返回</button><button class="pds-primary" type="button" id="pds-merge-confirm">确认合并</button></div></div>
+        <section class="pds-card"><div class="pds-form-grid"><div class="pds-form-field"><label for="pds-merge-main">保留的主需求 *</label><select id="pds-merge-main"></select></div><div class="pds-form-field"><label for="pds-merge-reason">合并原因 *</label><input id="pds-merge-reason" placeholder="例如：同一平台的重复渠道申请，统一评估"></div></div><p class="pds-empty-note">主需求编号保留，其他申请标记为“已合并”，原编号和合并前数据仍可查看；主需求返回“待初筛”。</p></section>
+        <div class="pds-table-card" style="margin-top:14px"><div class="pds-table-tools"><h3>所选需求对比</h3></div><div class="pds-table-wrap"><table class="pds-merge-table"><thead><tr><th>产品需求</th><th>申请人 / 产品类别</th><th>市场 / 渠道</th><th>销量与价格预测（逐区域保留）</th></tr></thead><tbody id="pds-merge-comparison"></tbody></table></div></div>
+        <div class="pds-table-card" style="margin-top:14px"><div class="pds-table-tools"><h3>字段差异确认</h3><span>默认保留主需求值，支持引用原值后手工整理</span></div><div class="pds-table-wrap"><table class="pds-merge-table"><thead><tr><th>差异字段</th><th>各申请原始内容</th><th>合并后采用的内容（可编辑）</th></tr></thead><tbody id="pds-merge-conflicts"></tbody></table></div></div>
+        <section class="pds-card" style="margin-top:14px"><h3>销量、金额与附件</h3><p>合并后的主表沿用主需求的区域预测，不自动累加销量或金额。所有原始区域预测、价格、情报、附件及处理记录均保留快照，供再次初筛核对。</p><label><input type="checkbox" id="pds-merge-ack"> 我已核对差异，确认保留主需求预测，后续重新初筛时再确认区域预测及价格。</label><p class="pds-empty-note" id="pds-merge-feedback" role="status"></p></section>
+      </section>
+
+      <section class="pds-view" data-view="oa">
+        <div class="pds-heading"><div><h2>OA 审批记录</h2><p class="pds-sub">PDS 仅关联 OA 单据并显示回写结果，不复制 OA 审批节点</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="pool">返回需求池</button></div></div>
+        <div class="pds-table-card"><div class="pds-table-tools"><h3>关联审批单</h3><span>审批流程在 OA 端执行</span></div><div class="pds-table-wrap"><table><thead><tr><th>产品需求</th><th>OA 单号</th><th>发起时间</th><th>审批结果</th><th>审批完成时间</th><th></th></tr></thead><tbody id="pds-oa-rows"><tr><td>欧洲新渠道套装<br><span class="pds-code">PD-2026-011</span></td><td>OA-2026-0918</td><td>2026-09-29</td><td><span class="pds-status status-blue">审批中</span></td><td>—</td><td><button class="pds-link" type="button" data-view-target="detail">查看需求</button></td></tr></tbody></table></div></div>
+        <p class="pds-empty-note">OA 审批完成后，PDS 回写“已批准”或“未批准”、审批单号和完成时间；需求内容保留提交时的版本快照。</p>
+      </section>
+
+      <section class="pds-view" data-view="intel-original">
+        <div class="pds-heading"><div><h2 id="pds-original-title">AI 情报详情</h2><p class="pds-sub">PDS CRM · 最新原情报（演示记录）</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="intelligence">返回 AI 情报池</button></div></div>
+        <section class="pds-card"><p class="pds-empty-note">本页演示打开最新原情报的效果。正式实施时链接指向已有 PDS CRM 情报记录，当前不连接实际系统。</p><div class="pds-intel-body" id="pds-original-body"></div></section>
+      </section>
+
+      <section class="pds-view" data-view="settings">
+        <div class="pds-heading"><div><h2>字段与规则</h2><p class="pds-sub">需求管理范围内的字段、状态和 OA 对接规则</p></div></div>
+        <div class="pds-detail-grid"><section class="pds-card"><h3>需求主表字段</h3><ul class="pds-info-list"><li><span>申请信息</span><strong>需求名称、创建日期、申请人、申请部门、需求原因、商业价值</strong></li><li><span>市场信息</span><strong>销售地区、销售渠道；三年销量预测表逐区域记录销量、FOB、CFI、DDP、MAP、MSRP、产品配置、上市时间、目标价格和币种</strong></li><li><span>产品信息</span><strong>产品类别、品牌、产品定位、基本参数、使用环境、目标人群、目标客户、使用场景</strong></li><li><span>来源追溯</span><strong>可关联多条 AI 情报，各条金额和数量保持原话</strong></li><li><span>产品与竞品资料</span><strong>认证、主要特征、产品和竞品图片、竞品配置、需求附件分别记录；表格标红项均为必填</strong></li></ul></section><aside class="pds-card"><h3>PDS 状态与 OA 关联</h3><ul class="pds-info-list"><li><span>筛选前</span><strong>草稿、待初筛、待补充</strong></li><li><span>筛选结果</span><strong>已受理、已合并、已暂缓、已关闭</strong></li><li><span>OA 回写</span><strong>OA 审批中、已批准、未批准</strong></li><li><span>版本与编号</span><strong>产品需求编号、来源情报编号、OA 单号</strong></li></ul></aside></div>
+      </section>
+      <dialog class="pds-intel-drawer" id="pds-intel-drawer" aria-labelledby="pds-intel-drawer-title"><div class="pds-intel-header"><div><h3 id="pds-intel-drawer-title">情报详情</h3><p class="pds-empty-note" id="pds-intel-drawer-context"></p></div><button type="button" class="pds-secondary" id="pds-intel-drawer-close" aria-label="关闭情报详情">关闭</button></div><div class="pds-intel-body" id="pds-intel-drawer-body"></div><div class="pds-source-buttons"><a id="pds-intel-drawer-original" target="_blank" rel="noopener noreferrer">打开最新原情报 ↗</a></div></dialog>
+    </main>
+  </div>
+</section>
+<script>
+(() => {
+  const root = document.getElementById('pds-demand-prototype');
+  if (!root) return;
+  const views = Array.from(root.querySelectorAll('.pds-view'));
+  const navButtons = Array.from(root.querySelectorAll('.pds-sidebar button'));
+  const toast = root.querySelector('.pds-toast');
+  const field = (id) => root.querySelector('#pds-' + id);
+  const sourceLine = field('source-line');
+  const sourceCard = field('source-card');
+  const sourceList = field('selected-sources');
+  const intelRows = Array.from(root.querySelectorAll('#pds-intelligence-rows tr'));
+  const intelRecords = new Map(intelRows.map((row) => [row.dataset.id, {
+    id: row.dataset.id, title: row.dataset.title, market: row.dataset.market, category: row.dataset.category,
+    owner: row.dataset.owner, quote: row.dataset.quote, origin: row.dataset.origin,
+    attachment: row.dataset.attachment, collectedAt: '2026-10-09 09:20', updatedAt: '2026-10-09 09:20', version: 'V1',
+    customer: '渠道客户（演示）', rawText: row.dataset.quote,
+    aiSummary: row.dataset.title + '；需人工确认客户意向、产品参数、交期和预测依据。',
+    quantity: row.dataset.quote.match(/(?:约\s*)?\d+\s*台/)?.[0] || '未提及',
+    amount: row.dataset.quote.includes('预算') ? row.dataset.quote.split('预算')[1].trim() : '未提及'
+  }]));
+  const intelDetails = {
+    'IN-2026-243': { customer: '美国绿地设备经销商 A（演示客户）', collectedAt: '2026-10-09 09:20', updatedAt: '2026-10-16 11:00', version: 'V2',
+      rawText: '我们渠道的园林维护客户需要 54 英寸商用零转向割草机，要 500 台，预算约 200 万美金。希望采用可换电方案，满足高频草坪作业，并提供集草套件。交期和具体配置还需要确认。\n10月16日补充：希望按旺季分两批交付，最终节奏待采购确认。',
+      aiSummary: '商用 54 英寸平台需求；重点为换电续航、易维护和集草能力。数量、预算为客户原话，尚非承诺订单。最新补充分批交付意向。' },
+    'IN-2026-238': { customer: '加拿大园林渠道 B（演示客户）', collectedAt: '2026-10-08 15:40', updatedAt: '2026-10-13 10:30', version: 'V2',
+      rawText: '专业经销商询问 54 英寸零转向割草机，2027 年预计 800 台。需要英语、法语资料，并核对商用质保和电池更换方式。该预计数量覆盖的渠道范围仍待销售复核。',
+      aiSummary: '渠道提出 54 英寸商用机及双语资料要求；预计数量需复核渠道范围，不能与其他情报直接相加。' },
+    'IN-2026-221': { customer: '澳洲园艺经销商 E（演示客户）', collectedAt: '2026-10-02 11:20', updatedAt: '2026-10-11 14:10', version: 'V2',
+      rawText: '计划采购 500 台高压清洗机，预算 180 万澳元。重点改善软管收纳，增加防缠绕卷盘和快速接头，希望包含泡沫壶与露台清洗附件。采购数量和预算待最终报价确认。',
+      aiSummary: '高压清洗机升级，重点为收纳与附件完整度；需确认当地电源、接口及认证范围。' },
+    'IN-2026-229': { customer: '美国专业园林客户 I（演示客户）', collectedAt: '2026-10-10 08:30', updatedAt: '2026-10-10 08:30', version: 'V1',
+      rawText: '客户网页询价涉及商用割草机，首批约 300 台，价格待谈；需销售进一步联系，确认实际采购主体、规格和交期。',
+      aiSummary: '来自网页采集的初步采购线索，尚未人工核实；不应直接作为承诺销量。' }
+  };
+  Object.entries(intelDetails).forEach(([id, details]) => Object.assign(intelRecords.get(id), details));
+  intelRecords.set('IN-2026-226', {
+    id: 'IN-2026-226', title: '新西兰高压清洗机试销反馈', customer: '新西兰渠道 F（演示客户）', owner: '郑悦',
+    market: '新西兰', category: '清洗设备', origin: '企微文件', quote: '新西兰试销预计 200 台，需配完整附件',
+    quantity: '200 台', amount: '未提及', collectedAt: '2026-10-04 10:00', updatedAt: '2026-10-04 10:00', version: 'V1',
+    rawText: '新西兰渠道计划试销 200 台高压清洗机，需配完整附件，包括泡沫壶、长软管和清洗盘。需要核对插头和售后支持，试销结果决定后续采购。',
+    aiSummary: '清洗机小批量试销机会；附件完整性和本地适配需确认。', attachment: '新西兰渠道反馈.pdf'
+  });
+  let intelTrigger = null;
+  function sourceSnapshot(source, demand) {
+    const record = intelRecords.get(source.id);
+    const parts = source.origin.split(' · ');
+    return {
+      ...(record ? JSON.parse(JSON.stringify(record)) : {}), id: source.id,
+      title: source.title || record?.title || '原始需求情报', quote: source.quote,
+      owner: parts[1] || source.owner || record?.owner || demand.applicant,
+      origin: parts[0], collectedAt: parts[2] || record?.collectedAt || '见原始资料',
+      rawText: source.id === 'IN-2026-243'
+        ? '我们渠道的园林维护客户需要 54 英寸商用零转向割草机，要 500 台，预算约 200 万美金。希望采用可换电方案，满足高频草坪作业，并提供集草套件。交期和具体配置还需要确认。'
+        : (record?.rawText || source.quote),
+      quantity: source.quote.match(/(?:约\s*)?\d+\s*台/)?.[0] || '未提及',
+      amount: source.quote.includes('预算') ? source.quote.split('预算')[1].trim() : '未提及',
+      attachment: source.attachment || record?.attachment || '',
+      aiSummary: source.id === 'IN-2026-243' ? '商用 54 英寸平台需求，需评估换电续航、易维护和集草能力；客户原话中的数量与预算仍待确认。' : record?.aiSummary || '请结合原文和附件人工判断。',
+      version: '转化留存版本', capturedAt: demand['created-at'] || localDate(),
+      updatedAt: demand['created-at'] || localDate()
+    };
+  }
+  const selectedCount = field('selected-count');
+  const selectionHint = field('selection-hint');
+  const batchButton = field('batch-convert');
+  const selectAll = field('select-all');
+  const formError = field('form-error');
+  const demandRows = field('demand-rows');
+  const forecastRows = field('forecast-rows');
+  const forecastSelectAll = field('forecast-select-all');
+  const forecastDelete = field('forecast-delete');
+  const records = new Map();
+  let inboxTab = '待初筛';
+  let detailOrigin = 'pool';
+  let messageDemandCode = '';
+  let reviewCommentCode = '';
+  let pendingReview = null;
+  let reviewTrigger = null;
+  const mergeSelection = new Set();
+  let mergeCandidates = [];
+  const mergeable = (demand) => demand && demand.reviewer === field('inbox-manager').value && ['待初筛', '待补充', '已受理', '已暂缓'].includes(taskStatus(demand.code));
+  const defaultReviewer = (category) => category === '清洗设备' ? '张晨' : '王琳';
+  const taskStatus = (code) => Array.from(demandRows.rows).find((row) => row.querySelector('.pds-code')?.textContent === code)?.dataset.status || '待初筛';
+  function dueAfterWorkdays(date) {
+    const result = new Date(date + 'T12:00:00');
+    let remaining = 2;
+    while (remaining > 0) { result.setDate(result.getDate() + 1); if (![0, 6].includes(result.getDay())) remaining--; }
+    return result.getFullYear() + '-' + String(result.getMonth() + 1).padStart(2, '0') + '-' + String(result.getDate()).padStart(2, '0');
+  }
+  let selectedSources = [];
+  let formMode = 'manual';
+  let currentRow = demandRows.querySelector('tr');
+  // 独立的四组业务演示数据；客户、竞品、附件和金额均非实际业务资料。
+  const sampleDemands = [
+    {
+      code: 'PD-2026-018', name: '北美商用割草机平台', source: 'AI 情报合并',
+      'created-at': '2026-10-12', applicant: '李强', department: '北美区域公司',
+      category: '园林工具', brand: 'SENIX', positioning: '商用中高端', region: '美国、加拿大',
+      channel: 'Dealers 经销商', compliance: 'UL、CSA、FCC',
+      reason: '北美专业经销商反馈现有家用机型无法满足每日长时间作业，需要补齐 54 英寸商用零转向平台。',
+      value: '进入专业园林维护渠道，拓展整机、备用电池和售后配件收入；首年以试点经销商导入为主。',
+      'target-users': '专业园林养护团队、物业维护人员', 'target-customers': '美国绿地设备经销商 A、加拿大园林渠道 B（演示客户）',
+      environment: '公园、学校、社区草坪；作业温度 0–40℃；需适应轻度潮湿和起伏地面。',
+      'basic-params': '54 英寸钢制割台；80V 电池平台；切高 25–110 mm；目标连续作业 3 小时；关键参数待技术评估。',
+      scene: '单次 2–5 英亩草坪的高频修剪；通过换电覆盖整日作业。',
+      basis: '结合两条渠道情报，区域销售复核客户及机会范围后确认预测；两条原始情报不直接相加。第一年按美国 500 台、加拿大 300 台测算，第二、三年随网点扩展增长。',
+      'selling-points': '低噪音换电作业、商用钢制割台、关键保养部位易维护。', accessories: '侧排组件、集草套件、备用刀片、充电器及维修工具包。',
+      'special-requirements': '机身支持渠道标识；增加座椅安全联锁和运输固定点；认证范围待认证工程师确认。',
+      'feature-1': '零转向操控，适合树木和障碍物较多的草坪。', 'feature-2': '电池可拆换，维修模块可单独更换。',
+      'competitor-brand': '样例品牌 NorthGarden', 'competitor-model': 'NG-Z54（虚构对标型号）',
+      'competitor-price': 'USD 5,499 / 台（演示零售价）', 'competitor-warranty': '商用 2 年（演示条件）',
+      'competitor-configuration': '54 英寸割台、电池组、充电器、侧排组件。', 'competitor-channel': '北美专业经销商',
+      'sample-available': '是，样机预计 2026-11 到位', 'competitor-specs': '54 英寸零转向；目标对标续航约 3 小时。',
+      'competitor-link': 'https://example.com/demo/ng-z54（演示占位链接）', 'competitor-advantages': '对标产品渠道成熟；拟通过换电效率、维护便利性和整机价格形成差异。',
+      packaging: '加固托盘、整机防护罩及防倾倒标识；满足海运堆码要求。', manual: '英语、法语说明书；提供保养视频二维码。', warranty: '商用整机 2 年，电池 3 年（拟定）',
+      'product-imageFiles': ['54英寸商用割草机_外观方案.png'], 'competitor-imageFiles': ['NG-Z54_对标示意图.jpg'],
+      referenceFiles: ['北美专业渠道访谈汇总.pdf', '商用割草机竞品对比.xlsx'], attachmentFiles: ['北美商用割草机_需求说明_V1.docx'],
+      forecast: [
+        { market: '美国', owner: '李强', year1: '500', year2: '800', year3: '1200', fob: '2600', cfi: '不适用', ddp: '3250', map: '4299', msrp: '4799', configuration: '54英寸 / 80V / 电池及充电器', launch: '2027-03', price: '2600', currency: 'USD' },
+        { market: '加拿大', owner: '周宁', year1: '300', year2: '450', year3: '650', fob: '3550', cfi: '不适用', ddp: '4400', map: '5799', msrp: '6499', configuration: '54英寸 / 双语标签 / 电池及充电器', launch: '2027-04', price: '3550', currency: 'CAD' }
+      ],
+      sources: [
+        { id: 'IN-2026-243', origin: '企微语音 · 李强 · 2026-10-09', quote: '要 500 台，预算约 200 万美金', attachment: '美国经销商访谈录音转写.txt' },
+        { id: 'IN-2026-238', origin: '企微文字 · 周宁 · 2026-10-08', quote: '2027 年预计 800 台', attachment: '渠道意向清单.xlsx' }
+      ],
+      history: [ ['2026-10-09 09:20', '李强 · 收录美国经销商需求情报。'], ['2026-10-12 14:30', '李强 · 合并两条相似情报，形成产品需求并提交初筛。'], ['2026-10-13 10:00', '王琳 · 已认领初筛，待核对平台匹配及认证范围。'] ],
+      next: '下一步：产品经理完成初筛；计划 2026-10-19 前给出受理或补充结论。'
+    },
+    {
+      code: 'PD-2026-017', name: '手持工具平台升级', source: '直接填写',
+      'created-at': '2026-10-10', applicant: '陈敏', department: '欧洲区域公司', category: '手持工具',
+      brand: 'SENIX', positioning: '家用中高端', region: '德国、法国', channel: 'Retail 零售、E-Comm 电商', compliance: 'CE、RoHS',
+      reason: '零售渠道希望新一代电钻和冲击起子共用电池，降低套装库存复杂度，改善长时间握持体验。',
+      value: '通过统一电池平台形成套装复购，支持欧洲零售渠道春季促销上新。',
+      'target-users': '家庭 DIY 用户、小型维修作业者', 'target-customers': '德国连锁零售商 C、法国工具电商 D（演示客户）',
+      environment: '室内装配、车库及轻度户外施工；需满足欧洲家庭常见工作空间。',
+      'basic-params': '20V 无刷平台；电钻目标扭矩 60 N·m；双速调节；2×2.0Ah 电池；参数由研发复核。',
+      scene: '家具组装、木材钻孔、紧固及小型家庭维修。',
+      basis: '首年德国 1,200 套、法国 800 套为销售初步预测；客户尚未回签，第二、三年增长假设需补充零售上架网点和促销排期。',
+      'selling-points': '共用电池、机身轻量化、无刷电机和快速换批头。', accessories: '2 块电池、充电器、批头组合、收纳箱。',
+      'special-requirements': '德国版和法国版需独立包装条码；客户预测回签仍待补充。', 'feature-1': '平台电池互通，降低用户购置成本。', 'feature-2': '软胶握把和腰带挂钩，改善操作便利性。',
+      'competitor-brand': '样例品牌 EuroTool', 'competitor-model': 'ET-C20（虚构对标型号）', 'competitor-price': 'EUR 179 / 套（演示零售价）',
+      'competitor-warranty': '家用 3 年（演示条件）', 'competitor-configuration': '电钻、起子、2×2.0Ah 电池及工具箱。',
+      'competitor-channel': '德国五金零售、法国电商', 'sample-available': '否，采购申请已提交', 'competitor-specs': '20V 无刷；两档调速；电钻目标扭矩 60 N·m。',
+      'competitor-link': 'https://example.com/demo/et-c20（演示占位链接）', 'competitor-advantages': '对标套装售后体系成熟；拟强化电池通用性与轻量化。',
+      packaging: '彩盒加工具箱；德法版本独立条码；外箱满足零售配送。', manual: '德语、法语及英语；补充电池安全说明。', warranty: '家用整机 3 年（拟定）',
+      'product-imageFiles': ['20V手持工具平台_工业设计.png'], 'competitor-imageFiles': ['ET-C20_套装示意图.jpg'], referenceFiles: ['欧洲零售访谈纪要.pdf'], attachmentFiles: ['手持工具平台升级_初稿.docx'],
+      forecast: [
+        { market: '德国', owner: '陈敏', year1: '1200', year2: '1800', year3: '2500', fob: '62', cfi: '不适用', ddp: '86', map: '129', msrp: '149', configuration: '电钻+起子 / 2×2.0Ah / 工具箱', launch: '2027-04（待客户确认）', price: '62', currency: 'EUR' },
+        { market: '法国', owner: '刘芳', year1: '800', year2: '1200', year3: '1700', fob: '64', cfi: '不适用', ddp: '89', map: '139', msrp: '159', configuration: '法语包装 / 双机套装', launch: '2027-05（待客户确认）', price: '64', currency: 'EUR' }
+      ], sources: [],
+      history: [ ['2026-10-10 11:15', '陈敏 · 直接新建需求并提交初筛。'], ['2026-10-12 16:40', '王琳 · 退回补充：请上传客户销量承诺回签和渠道上市排期。'], ['2026-10-13 09:30', '陈敏 · 已补充初步预测，等待德国与法国客户确认函。'] ],
+      next: '待补充：客户预测回签文件、零售上架网点及促销排期；由陈敏补齐后重新提交初筛。'
+    },
+    {
+      code: 'PD-2026-014', name: '澳洲高压清洗机升级', source: 'AI 情报合并',
+      'created-at': '2026-10-06', applicant: '赵宁', department: '澳洲区域公司', category: '清洗设备',
+      brand: 'SENIX', positioning: '家用高端', region: '澳大利亚、新西兰', channel: 'Dealers 经销商', compliance: '其他：RCM（拟申请范围）',
+      reason: '现有机型软管收纳效率低，渠道反馈需要更长软管、快速接头及防缠绕卷盘。',
+      value: '升级现有清洗机系列，减少收纳相关投诉，并带动泡沫壶及露台清洗附件销售。',
+      'target-users': '独栋住宅用户、小型洗车及物业维护人员', 'target-customers': '澳洲园艺经销商 E、新西兰渠道 F（演示客户）',
+      environment: '庭院、车道、露台和家用车清洁；适配当地电源及进水接口。', 'basic-params': '220–240V / 50Hz；额定压力目标 130 bar；额定流量目标 7 L/min；10 m 软管；待工程验证。',
+      scene: '家庭洗车、庭院石材及露台的周期性清洗。', basis: '两条情报涉及澳洲首批 500 台及新西兰试销 200 台；经销售确认后分别录入，第二年按渠道扩点测算，第三年按稳定复购测算。',
+      'selling-points': '防缠绕卷盘、快插喷头、附件集中收纳、直立移动。', accessories: '10 m 软管、泡沫壶、可调喷枪、露台清洗盘。',
+      'special-requirements': '按澳新市场确认插头和电气安全要求；进水端配置可清洗过滤网。', 'feature-1': '软管卷盘采用快拆连接，方便更换。', 'feature-2': '喷枪和电源线均可机身收纳。',
+      'competitor-brand': '样例品牌 AquaHome', 'competitor-model': 'AH-P130（虚构对标型号）', 'competitor-price': 'AUD 399 / 台（演示零售价）',
+      'competitor-warranty': '家用 2 年（演示条件）', 'competitor-configuration': '卷盘、10 m 软管、泡沫壶及清洗盘。', 'competitor-channel': '澳洲五金经销商',
+      'sample-available': '是，1 台对标样机可供评估', 'competitor-specs': '额定压力 130 bar；流量 7 L/min（演示对标参数）。',
+      'competitor-link': 'https://example.com/demo/ah-p130（演示占位链接）', 'competitor-advantages': '对标产品收纳体验较好；拟提升快拆便捷性与附件完整度。',
+      packaging: '彩箱配纸浆护角；卷盘单独固定；符合零售陈列和运输需要。', manual: '英语说明书；附快速安装及接头使用图。', warranty: '家用 2 年（拟定）',
+      'product-imageFiles': ['高压清洗机升级_结构示意.png'], 'competitor-imageFiles': ['AH-P130_对标示意图.jpg'], referenceFiles: ['澳新客户访谈纪要.pdf', '软管收纳反馈汇总.xlsx'], attachmentFiles: ['高压清洗机升级_需求说明_V2.docx'],
+      forecast: [
+        { market: '澳大利亚', owner: '赵宁', year1: '500', year2: '750', year3: '1000', fob: '138', cfi: '不适用', ddp: '185', map: '299', msrp: '349', configuration: '卷盘 / 10m软管 / 泡沫壶 / 清洗盘', launch: '2027-08', price: '138', currency: 'AUD' },
+        { market: '新西兰', owner: '郑悦', year1: '200', year2: '350', year3: '500', fob: '151', cfi: '不适用', ddp: '205', map: '329', msrp: '379', configuration: '澳新插头 / 完整附件包', launch: '2027-09', price: '151', currency: 'NZD' }
+      ],
+      sources: [ { id: 'IN-2026-221', origin: '企微文字 · 赵宁 · 2026-10-02', quote: '首批计划 500 台，重点改善软管收纳', attachment: '澳洲试销意向.xlsx' }, { id: 'IN-2026-226', origin: '企微文件 · 郑悦 · 2026-10-04', quote: '新西兰试销预计 200 台，需配完整附件', attachment: '新西兰渠道反馈.pdf' } ],
+      history: [ ['2026-10-06 10:30', '赵宁 · 汇总澳新渠道情报并提交需求。'], ['2026-10-08 14:00', '王琳 · 初筛通过：需求完整、无重复、符合清洗设备产品线。'], ['2026-10-09 09:20', '产品管理中心 · 已受理，等待需求负责人发起 OA 审批。'] ],
+      next: '下一步：需求负责人发起 OA 审批；认证及结构可行性在后续评审中确认。'
+    },
+    {
+      code: 'PD-2026-011', name: '欧洲新渠道套装', source: '直接填写', 'created-at': '2026-09-26',
+      applicant: '王琳', department: '产品管理中心', category: '手持工具', brand: 'SENIX', positioning: '家用入门',
+      region: '德国、荷兰', channel: 'E-Comm 电商', compliance: 'CE、RoHS',
+      reason: '欧洲新电商渠道计划导入电钻与冲击起子组合套装，需要统一配置、独立商品包装和本地语言资料。',
+      value: '拓展线上入门级客群，以标准化组合套装减少渠道建档时间，并增加电池平台用户。',
+      'target-users': '首次购买电动工具的家庭 DIY 用户', 'target-customers': '德国电商渠道 G、荷兰线上分销商 H（演示客户）',
+      environment: '家庭室内及轻度户外作业；电商快递运输及个人收纳。', 'basic-params': '20V 入门双机套装；电钻目标扭矩 45 N·m；2×2.0Ah 电池；1 小时级充电器。',
+      scene: '家庭装修、家具组装、轻量钻孔与紧固；作为节日促销套装销售。',
+      basis: '德国渠道首年 1,500 套、荷兰 1,000 套，合计 2,500 套；参考试销询价及季度促销计划。各区域按套装单价记录，未将三年收入当作目标价格。',
+      'selling-points': '双机组合、统一电池、便携工具箱及适配电商运输的紧凑包装。', accessories: '双机、2 块电池、充电器、批头及工具箱。',
+      'special-requirements': '提供电商主图、德荷语言卖点和独立 SKU；审批期间不对外承诺交期。', 'feature-1': '一箱双机，覆盖常用家庭作业。', 'feature-2': '入门套装也可扩展同平台电池和工具。',
+      'competitor-brand': '样例品牌 HomeDrive', 'competitor-model': 'HD-2Kit（虚构对标型号）', 'competitor-price': 'EUR 129 / 套（演示零售价）',
+      'competitor-warranty': '家用 2 年（演示条件）', 'competitor-configuration': '双机、双电池、充电器和工具箱。', 'competitor-channel': '欧洲电商平台',
+      'sample-available': '是，已提供 2 套评审样品', 'competitor-specs': '20V；电钻扭矩 45 N·m；双机紧凑机身（演示参数）。',
+      'competitor-link': 'https://example.com/demo/hd-2kit（演示占位链接）', 'competitor-advantages': '对标价格较低；本方案拟通过完整配件及平台扩展能力提高吸引力。',
+      packaging: '电商防护外箱、工具箱防松定位、单品及套装双层条码管理。', manual: '德语、荷兰语和英语；电子说明书二维码。', warranty: '家用 2 年（拟定）',
+      'product-imageFiles': ['欧洲电商双机套装_效果示意.png'], 'competitor-imageFiles': ['HD-2Kit_对标示意图.jpg'], referenceFiles: ['欧洲电商渠道导入方案.pdf', '套装询价记录.xlsx'], attachmentFiles: ['欧洲新渠道套装_需求说明_评审版.docx'],
+      forecast: [
+        { market: '德国', owner: '王琳', year1: '1500', year2: '2200', year3: '3000', fob: '54', cfi: '不适用', ddp: '74', map: '109', msrp: '129', configuration: '20V双机 / 双电池 / 工具箱', launch: '2027-02', price: '54', currency: 'EUR' },
+        { market: '荷兰', owner: '刘芳', year1: '1000', year2: '1500', year3: '2000', fob: '55', cfi: '不适用', ddp: '76', map: '109', msrp: '129', configuration: '荷兰语包装 / 双机套装', launch: '2027-03', price: '55', currency: 'EUR' }
+      ], sources: [],
+      history: [ ['2026-09-26 15:00', '王琳 · 直接录入欧洲渠道需求。'], ['2026-09-28 11:20', '产品管理中心 · 初筛通过并受理。'], ['2026-09-29 09:10', '王琳 · 发起 OA-2026-0918，当前审批中。'], ['2026-09-30 14:50', 'OA 状态回写（演示）· 区域负责人已审核，待产品管理中心评审。'] ],
+      next: 'OA 关联单号：OA-2026-0918；等待 OA 端评审，审批结果及完成时间回写 PDS。'
+    }
+  ];
+  const mergeDemo = JSON.parse(JSON.stringify(sampleDemands[1]));
+  Object.assign(mergeDemo, {
+    code: 'PD-2026-016', name: '欧洲20V双机套装补充需求', 'created-at': '2026-10-15',
+    applicant: '刘芳', department: '欧洲渠道业务部', region: '法国、比利时',
+    channel: 'E-Comm 电商', 'target-customers': '法国线上渠道 J、比利时分销商 K（演示客户）',
+    reason: '线上渠道提出同一 20V 无刷双机平台需求，需与欧洲平台升级申请统一核对电池配置和销量。',
+    basis: '法国首年 600 套、比利时 300 套，为渠道初步意向；法国需求可能与原平台申请重叠，不应直接相加。',
+    attachmentFiles: ['欧洲20V双机套装_渠道补充.docx'], referenceFiles: ['法比渠道反馈汇总.pdf'],
+    history: [['2026-10-15 14:30', '刘芳 · 提交欧洲20V双机套装需求，待产品经理初筛。']],
+    next: '待核对与 PD-2026-017 的平台及渠道重叠情况，可在列表中多选后合并。'
+  });
+  mergeDemo.forecast = [
+    { ...mergeDemo.forecast[1], market: '法国', owner: '刘芳', year1: '600', year2: '900', year3: '1200' },
+    { ...mergeDemo.forecast[1], market: '比利时', owner: '徐凯', year1: '300', year2: '500', year3: '700' }
+  ];
+  sampleDemands.push(mergeDemo);
+  sampleDemands.forEach((demand) => {
+    demand.sources.forEach((source) => { source.snapshot = sourceSnapshot(source, demand); });
+    demand.reviewer = defaultReviewer(demand.category);
+    demand.submittedAt = demand['created-at'] + ' 14:30';
+    demand.dueAt = dueAfterWorkdays(demand['created-at']);
+    if (demand.code === 'PD-2026-018') demand.next = '下一步：产品经理完成初筛；要求于 ' + demand.dueAt + ' 前给出受理或补充结论。';
+    demand.viewed = demand.code !== 'PD-2026-018';
+    demand.notification = { time: demand.submittedAt, state: '已生成企微留言（演示）' };
+    records.set(demand.code, demand);
+  });
+  let currentDemand = sampleDemands[0];
+  const mergeDemoRow = demandRows.rows[0].cloneNode(true);
+  mergeDemoRow.querySelector('.pds-code').textContent = mergeDemo.code;
+  mergeDemoRow.querySelector('.pds-demand-name').textContent = mergeDemo.name;
+  mergeDemoRow.dataset.source = mergeDemo.source;
+  mergeDemoRow.cells[1].textContent = mergeDemo.source;
+  mergeDemoRow.cells[2].textContent = mergeDemo.applicant;
+  demandRows.append(mergeDemoRow);
+  // 列表展示与详情使用同一组样例预测，避免跨币种合计。
+  Array.from(demandRows.querySelectorAll('tr')).forEach((row) => {
+    const demand = records.get(row.querySelector('.pds-code').textContent);
+    if (!demand) return;
+    row.dataset.category = demand.category;
+    row.querySelector('[data-view-target]').dataset.viewTarget = 'detail';
+    row.cells[3].textContent = demand.region;
+    row.cells[4].textContent = demand.channel;
+    const totals = ['year1', 'year2', 'year3'].map((year) => demand.forecast.reduce((sum, item) => sum + Number(item[year]), 0).toLocaleString('zh-CN'));
+    row.cells[5].textContent = totals.join(' / ') + (demand.category === '手持工具' ? ' 套' : ' 台');
+    row.cells[5].title = '第一年 / 第二年 / 第三年；各区域销量合计';
+    row.cells[6].textContent = '分区域见详情';
+    row.cells[6].title = demand.forecast.map((item) => item.market + '：' + item.currency + ' ' + item.price).join('；');
+  });
+  const formFieldIds = [
+    'demand-name', 'created-at', 'applicant', 'department', 'reviewer', 'brand', 'positioning', 'region',
+    'channel', 'compliance', 'reason', 'value', 'target-users', 'target-customers', 'scene',
+    'environment', 'basic-params', 'basis', 'selling-points', 'accessories',
+    'packaging', 'manual', 'warranty', 'special-requirements', 'feature-1', 'feature-2',
+    'competitor-brand', 'competitor-model', 'competitor-price', 'competitor-warranty',
+    'competitor-configuration', 'competitor-channel', 'sample-available',
+    'competitor-specs', 'competitor-link', 'competitor-advantages'
+  ];
+  const detailFieldIds = formFieldIds.filter((id) => root.querySelector('#pds-detail-' + id));
+  const supplementalFieldIds = [
+    'selling-points', 'compliance', 'accessories', 'special-requirements',
+    'feature-1', 'feature-2', 'competitor-brand', 'competitor-model',
+    'competitor-price', 'competitor-warranty', 'competitor-configuration',
+    'competitor-channel', 'sample-available', 'competitor-specs', 'competitor-link',
+    'competitor-advantages', 'packaging', 'manual', 'warranty'
+  ];
+  const fileFieldIds = ['product-image', 'competitor-image', 'reference', 'attachment'];
+  const requiredFieldLabels = {
+    'demand-name': '需求名称', 'created-at': '创建日期', applicant: '申请人',
+    department: '申请部门', category: '产品类别', brand: '品牌', channel: '销售渠道',
+    reviewer: '对应产品经理',
+    region: '销售地区', compliance: '认证要求', positioning: '产品定位',
+    reason: '需求原因', value: '商业价值', 'basic-params': '基本参数',
+    scene: '使用场景', environment: '使用环境', 'target-users': '目标人群',
+    'selling-points': '主要卖点', packaging: '包装要求', manual: '说明书要求',
+    accessories: '配件', warranty: '质保年限', 'special-requirements': '其他特殊要求',
+    'feature-1': '主要特征-1', 'feature-2': '主要特征-2',
+    'competitor-brand': '竞品品牌', 'competitor-model': '竞品型号',
+    'competitor-price': '竞品售价', 'competitor-warranty': '竞品质保',
+    'competitor-configuration': '竞品配置', 'competitor-channel': '竞品销售渠道',
+    'sample-available': '是否提供样品', 'competitor-specs': '竞品基本参数',
+    'competitor-link': '竞品链接'
+  };
+  const requiredFileLabels = {
+    'product-image': '产品图片', 'competitor-image': '竞品图片', attachment: '上传需求附件'
+  };
+  const requiredForecastFields = [
+    ['market', '销售区域或国家'], ['owner', '承诺人'],
+    ['year1', '第一年'], ['year2', '第二年'], ['year3', '第三年'],
+    ['fob', 'FOB(代理商)'], ['cfi', 'CFI(RU)'], ['ddp', 'DDP'],
+    ['map', 'MAP'], ['msrp', 'MSRP'], ['configuration', '产品配置'], ['launch', '上市时间']
+  ];
+  const forecastFields = [
+    ['market', '销售区域或国家', 'text'], ['owner', '承诺人', 'text'],
+    ['year1', '第一年', 'number'], ['year2', '第二年', 'number'], ['year3', '第三年', 'number'],
+    ['fob', 'FOB(代理商)', 'text'], ['cfi', 'CFI(RU)', 'text'],
+    ['ddp', 'DDP', 'text'], ['map', 'MAP', 'text'], ['msrp', 'MSRP', 'text'],
+    ['configuration', '产品配置', 'text'], ['launch', '上市时间', 'text'],
+    ['price', '目标价格', 'text'], ['currency', '币种', 'select']
+  ];
+
+  function textNode(tag, text, className) {
+    const node = document.createElement(tag);
+    node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  }
+  function originalIntelHref(id) {
+    try { const url = new URL(window.location.href); url.search = ''; url.hash = ''; url.searchParams.set('intel', id); return url.href; }
+    catch { return '?intel=' + encodeURIComponent(id); }
+  }
+  function renderIntelContent(container, record, snapshot) {
+    container.replaceChildren();
+    container.append(textNode('p', snapshot ? '转成产品需求时的留存快照，用于核对当时的评审依据；原情报后续修改不会覆盖此快照。' : '最新原情报记录；可能包含需求转化后的补充。', 'pds-review-context'));
+    const list = document.createElement('ul'); list.className = 'pds-info-list';
+    [['情报编号', record.id], ['标题', record.title], ['客户', record.customer], ['提交人 / 负责人', record.owner], ['收录时间', record.collectedAt], ['收录渠道', record.origin], ['市场 / 类别', [record.market, record.category].filter(Boolean).join(' / ')], ['数量（原话）', record.quantity], ['金额（原话）', record.amount], [snapshot ? '快照留存时间' : '最近更新时间', snapshot ? record.capturedAt : record.updatedAt], ['版本', record.version]].forEach(([label, value]) => {
+      const li = document.createElement('li'); li.append(textNode('span', label), textNode('strong', value || '未提供')); list.append(li);
+    });
+    container.append(list, textNode('h4', '原始内容'), textNode('blockquote', record.rawText || record.quote || '暂无原文'), textNode('h4', 'AI 整理内容'), textNode('p', record.aiSummary || '暂无整理内容'), textNode('h4', '原始附件'));
+    container.append(textNode('p', record.attachment || '无附件'));
+    container.append(textNode('p', '附件仅展示演示文件名；数量和金额按原话保留，AI 整理供参考，需求价值由产品经理判断。', 'pds-empty-note'));
+  }
+  function closeIntelDrawer(restoreFocus = true) {
+    const drawer = field('intel-drawer');
+    if (typeof drawer.close === 'function') drawer.close(); else drawer.removeAttribute('open');
+    if (restoreFocus && intelTrigger?.isConnected) intelTrigger.focus();
+    intelTrigger = null;
+  }
+  root.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-intel-snapshot]');
+    if (!button) return;
+    const source = currentDemand.sources.find((item) => item.id === button.dataset.intelSnapshot);
+    if (!source) return;
+    const snapshot = source.snapshot || sourceSnapshot(source, currentDemand);
+    intelTrigger = button;
+    field('intel-drawer-title').textContent = snapshot.title;
+    field('intel-drawer-context').textContent = '转化时快照 · 关联产品需求 ' + currentDemand.code;
+    renderIntelContent(field('intel-drawer-body'), snapshot, true);
+    field('intel-drawer-original').href = originalIntelHref(source.id);
+    const drawer = field('intel-drawer');
+    if (typeof drawer.showModal === 'function') drawer.showModal(); else drawer.setAttribute('open', '');
+    field('intel-drawer-close').focus();
+  });
+  field('intel-drawer-close').addEventListener('click', () => closeIntelDrawer());
+  field('intel-drawer').addEventListener('cancel', (event) => { event.preventDefault(); closeIntelDrawer(); });
+  field('detail-source').addEventListener('click', () => {
+    if (!currentDemand.sources.length) return;
+    const panel = field('related-intelligence'); panel.scrollIntoView?.({ behavior: 'smooth', block: 'start' }); panel.focus();
+  });
+  function selectedFileNames(id) {
+    return Array.from(field(id).files || [], (file) => file.name);
+  }
+  function selectedOptions(id) {
+    return Array.from(field(id + '-menu').querySelectorAll('input:checked'), (input) => input.value);
+  }
+  function closeMulti(id) {
+    field(id + '-menu').hidden = true;
+    field(id).setAttribute('aria-expanded', 'false');
+  }
+  function renderMulti(id) {
+    const values = selectedOptions(id);
+    field(id).textContent = values.length ? values.join('、') : (id === 'channel' ? '请选择渠道' : '请选择认证');
+    field(id).classList.toggle('has-selection', values.length > 0);
+  }
+  function setMultiValues(id, values) {
+    field(id + '-menu').querySelectorAll('input[type="checkbox"]').forEach((input) => {
+      input.checked = values.includes(input.value);
+    });
+    renderMulti(id);
+  }
+  ['channel', 'compliance'].forEach((id) => {
+    field(id).addEventListener('click', () => {
+      const willOpen = field(id + '-menu').hidden;
+      ['channel', 'compliance'].forEach(closeMulti);
+      if (willOpen) {
+        field(id + '-menu').hidden = false;
+        field(id).setAttribute('aria-expanded', 'true');
+      }
+    });
+    field(id + '-menu').addEventListener('change', () => renderMulti(id));
+    field(id).addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMulti(id);
+    });
+  });
+  document.addEventListener('click', (event) => {
+    if (!root.contains(event.target) || !event.target.closest('.pds-multi-dropdown')) {
+      ['channel', 'compliance'].forEach(closeMulti);
+    }
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') ['channel', 'compliance'].forEach(closeMulti);
+  });
+  function localDate() {
+    const today = new Date();
+    return [today.getFullYear(), String(today.getMonth() + 1).padStart(2, '0'), String(today.getDate()).padStart(2, '0')].join('-');
+  }
+  function renderSelectedFiles(id) {
+    const list = field(id + '-selected');
+    list.replaceChildren();
+    const names = selectedFileNames(id);
+    if (!names.length) list.textContent = '尚未选择文件';
+    else names.forEach((name) => list.append(textNode('span', name)));
+  }
+  fileFieldIds.forEach((id) => field(id).addEventListener('change', () => renderSelectedFiles(id)));
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('show');
+  }
+  function showView(name) {
+    if (field('intel-drawer').hasAttribute('open')) closeIntelDrawer(false);
+    if (field('review-dialog').hasAttribute('open')) closeReviewDialog(false);
+    if (name === 'screening') renderInbox();
+    if (name === 'detail') renderDetail();
+    toast.classList.remove('show');
+    views.forEach((view) => view.classList.toggle('is-visible', view.dataset.view === name));
+    const navView = name === 'merge' || (name === 'detail' && detailOrigin === 'screening') ? 'screening' : name === 'intel-original' ? 'intelligence' : name;
+    navButtons.forEach((button) => button.setAttribute('aria-current', button.dataset.viewTarget === navView ? 'page' : 'false'));
+  }
+  function renderInbox() {
+    const manager = field('inbox-manager').value;
+    const assigned = [...records.values()].filter((demand) => demand.reviewer === manager);
+    const counts = (status) => assigned.filter((demand) => taskStatus(demand.code) === status).length;
+    field('inbox-pending').textContent = counts('待初筛');
+    field('inbox-supplement').textContent = counts('待补充');
+    field('inbox-accepted').textContent = counts('已受理');
+    field('inbox-oa').textContent = counts('OA 审批中');
+    field('inbox-owner').textContent = manager + '的需求待办 · 共分配 ' + assigned.length + ' 条';
+    root.querySelectorAll('[data-inbox-tab]').forEach((button) => button.setAttribute('aria-selected', String(button.dataset.inboxTab === inboxTab)));
+    const query = field('inbox-search').value.trim().toLowerCase();
+    const category = field('inbox-category').value;
+    const read = field('inbox-read').value;
+    const filtered = assigned.filter((demand) => {
+      const status = taskStatus(demand.code);
+      const inTab = inboxTab === 'all' || (inboxTab === 'processed' ? !['待初筛', '待补充'].includes(status) : status === inboxTab);
+      return inTab && (!category || demand.category === category)
+        && (!read || (read === 'read' ? demand.viewed : !demand.viewed))
+        && (!query || [demand.code, demand.name, demand.applicant, demand.region].join(' ').toLowerCase().includes(query));
+    }).sort((a, b) => Number(a.viewed) - Number(b.viewed) || b.submittedAt.localeCompare(a.submittedAt));
+    field('inbox-count').textContent = '当前 ' + filtered.length + ' 条';
+    const body = field('inbox-rows');
+    body.replaceChildren();
+    filtered.forEach((demand) => {
+      const row = document.createElement('tr');
+      const status = taskStatus(demand.code);
+      const selectCell = document.createElement('td');
+      const select = document.createElement('input');
+      select.type = 'checkbox'; select.dataset.mergeCode = demand.code;
+      select.setAttribute('aria-label', '选择需求 ' + demand.code);
+      select.disabled = !mergeable(demand); select.checked = mergeSelection.has(demand.code);
+      selectCell.append(select); row.append(selectCell);
+      [[demand.name, demand.code + ' · ' + demand.category], [demand.applicant, demand.department], [demand.region, demand.source], [demand.submittedAt, '业务提交'], [demand.dueAt, status === '待初筛' && demand.dueAt < localDate() ? '已逾期，请优先处理' : '提交后 2 个工作日']].forEach(([primary, secondary]) => {
+        const cell = document.createElement('td');
+        cell.append(textNode('strong', primary), textNode('span', secondary, 'pds-code'));
+        row.append(cell);
+      });
+      const statusCell = document.createElement('td');
+      statusCell.append(textNode('span', status, 'pds-status ' + (status === '待补充' ? 'status-amber' : status === '已受理' ? 'status-green' : 'status-blue')));
+      row.append(statusCell);
+      const reminderCell = document.createElement('td');
+      reminderCell.append(textNode('span', '企微留言已生成', 'pds-code'), textNode('span', demand.viewed ? '已查看' : '未查看', 'pds-status ' + (demand.viewed ? 'status-green' : 'status-blue')));
+      row.append(reminderCell);
+      const actions = document.createElement('td');
+      [['查看申请', 'data-task-code'], ['企微留言', 'data-message-code']].forEach(([label, attribute]) => {
+        const button = textNode('button', label, 'pds-link');
+        button.type = 'button'; button.setAttribute(attribute, demand.code); actions.append(button);
+      });
+      row.append(actions); body.append(row);
+    });
+    if (!filtered.length) {
+      const cell = textNode('td', '当前条件下暂无分配给 ' + manager + ' 的需求，可切换任务范围或重置筛选。', 'pds-forecast-empty');
+      cell.colSpan = 9; const row = document.createElement('tr'); row.append(cell); body.append(row);
+    }
+    updateMergeSelection();
+  }
+  function clearMergeSelection() { mergeSelection.clear(); }
+  function updateMergeSelection() {
+    const visible = [...field('inbox-rows').querySelectorAll('[data-merge-code]:not(:disabled)')];
+    for (const code of mergeSelection) if (!visible.some((input) => input.dataset.mergeCode === code)) mergeSelection.delete(code);
+    field('inbox-selected').textContent = '已选 ' + mergeSelection.size + ' 条';
+    field('inbox-merge').disabled = mergeSelection.size < 2;
+    field('inbox-select-all').checked = visible.length > 0 && visible.every((input) => mergeSelection.has(input.dataset.mergeCode));
+    field('inbox-select-all').indeterminate = mergeSelection.size > 0 && !field('inbox-select-all').checked;
+    field('inbox-select-all').disabled = visible.length === 0;
+  }
+  const mergeFieldIds = ['name', ...formFieldIds.filter((id) => !['demand-name', 'created-at', 'applicant', 'department', 'reviewer'].includes(id))];
+  function fieldLabel(id) {
+    return id === 'name' ? '需求名称' : (root.querySelector('label[for="pds-' + id + '"]')?.textContent.replace(/\s*\*$/, '') || id);
+  }
+  function renderMergePreview() {
+    const main = records.get(field('merge-main').value);
+    const comparison = field('merge-comparison'); comparison.replaceChildren();
+    mergeCandidates.forEach((demand) => {
+      const row = document.createElement('tr');
+      [demand.code + '｜' + demand.name, demand.applicant + ' / ' + demand.category, demand.region + ' / ' + demand.channel,
+        demand.forecast.map((item) => item.market + '：' + [item.year1, item.year2, item.year3].join(' / ') + '；目标价 ' + item.currency + ' ' + (item.price || '待确认')).join('；')
+      ].forEach((value) => row.append(textNode('td', value)));
+      comparison.append(row);
+    });
+    const conflicts = field('merge-conflicts'); conflicts.replaceChildren();
+    mergeFieldIds.forEach((id) => {
+      const values = [...new Set(mergeCandidates.map((demand) => demand[id] || ''))];
+      if (values.length < 2) return;
+      const row = document.createElement('tr');
+      row.append(textNode('td', fieldLabel(id)));
+      const originals = document.createElement('td');
+      mergeCandidates.forEach((demand) => originals.append(textNode('p', demand.code + '：' + (demand[id] || '未填写'))));
+      row.append(originals);
+      const cell = document.createElement('td'); const select = document.createElement('select');
+      select.dataset.mergePreset = id; select.setAttribute('aria-label', '引用原申请的' + fieldLabel(id));
+      values.forEach((value) => { const option = textNode('option', value || '未填写'); option.value = value; select.append(option); });
+      select.value = main[id] || '';
+      const editor = document.createElement('textarea');
+      editor.dataset.mergeField = id; editor.value = main[id] || '';
+      editor.setAttribute('aria-label', '合并采用的' + fieldLabel(id));
+      editor.placeholder = '可引用上方原值，再手工合并、补充或重新定义';
+      select.addEventListener('change', () => { editor.value = select.value; });
+      cell.append(select, editor, textNode('span', '下拉引用原值；下方可直接编辑最终内容。', 'pds-code'));
+      row.append(cell); conflicts.append(row);
+    });
+    if (!conflicts.children.length) { const cell = textNode('td', '所选需求的产品字段一致。'); cell.colSpan = 3; const row = document.createElement('tr'); row.append(cell); conflicts.append(row); }
+    field('merge-ack').checked = false;
+  }
+  field('inbox-merge').addEventListener('click', () => {
+    mergeCandidates = [...mergeSelection].map((code) => records.get(code));
+    if (mergeCandidates.length < 2 || !mergeCandidates.every(mergeable)) return;
+    if (!mergeCandidates.every((demand) => demand.category === mergeCandidates[0].category)) {
+      showToast('请选择同一产品类别的需求合并；跨类别需求请分别评估。'); return;
+    }
+    const select = field('merge-main'); select.replaceChildren();
+    mergeCandidates.forEach((demand) => { const option = textNode('option', demand.code + '｜' + demand.name); option.value = demand.code; select.append(option); });
+    field('merge-reason').value = ''; field('merge-feedback').textContent = '';
+    renderMergePreview(); showView('merge');
+  });
+  field('merge-main').addEventListener('change', renderMergePreview);
+  field('merge-confirm').addEventListener('click', () => {
+    const reason = field('merge-reason').value.trim();
+    if (!reason || !field('merge-ack').checked) { field('merge-feedback').textContent = '请填写合并原因，并勾选预测及差异核对确认。'; return; }
+    if (mergeCandidates.length < 2 || !mergeCandidates.every(mergeable)) { field('merge-feedback').textContent = '需求状态或分配人已改变，请返回列表重新选择。'; return; }
+    const main = records.get(field('merge-main').value);
+    const editors = [...field('merge-conflicts').querySelectorAll('[data-merge-field]')];
+    const missing = editors.filter((editor) => (editor.dataset.mergeField === 'name' || Object.hasOwn(requiredFieldLabels, editor.dataset.mergeField)) && !editor.value.trim());
+    if (missing.length) { field('merge-feedback').textContent = '请填写合并后必填字段：' + missing.map((editor) => fieldLabel(editor.dataset.mergeField)).join('、') + '。'; missing[0].focus(); return; }
+    const snapshots = mergeCandidates.map((demand) => JSON.parse(JSON.stringify({ ...demand, snapshotStatus: taskStatus(demand.code) })));
+    editors.forEach((editor) => main[editor.dataset.mergeField] = editor.value.trim());
+    main['demand-name'] = main.name;
+    main.mergeSnapshots = [...(main.mergeSnapshots || []), ...snapshots];
+    const sources = new Map(); mergeCandidates.forEach((demand) => demand.sources.forEach((source) => sources.set(source.id, source)));
+    main.sources = [...sources.values()];
+    fileFieldIds.forEach((id) => { main[id + 'Files'] = [...new Set(mergeCandidates.flatMap((demand) => demand[id + 'Files'] || []))]; });
+    const actionText = '合并需求 ' + mergeCandidates.map((demand) => demand.code).join('、') + '；保留主需求 ' + main.code + '；原因：' + reason + '。主需求预测保留，不自动累加。';
+    mergeCandidates.forEach((demand) => {
+      const row = Array.from(demandRows.rows).find((item) => item.querySelector('.pds-code').textContent === demand.code);
+      const status = demand === main ? '待初筛' : '已合并';
+      row.dataset.status = status;
+      const badge = row.querySelector('.pds-status'); badge.textContent = status; badge.className = 'pds-status ' + (demand === main ? 'status-blue' : 'status-amber');
+      demand.history = demand.history || [];
+      demand.history.push(['本次演示', field('inbox-manager').value + ' · ' + actionText]);
+      if (demand !== main) { demand.mergedInto = main.code; demand.next = '已合并至 ' + main.code + '，原申请和附件继续保留。'; }
+    });
+    main.reviewComment = ''; main.reviewDate = ''; main.viewed = false;
+    main.next = '合并后待重新初筛；核对各来源区域预测和价格，确认是否存在客户或渠道重叠。';
+    const mainRow = Array.from(demandRows.rows).find((row) => row.querySelector('.pds-code').textContent === main.code);
+    mainRow.querySelector('.pds-demand-name').textContent = main.name;
+    mainRow.cells[3].textContent = main.region; mainRow.cells[4].textContent = main.channel;
+    currentDemand = main; currentRow = mainRow; reviewCommentCode = '';
+    clearMergeSelection(); inboxTab = '待初筛';
+    filterRows(); showView('screening'); showToast('合并完成：' + main.code + ' 已回到待我筛选，原始申请与预测快照已保留。');
+  });
+  field('inbox-rows').addEventListener('change', (event) => {
+    const code = event.target.dataset.mergeCode;
+    if (!code) return;
+    if (event.target.checked) mergeSelection.add(code); else mergeSelection.delete(code);
+    updateMergeSelection();
+  });
+  field('inbox-select-all').addEventListener('change', () => {
+    field('inbox-rows').querySelectorAll('[data-merge-code]:not(:disabled)').forEach((input) => {
+      input.checked = field('inbox-select-all').checked;
+      if (input.checked) mergeSelection.add(input.dataset.mergeCode); else mergeSelection.delete(input.dataset.mergeCode);
+    });
+    updateMergeSelection();
+  });
+  function openTask(code) {
+    const demand = records.get(code);
+    if (!demand || demand.reviewer !== field('inbox-manager').value) return;
+    currentDemand = demand;
+    currentRow = Array.from(demandRows.rows).find((row) => row.querySelector('.pds-code')?.textContent === code);
+    detailOrigin = 'screening'; demand.viewed = true;
+    field('inbox-message').hidden = true;
+    showView('detail');
+  }
+  function previewMessage(code) {
+    const demand = records.get(code);
+    if (!demand || demand.reviewer !== field('inbox-manager').value) return;
+    messageDemandCode = code;
+    field('message-recipient').textContent = '收件人：' + demand.reviewer + ' / 产品经理 · 发送人：PDS 需求管理';
+    field('message-content').textContent = '【产品需求待初筛】' + demand.applicant + '（' + demand.department + '）提交了“' + demand.name + '”，编号 ' + demand.code + '，产品类别：' + demand.category + '，销售地区：' + demand.region + '。请于 ' + demand.dueAt + ' 前进入 PDS 查看需求详情并完成初筛。当前状态：' + taskStatus(code) + '。';
+    field('message-time').textContent = '留言生成时间：' + demand.notification.time + '；点击下方入口打开同一条需求。';
+    field('inbox-message').hidden = false;
+  }
+  root.addEventListener('click', (event) => {
+    const task = event.target.closest('[data-task-code]');
+    const message = event.target.closest('[data-message-code]');
+    const tab = event.target.closest('[data-inbox-tab]');
+    if (task) openTask(task.dataset.taskCode);
+    if (message) previewMessage(message.dataset.messageCode);
+    if (tab) { clearMergeSelection(); inboxTab = tab.dataset.inboxTab; renderInbox(); }
+  });
+  ['inbox-search', 'inbox-category', 'inbox-read'].forEach((id) => field(id).addEventListener('input', () => { clearMergeSelection(); renderInbox(); }));
+  field('inbox-manager').addEventListener('change', () => { clearMergeSelection(); field('inbox-message').hidden = true; renderInbox(); });
+  field('inbox-reset').addEventListener('click', () => { clearMergeSelection(); ['inbox-search', 'inbox-category', 'inbox-read'].forEach((id) => field(id).value = ''); renderInbox(); });
+  field('message-open').addEventListener('click', () => openTask(messageDemandCode));
+  field('message-close').addEventListener('click', () => field('inbox-message').hidden = true);
+  field('category').addEventListener('change', () => field('reviewer').value = defaultReviewer(field('category').value));
+  function selectedIntelRows() {
+    return intelRows.filter((row) => row.querySelector('.pds-intel-select').checked);
+  }
+  function compatible(rows) {
+    return rows.every((row) =>
+      row.dataset.category === rows[0].dataset.category &&
+      row.dataset.market === rows[0].dataset.market
+    );
+  }
+  function updateSelection() {
+    const rows = selectedIntelRows();
+    selectedCount.textContent = '已选 ' + rows.length + ' 条';
+    batchButton.disabled = rows.length === 0;
+    selectionHint.textContent = rows.length > 1 && !compatible(rows)
+      ? '所选情报跨市场或产品类别，请拆成不同产品需求'
+      : rows.length > 0
+        ? '所选情报可整理为一条需求；数量和金额需人工核对'
+        : '勾选相似情报后，可合并转为一条产品需求';
+    selectAll.checked = rows.length === intelRows.length;
+    selectAll.indeterminate = rows.length > 0 && rows.length < intelRows.length;
+  }
+  intelRows.forEach((row) => row.querySelector('.pds-intel-select').addEventListener('change', updateSelection));
+  selectAll.addEventListener('change', () => {
+    intelRows.forEach((row) => { row.querySelector('.pds-intel-select').checked = selectAll.checked; });
+    updateSelection();
+  });
+  function updateForecastControls() {
+    const rows = Array.from(forecastRows.querySelectorAll('tr'));
+    const selected = rows.filter((row) => row.querySelector('input[type="checkbox"]').checked);
+    forecastDelete.disabled = selected.length === 0;
+    forecastSelectAll.checked = rows.length > 0 && selected.length === rows.length;
+    forecastSelectAll.indeterminate = selected.length > 0 && selected.length < rows.length;
+    field('forecast-count').textContent = '共 ' + rows.length + ' 行；请人工确认各区域销量及价格';
+  }
+  function renumberForecastRows() {
+    Array.from(forecastRows.querySelectorAll('tr')).forEach((row, index) => {
+      row.querySelector('.pds-forecast-index').textContent = String(index + 1);
+      row.querySelector('input[type="checkbox"]').setAttribute('aria-label', '选择第 ' + (index + 1) + ' 行');
+    });
+    updateForecastControls();
+  }
+  function addForecastRow() {
+    const row = document.createElement('tr');
+    const selectCell = document.createElement('td');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.addEventListener('change', updateForecastControls);
+    selectCell.append(checkbox);
+    row.append(selectCell);
+    row.append(textNode('td', '', 'pds-forecast-index'));
+    forecastFields.forEach(([name, label, type]) => {
+      const cell = document.createElement('td');
+      const input = document.createElement(type === 'select' ? 'select' : 'input');
+      if (type !== 'select') input.type = type;
+      input.dataset.forecastField = name;
+      input.setAttribute('aria-label', label);
+      if (requiredForecastFields.some(([id]) => id === name)) input.setAttribute('aria-required', 'true');
+      if (type === 'number') { input.min = '0'; input.step = '1'; input.inputMode = 'numeric'; }
+      if (type === 'select') {
+        [['', '请选择'], ['USD', 'USD'], ['EUR', 'EUR'], ['CNY', 'CNY'], ['AUD', 'AUD'], ['CAD', 'CAD']].forEach(([value, text]) => {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = text;
+          input.append(option);
+        });
+      }
+      cell.append(input);
+      row.append(cell);
+    });
+    forecastRows.append(row);
+    renumberForecastRows();
+  }
+  function resetForecastRows() {
+    forecastRows.replaceChildren();
+    for (let index = 0; index < 3; index += 1) addForecastRow();
+    forecastSelectAll.checked = false;
+    updateForecastControls();
+  }
+  function collectForecastRows() {
+    return Array.from(forecastRows.querySelectorAll('tr')).map((row) => {
+      const value = (name) => row.querySelector('[data-forecast-field="' + name + '"]').value.trim();
+      return Object.fromEntries(forecastFields.map(([name]) => [name, value(name)]));
+    }).filter((row) => Object.values(row).some(Boolean));
+  }
+  field('forecast-add').addEventListener('click', addForecastRow);
+  forecastSelectAll.addEventListener('change', () => {
+    forecastRows.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => { checkbox.checked = forecastSelectAll.checked; });
+    updateForecastControls();
+  });
+  forecastDelete.addEventListener('click', () => {
+    forecastRows.querySelectorAll('tr').forEach((row) => {
+      if (row.querySelector('input[type="checkbox"]').checked) row.remove();
+    });
+    renumberForecastRows();
+  });
+  resetForecastRows();
+  function openForm(mode, rows = []) {
+    formMode = mode;
+    formError.classList.remove('show');
+    selectedSources = rows.map((row) => ({
+      id: row.dataset.id, title: row.dataset.title, market: row.dataset.market,
+      category: row.dataset.category, owner: row.dataset.owner, quote: row.dataset.quote,
+      origin: row.dataset.origin, attachment: row.dataset.attachment,
+      snapshot: { ...JSON.parse(JSON.stringify(intelRecords.get(row.dataset.id))), capturedAt: localDate() }
+    }));
+    formFieldIds.forEach((name) => { field(name).value = ''; });
+    ['channel', 'compliance'].forEach((id) => { setMultiValues(id, []); closeMulti(id); });
+    field('created-at').value = localDate();
+    fileFieldIds.forEach((id) => { field(id).value = ''; renderSelectedFiles(id); });
+    resetForecastRows();
+    field('category').value = '';
+    field('demand-source').value = mode === 'ai' ? 'AI 情报合并' : '直接填写';
+    field('demand-source').disabled = true;
+    sourceLine.hidden = mode !== 'ai';
+    sourceCard.hidden = mode !== 'ai';
+    field('form-mode').textContent = mode === 'ai'
+      ? '汇总 ' + rows.length + ' 条相似情报，保留每条原始来源'
+      : '业务或产品人员直接填写需求，提交产品经理初筛';
+    sourceList.replaceChildren();
+    if (mode === 'ai') {
+      const first = selectedSources[0];
+      field('source-summary').textContent = '来自 ' + selectedSources.length + ' 条 AI 情报：' + selectedSources.map((item) => item.id).join('、');
+      selectedSources.forEach((item) => {
+        const li = document.createElement('li');
+        li.append(textNode('strong', item.id + '｜' + item.title));
+        li.append(textNode('span', item.origin + '｜' + item.quote + (item.attachment ? '｜附件：' + item.attachment : '')));
+        sourceList.append(li);
+      });
+      field('demand-name').value = first.category === '园林工具' ? '北美商用割草机平台' : first.title;
+      field('applicant').value = first.owner;
+      field('category').value = first.category;
+      field('region').value = first.market;
+      setMultiValues('channel', first.market === '北美' ? ['Dealers 经销商'] : []);
+      field('reason').value = selectedSources.map((item) => item.title).join('；');
+    }
+    field('reviewer').value = defaultReviewer(field('category').value);
+    showView('form');
+  }
+  batchButton.addEventListener('click', () => {
+    const rows = selectedIntelRows();
+    if (!rows.length) return;
+    if (!compatible(rows)) {
+      showToast('所选情报属于不同市场或产品类别，请取消不相似的情报后再转化。');
+      return;
+    }
+    openForm('ai', rows);
+  });
+  root.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-view-target]');
+    if (!button || !root.contains(button)) return;
+    if (button.dataset.viewTarget === 'form') {
+      openForm('manual');
+      return;
+    }
+    if (button.dataset.viewTarget === 'detail') {
+      const row = button.closest('tr');
+      let demandRow = row && row.closest('#pds-demand-rows') ? row : null;
+      if (row && row.closest('#pds-oa-rows')) {
+        const oaCode = row.textContent.match(/PD-2026-\d{3}/)?.[0];
+        demandRow = Array.from(demandRows.querySelectorAll('tr')).find((item) => item.querySelector('.pds-code').textContent === oaCode);
+      }
+      if (demandRow) {
+        detailOrigin = 'pool';
+        currentRow = demandRow;
+        const code = demandRow.querySelector('.pds-code').textContent;
+        currentDemand = records.get(code) || {
+          code, name: demandRow.querySelector('.pds-demand-name').textContent,
+          source: demandRow.dataset.source, category: demandRow.dataset.category,
+          applicant: demandRow.cells[2].textContent, region: demandRow.cells[3].textContent,
+          channel: demandRow.cells[4].textContent,
+          value: '请查看原始需求资料', sources: []
+        };
+        renderDetail();
+      }
+    }
+    showView(button.dataset.viewTarget);
+  });
+  field('form-back').addEventListener('click', () => showView(formMode === 'ai' ? 'intelligence' : 'pool'));
+  function renderDetail() {
+    const demand = currentDemand;
+    field('detail-back').dataset.viewTarget = detailOrigin;
+    field('detail-back').textContent = detailOrigin === 'screening' ? '返回我的筛选' : '返回需求池';
+    field('detail-assignment').textContent = '对应产品经理：' + (demand.reviewer || defaultReviewer(demand.category)) + ' · 提交时间：' + (demand.submittedAt || demand['created-at'] || '本次演示');
+    field('detail-notification').textContent = '企微留言：' + (demand.notification?.state || '待生成') + ' · 要求完成时间：' + (demand.dueAt || '提交后 2 个工作日');
+    if (reviewCommentCode !== demand.code) {
+      reviewCommentCode = demand.code;
+      field('review-comment').value = demand.reviewComment || '';
+      field('review-date').value = demand.reviewDate || '';
+      field('review-feedback').textContent = '';
+    }
+    const isOwner = demand.reviewer === field('inbox-manager').value;
+    const canReview = isOwner && ['待初筛', '待补充', '已受理', '已暂缓'].includes(currentRow.dataset.status);
+    ['accept', 'request-more', 'hold'].forEach((id) => field(id).disabled = !canReview);
+    field('review-comment').disabled = !canReview;
+    field('review-date').disabled = !canReview;
+    field('review-date').min = localDate();
+    field('review-permission').textContent = canReview
+      ? '已阅读以上申请数据与资料，可选择下方操作；点击后填写对应意见并确认。'
+      : !isOwner ? '该需求由产品经理 ' + demand.reviewer + ' 处理；当前为只读查看。'
+      : '当前状态为“' + currentRow.dataset.status + '”，查看下方处理记录与来源资料。';
+    const trace = field('detail-merge-trace');
+    trace.hidden = !demand.mergedInto && !demand.mergeSnapshots?.length;
+    field('detail-merge-summary').textContent = demand.mergedInto ? '当前申请已合并至 ' + demand.mergedInto + '，原编号与原始数据保留。' : '本需求为合并后的主需求；以下是各申请合并前的完整快照，销量与金额未自动相加。';
+    const traceRecords = field('detail-merge-records'); traceRecords.replaceChildren();
+    if (demand.mergedInto) {
+      const button = textNode('button', '查看主需求 ' + demand.mergedInto, 'pds-link');
+      button.type = 'button'; button.dataset.taskCode = demand.mergedInto; traceRecords.append(button);
+    }
+    (demand.mergeSnapshots || []).forEach((snapshot) => {
+      const details = document.createElement('details');
+      details.append(textNode('summary', snapshot.code + '｜' + snapshot.name + ' · 合并前快照'));
+      details.append(textNode('p', '合并前状态：' + (snapshot.snapshotStatus || '见原处理记录')));
+      const list = document.createElement('ul'); list.className = 'pds-info-list';
+      ['name', 'category', ...formFieldIds.filter((id) => id !== 'demand-name')].forEach((id) => {
+        const item = document.createElement('li');
+        item.append(textNode('span', fieldLabel(id)), textNode('strong', snapshot[id] || '—')); list.append(item);
+      });
+      details.append(list);
+      fileFieldIds.forEach((id) => details.append(textNode('p', fieldLabel(id) + '：' + (snapshot[id + 'Files'] || []).join('、'))));
+      details.append(textNode('h4', '原始区域预测与价格'));
+      (snapshot.forecast || []).forEach((item) => details.append(textNode('p', forecastFields.map(([id, label]) => label + '：' + (item[id] || '—')).join('；'))));
+      details.append(textNode('h4', '原始情报与处理记录'));
+      (snapshot.sources || []).forEach((source) => details.append(textNode('p', source.id + '｜' + source.origin + '｜' + source.quote + (source.attachment ? '｜附件：' + source.attachment : ''))));
+      (snapshot.history || []).forEach(([date, content]) => details.append(textNode('p', date + '｜' + content)));
+      traceRecords.append(details);
+      if (snapshot.code !== demand.code) {
+        const button = textNode('button', '查看原申请 ' + snapshot.code, 'pds-link');
+        button.type = 'button'; button.dataset.taskCode = snapshot.code; traceRecords.append(button);
+      }
+    });
+    field('detail-title').textContent = demand.code + '｜' + demand.name;
+    field('detail-subtitle').textContent = '当前状态：' + currentRow.dataset.status + '　　来源：' + demand.source;
+    field('detail-origin-step').textContent = demand.source === '直接填写' ? '业务直接录入' : 'AI 情报汇总';
+    field('detail-source').textContent = demand.source + (demand.sources.length ? '（' + demand.sources.length + ' 条）' : '');
+    field('detail-source').disabled = demand.sources.length === 0;
+    detailFieldIds.forEach((id) => { field('detail-' + id).textContent = demand[id] || '—'; });
+    fileFieldIds.forEach((id) => { field('detail-' + id).textContent = demand[id + 'Files']?.join('、') || '—'; });
+    const supplementalCount = supplementalFieldIds.filter((id) => Boolean(demand[id])).length
+      + fileFieldIds.filter((id) => demand[id + 'Files']?.length).length;
+    const supplementalDetail = field('detail-supplement');
+    supplementalDetail.open = supplementalCount > 0;
+    supplementalDetail.querySelector('summary').textContent = supplementalCount
+      ? '补充资料（已填 ' + supplementalCount + ' 项）'
+      : '补充资料（尚未填写）';
+    field('detail-category').textContent = demand.category;
+    const detailForecast = field('detail-forecast');
+    detailForecast.replaceChildren();
+    if (!demand.forecast?.length) {
+      const row = document.createElement('tr');
+      const cell = textNode('td', '尚未录入', 'pds-forecast-empty');
+      cell.colSpan = 15;
+      row.append(cell);
+      detailForecast.append(row);
+    } else {
+      const format = (value) => value && /^\d+(?:\.\d+)?$/.test(value) ? Number(value).toLocaleString('zh-CN') : (value || '—');
+      demand.forecast.forEach((item, index) => {
+        const row = document.createElement('tr');
+        [String(index + 1), ...forecastFields.map(([name]) => format(item[name]))].forEach((value) => row.append(textNode('td', value)));
+        detailForecast.append(row);
+      });
+    }
+    const list = field('detail-sources');
+    list.replaceChildren();
+    if (!demand.sources.length) {
+      list.append(textNode('li', '业务直接填写；无关联 AI 情报'));
+    } else {
+      demand.sources.forEach((item) => {
+        const snapshot = item.snapshot || sourceSnapshot(item, demand);
+        const li = document.createElement('li');
+        li.append(textNode('strong', item.id + '｜' + snapshot.title));
+        li.append(textNode('span', '客户：' + (snapshot.customer || '未提供')));
+        li.append(textNode('span', snapshot.origin + ' · ' + snapshot.owner + ' · ' + snapshot.collectedAt));
+        li.append(textNode('p', item.quote, 'pds-source-summary'));
+        li.append(textNode('span', '数量原话：' + snapshot.quantity + '｜金额原话：' + snapshot.amount));
+        const actions = document.createElement('div'); actions.className = 'pds-source-buttons';
+        const button = textNode('button', '查看情报', 'pds-link'); button.type = 'button'; button.dataset.intelSnapshot = item.id;
+        const original = textNode('a', '打开最新原情报 ↗'); original.href = originalIntelHref(item.id); original.target = '_blank'; original.rel = 'noopener noreferrer';
+        actions.append(button, original); li.append(actions);
+        list.append(li);
+      });
+    }
+    const historyList = field('detail-history');
+    historyList.replaceChildren();
+    const history = demand.history || [[demand['created-at'] || '本次演示', demand.applicant + ' · 新建产品需求并提交初筛。']];
+    history.forEach(([date, description]) => {
+      const li = document.createElement('li');
+      li.append(textNode('strong', date));
+      li.append(textNode('span', description));
+      historyList.append(li);
+    });
+    field('detail-next').textContent = demand.next || '下一步：产品经理完成需求初筛。';
+    field('screening-result').textContent = currentRow.dataset.status;
+    field('send-oa').disabled = !isOwner || currentRow.dataset.status !== '已受理';
+  }
+  let nextNumber = 19;
+  field('submit-demand').addEventListener('click', () => {
+    const missing = Object.entries(requiredFieldLabels)
+      .filter(([id]) => ['channel', 'compliance'].includes(id) ? selectedOptions(id).length === 0 : !field(id).value.trim())
+      .map(([, label]) => label);
+    Object.entries(requiredFileLabels).forEach(([id, label]) => {
+      if (!selectedFileNames(id).length) missing.push(label);
+    });
+    const forecast = collectForecastRows();
+    if (!forecast.length) missing.push('三年销量预测');
+    forecast.forEach((row, index) => requiredForecastFields.forEach(([id, label]) => {
+      if (!row[id]) missing.push('销量第 ' + (index + 1) + ' 行的 ' + label);
+    }));
+    if (missing.length) {
+      formError.textContent = '请补齐必填项：' + missing.join('、') + '。';
+      formError.classList.add('show');
+      return;
+    }
+    const code = 'PD-2026-' + String(nextNumber++).padStart(3, '0');
+    const demand = Object.fromEntries(formFieldIds.map((id) => [id, field(id).value.trim()]));
+    demand.channel = selectedOptions('channel').join('、');
+    demand.compliance = selectedOptions('compliance').join('、');
+    fileFieldIds.forEach((id) => { demand[id + 'Files'] = selectedFileNames(id); });
+    demand.name = demand['demand-name'];
+    demand.code = code;
+    demand.source = field('demand-source').value;
+    demand.category = field('category').value;
+    demand.sources = selectedSources.slice();
+    demand.forecast = forecast;
+    demand.reviewer = field('reviewer').value || defaultReviewer(demand.category);
+    demand.submittedAt = demand['created-at'] + ' ' + new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false });
+    demand.dueAt = dueAfterWorkdays(demand['created-at']);
+    demand.viewed = false;
+    demand.notification = { time: demand.submittedAt, state: '已生成企微留言（演示）' };
+    demand.history = [[demand.submittedAt, demand.applicant + ' · 提交需求，分配给产品经理 ' + demand.reviewer + '，已生成企微提醒。']];
+    records.set(code, demand);
+    const row = document.createElement('tr');
+    row.dataset.status = '待初筛';
+    row.dataset.source = demand.source;
+    row.dataset.category = demand.category;
+    const nameCell = document.createElement('td');
+    nameCell.append(textNode('span', demand.name, 'pds-demand-name'));
+    nameCell.append(textNode('span', code, 'pds-code'));
+    row.append(nameCell);
+    const sourceCell = textNode('td', demand.source);
+    if (demand.sources.length) sourceCell.append(textNode('span', '关联 ' + demand.sources.length + ' 条', 'pds-code'));
+    row.append(sourceCell);
+    row.append(textNode('td', demand.applicant));
+    row.append(textNode('td', demand.region));
+    row.append(textNode('td', demand.channel));
+    row.append(textNode('td', demand.forecast.length ? '已录入 ' + demand.forecast.length + ' 个区域' : '待确认'));
+    const listedPrices = [...new Set(demand.forecast.filter((item) => item.price).map((item) => (item.currency ? item.currency + ' ' : '') + item.price))];
+    row.append(textNode('td', listedPrices.length === 1 ? listedPrices[0] : listedPrices.length > 1 ? '多区域见详情' : '待确认'));
+    const stateCell = document.createElement('td');
+    stateCell.append(textNode('span', '待初筛', 'pds-status status-blue'));
+    row.append(stateCell);
+    const actionCell = document.createElement('td');
+    const detailButton = textNode('button', '查看', 'pds-link');
+    detailButton.type = 'button';
+    detailButton.dataset.viewTarget = 'detail';
+    actionCell.append(detailButton);
+    row.append(actionCell);
+    demandRows.prepend(row);
+    currentRow = row;
+    currentDemand = demand;
+    selectedSources = [];
+    intelRows.forEach((item) => { item.querySelector('.pds-intel-select').checked = false; });
+    updateSelection();
+    filterRows();
+    showView('pool');
+    field('inbox-manager').value = demand.reviewer;
+    inboxTab = '待初筛';
+    showToast('演示：' + code + ' 已提交，已为产品经理 ' + demand.reviewer + ' 生成企微待办留言，可进入“我的筛选”查看。');
+  });
+  function setDemandStatus(status, style, details = {}) {
+    if (currentDemand.reviewer !== field('inbox-manager').value || !['待初筛', '待补充', '已受理', '已暂缓'].includes(currentRow.dataset.status)) return false;
+    const comment = (details.comment ?? currentDemand.reviewComment ?? '').trim();
+    if (['待补充', '已暂缓', '已关闭'].includes(status) && !comment) {
+      field('review-feedback').textContent = '请先填写初筛意见，说明需要补充的资料或处理原因。';
+      return false;
+    }
+    const reviewDate = details.reviewDate || '';
+    if (status === '已暂缓' && (!reviewDate || reviewDate < localDate())) {
+      field('review-feedback').textContent = '暂缓时请选择今天或之后的复核日期。'; return false;
+    }
+    currentDemand.reviewComment = comment;
+    currentDemand.reviewDate = status === '已暂缓' ? reviewDate : '';
+    field('review-feedback').textContent = '初筛结论已保存（演示）。';
+    currentRow.dataset.status = status;
+    const badge = currentRow.querySelector('.pds-status');
+    badge.textContent = status;
+    badge.className = 'pds-status ' + style;
+    field('screening-result').textContent = status;
+    field('send-oa').disabled = status !== '已受理';
+    currentDemand.history = currentDemand.history || [];
+    currentDemand.history.push(['本次演示', (currentDemand.reviewer || '产品经理') + ' · 状态更新为“' + status + '”。' + (comment ? '初筛意见：' + comment : '') + (status === '已暂缓' ? '；复核日期：' + reviewDate : '')]);
+    currentDemand.next = status === '已暂缓' ? '暂缓原因：' + comment + '；计划于 ' + reviewDate + ' 复核。' : ({ '已受理': '下一步：需求负责人发起 OA 审批。', '待补充': '待申请人补充资料后重新提交初筛。', 'OA 审批中': '等待 OA 端评审，审批结果及完成时间回写 PDS。' })[status] || '请查看最新处理记录。';
+    renderDetail();
+    filterRows();
+    return true;
+  }
+  function closeReviewDialog(restoreFocus = true) {
+    const dialog = field('review-dialog');
+    if (typeof dialog.close === 'function') dialog.close(); else dialog.removeAttribute('open');
+    pendingReview = null;
+    field('review-comment').value = ''; field('review-date').value = ''; field('review-feedback').textContent = '';
+    if (restoreFocus && reviewTrigger && !reviewTrigger.disabled) reviewTrigger.focus();
+    reviewTrigger = null;
+  }
+  function openReviewDialog(action, trigger) {
+    if (trigger.disabled) return;
+    const configs = {
+      accept: { status: '已受理', style: 'status-green', title: '受理需求', label: '受理意见（选填）', placeholder: '可填写受理建议或后续评审关注事项。', confirm: '确认受理' },
+      more: { status: '待补充', style: 'status-amber', title: '退回补充', label: '需补充的事项 *', placeholder: '请逐项列明缺少的资料或需要业务确认的内容。', confirm: '确认退回' },
+      hold: { status: '已暂缓', style: 'status-amber', title: '暂缓需求', label: '暂缓原因 *', placeholder: '请说明暂缓原因、待解决条件及复核安排。', confirm: '确认暂缓' }
+    };
+    const config = configs[action];
+    pendingReview = { ...config, code: currentDemand.code }; reviewTrigger = trigger;
+    field('review-dialog-title').textContent = config.title;
+    field('review-dialog-context').textContent = currentDemand.code + '｜' + currentDemand.name;
+    field('review-comment-label').textContent = config.label;
+    field('review-comment').value = ''; field('review-comment').placeholder = config.placeholder;
+    field('review-comment').required = action !== 'accept';
+    field('review-date-group').hidden = action !== 'hold';
+    field('review-date').value = ''; field('review-date').min = localDate(); field('review-date').required = action === 'hold';
+    field('review-feedback').textContent = ''; field('review-confirm').textContent = config.confirm;
+    const dialog = field('review-dialog');
+    if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open', '');
+    field('review-comment').focus();
+  }
+  [['accept', 'accept'], ['request-more', 'more'], ['hold', 'hold']].forEach(([id, action]) => field(id).addEventListener('click', () => openReviewDialog(action, field(id))));
+  field('review-cancel').addEventListener('click', () => closeReviewDialog());
+  field('review-dialog').addEventListener('cancel', (event) => { event.preventDefault(); closeReviewDialog(); });
+  field('review-confirm').addEventListener('click', () => {
+    if (!pendingReview || pendingReview.code !== currentDemand.code) return;
+    const action = pendingReview;
+    if (!setDemandStatus(action.status, action.style, { comment: field('review-comment').value, reviewDate: field('review-date').value })) return;
+    closeReviewDialog();
+    showToast('演示：' + currentDemand.code + ' 已更新为“' + action.status + '”，处理记录已保存。');
+  });
+  field('send-oa').addEventListener('click', () => {
+    if (currentRow.dataset.status !== '已受理') return;
+    if (!setDemandStatus('OA 审批中', 'status-blue')) return;
+    const row = document.createElement('tr');
+    [currentDemand.name + '（' + currentDemand.code + '）', 'OA-2026-DEMO', '演示发起', '审批中', '—'].forEach((value) => row.append(textNode('td', value)));
+    const actionCell = document.createElement('td');
+    const viewButton = textNode('button', '查看需求', 'pds-link');
+    viewButton.type = 'button';
+    viewButton.dataset.viewTarget = 'detail';
+    actionCell.append(viewButton);
+    row.append(actionCell);
+    field('oa-rows').prepend(row);
+    showView('oa');
+    showToast('演示：已建立 OA 单据关联；审批动作仍在 OA 端完成。');
+  });
+  const search = field('search');
+  const statusFilter = field('status-filter');
+  const sourceFilter = field('source-filter');
+  const categoryFilter = field('category-filter');
+  const count = field('result-count');
+  function filterRows() {
+    const query = search.value.trim().toLowerCase();
+    let visible = 0;
+    Array.from(demandRows.querySelectorAll('tr')).forEach((row) => {
+      const match = (!query || row.textContent.toLowerCase().includes(query))
+        && (!statusFilter.value || row.dataset.status === statusFilter.value)
+        && (!sourceFilter.value || row.dataset.source === sourceFilter.value)
+        && (!categoryFilter.value || row.dataset.category === categoryFilter.value);
+      row.hidden = !match;
+      if (match) visible += 1;
+    });
+    count.textContent = '共 ' + visible + ' 条';
+  }
+  [search, statusFilter, sourceFilter, categoryFilter].forEach((control) => control.addEventListener('input', filterRows));
+  field('reset-filter').addEventListener('click', () => {
+    search.value = '';
+    statusFilter.value = '';
+    sourceFilter.value = '';
+    categoryFilter.value = '';
+    filterRows();
+  });
+  ['已合并', '已暂缓'].forEach((status) => statusFilter.append(textNode('option', status)));
+  filterRows();
+  const originalId = new URLSearchParams(window.location.search).get('intel');
+  if (originalId) {
+    const record = intelRecords.get(originalId);
+    field('original-title').textContent = record ? record.id + '｜' + record.title : '情报记录不存在';
+    if (record) renderIntelContent(field('original-body'), record, false);
+    else field('original-body').textContent = '未找到对应的演示情报，请返回 AI 情报池。';
+    showView('intel-original');
+  }
+})();
+</script>
+</body>
+</html>
