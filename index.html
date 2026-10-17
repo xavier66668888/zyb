@@ -149,6 +149,12 @@
     #pds-demand-prototype .pds-merge-table select { width:100%; max-width:360px; padding:9px; border:1px solid var(--line); border-radius:5px; background:var(--surface); color:var(--ink); }
     #pds-demand-prototype .pds-merge-table textarea { display:block; box-sizing:border-box; width:100%; min-width:260px; min-height:80px; margin-top:8px; padding:10px; border:1px solid var(--line); border-radius:5px; background:var(--surface); color:var(--ink); font:inherit; line-height:1.65; resize:vertical; }
     #pds-demand-prototype .pds-merge-table textarea:focus { outline:2px solid var(--blue); outline-offset:1px; }
+    #pds-demand-prototype #pds-merge-forecast-table { min-width:2500px; }
+    #pds-demand-prototype #pds-merge-forecast-source { max-width:100%; padding:10px; border:1px solid var(--line); border-radius:6px; color:var(--ink); background:var(--surface); }
+    #pds-demand-prototype .pds-merge-file-group { border:1px solid var(--line); border-radius:6px; padding:14px; min-width:0; }
+    #pds-demand-prototype .pds-merge-file-group h4 { margin:0 0 10px; }
+    #pds-demand-prototype .pds-merge-file-group label { display:block; margin:9px 0; overflow-wrap:anywhere; font-size:13px; }
+    #pds-demand-prototype .pds-merge-file-group input[type="file"] { width:100%; margin-top:8px; }
     #pds-demand-prototype .pds-merge-trace details { margin-top:12px; padding:12px; border:1px solid var(--line); border-radius:6px; }
     #pds-demand-prototype .pds-merge-trace summary { cursor:pointer; color:var(--blue); font-weight:600; }
     #pds-demand-prototype .pds-merge-trace p { line-height:1.7; overflow-wrap:anywhere; }
@@ -370,7 +376,9 @@
         <section class="pds-card"><div class="pds-form-grid"><div class="pds-form-field"><label for="pds-merge-main">保留的主需求 *</label><select id="pds-merge-main"></select></div><div class="pds-form-field"><label for="pds-merge-reason">合并原因 *</label><input id="pds-merge-reason" placeholder="例如：同一平台的重复渠道申请，统一评估"></div></div><p class="pds-empty-note">主需求编号保留，其他申请标记为“已合并”，原编号和合并前数据仍可查看；主需求返回“待初筛”。</p></section>
         <div class="pds-table-card" style="margin-top:14px"><div class="pds-table-tools"><h3>所选需求对比</h3></div><div class="pds-table-wrap"><table class="pds-merge-table"><thead><tr><th>产品需求</th><th>申请人 / 产品类别</th><th>市场 / 渠道</th><th>销量与价格预测（逐区域保留）</th></tr></thead><tbody id="pds-merge-comparison"></tbody></table></div></div>
         <div class="pds-table-card" style="margin-top:14px"><div class="pds-table-tools"><h3>字段差异确认</h3><span>默认保留主需求值，支持引用原值后手工整理</span></div><div class="pds-table-wrap"><table class="pds-merge-table"><thead><tr><th>差异字段</th><th>各申请原始内容</th><th>合并后采用的内容（可编辑）</th></tr></thead><tbody id="pds-merge-conflicts"></tbody></table></div></div>
-        <section class="pds-card" style="margin-top:14px"><h3>销量、金额与附件</h3><p>合并后的主表沿用主需求的区域预测，不自动累加销量或金额。所有原始区域预测、价格、情报、附件及处理记录均保留快照，供再次初筛核对。</p><label><input type="checkbox" id="pds-merge-ack"> 我已核对差异，确认保留主需求预测，后续重新初筛时再确认区域预测及价格。</label><p class="pds-empty-note" id="pds-merge-feedback" role="status"></p></section>
+        <section class="pds-form-card" style="margin-top:14px"><h3>合并后的三年销量与价格</h3><p class="pds-empty-note">默认带入主需求预测，可直接修改销量、各项价格、配置和上市时间。可引用其他申请的区域行，也可新增、删除；重复区域请人工核对，不自动累加或换算币种。切换主需求会重新带入预测和附件，请先确定主需求再整理。</p><div class="pds-actions" style="margin-bottom:12px;flex-wrap:wrap"><select id="pds-merge-forecast-source" aria-label="引用其他申请的区域预测"></select><button class="pds-secondary" type="button" id="pds-merge-forecast-import">引用此预测行</button><button class="pds-secondary" type="button" id="pds-merge-forecast-add">＋ 新增区域</button><button class="pds-secondary" type="button" id="pds-merge-forecast-delete" disabled>删除选中行</button></div><p class="pds-empty-note" id="pds-merge-forecast-feedback" role="status"></p><div class="pds-forecast-wrap"><table class="pds-forecast-table" id="pds-merge-forecast-table"><thead><tr><th><input type="checkbox" id="pds-merge-forecast-all" aria-label="全选合并预测行"></th><th>序号</th><th>来源申请</th><th>销售区域或国家 *</th><th>承诺人 *</th><th>第一年 *</th><th>第二年 *</th><th>第三年 *</th><th>FOB(代理商) *</th><th>CFI(RU) *</th><th>DDP *</th><th>MAP *</th><th>MSRP *</th><th>产品配置 *</th><th>上市时间 *</th><th>目标价格</th><th>币种</th></tr></thead><tbody id="pds-merge-forecast-rows"></tbody></table></div></section>
+        <section class="pds-card" style="margin-top:14px"><h3>合并后的图片、参考资料与附件</h3><p class="pds-empty-note">勾选要保留的原文件，取消勾选可从合并结果中移除；也可上传新版本。原文件名称及来源仍保留在合并前快照中。原型仅展示文件名称，不上传到实际业务系统。</p><div class="pds-form-grid" id="pds-merge-files"></div></section>
+        <section class="pds-card" style="margin-top:14px"><label><input type="checkbox" id="pds-merge-ack"> 我已核对并确认合并后的字段、区域销量、价格及附件，原始申请保留快照。</label><p class="pds-empty-note" id="pds-merge-feedback" role="status"></p></section>
       </section>
 
       <section class="pds-view" data-view="oa">
@@ -918,7 +926,85 @@
     });
     if (!conflicts.children.length) { const cell = textNode('td', '所选需求的产品字段一致。'); cell.colSpan = 3; const row = document.createElement('tr'); row.append(cell); conflicts.append(row); }
     field('merge-ack').checked = false;
+    renderMergeAssets(main);
   }
+  function updateMergeForecastControls() {
+    const rows = [...field('merge-forecast-rows').rows];
+    rows.forEach((row, index) => row.querySelector('.pds-forecast-index').textContent = String(index + 1));
+    const selected = rows.filter((row) => row.querySelector('[data-merge-row-select]').checked).length;
+    field('merge-forecast-delete').disabled = selected === 0;
+    field('merge-forecast-all').checked = rows.length > 0 && selected === rows.length;
+    field('merge-forecast-all').indeterminate = selected > 0 && selected < rows.length;
+  }
+  function appendMergeForecastRow(values = {}, source = '手工新增', sourceKey = '') {
+    const row = document.createElement('tr'); row.dataset.forecastSource = source; row.dataset.sourceKey = sourceKey;
+    const selectCell = document.createElement('td'); const select = document.createElement('input'); select.type = 'checkbox'; select.dataset.mergeRowSelect = '';
+    select.setAttribute('aria-label', '选择合并预测行'); select.addEventListener('change', updateMergeForecastControls); selectCell.append(select); row.append(selectCell);
+    row.append(textNode('td', '', 'pds-forecast-index'), textNode('td', source));
+    forecastFields.forEach(([id, label, type]) => {
+      const cell = document.createElement('td'); const input = document.createElement(type === 'select' ? 'select' : 'input');
+      if (type !== 'select') input.type = type;
+      if (type === 'number') { input.min = '0'; input.step = '1'; }
+      if (type === 'select') {
+        ['', 'USD', 'EUR', 'CNY', 'AUD', 'CAD', 'NZD'].forEach((currency) => { const option = textNode('option', currency || '请选择'); option.value = currency; input.append(option); });
+        if (values[id] && ![...input.options].some((option) => option.value === values[id])) { const option = textNode('option', values[id]); option.value = values[id]; input.append(option); }
+      }
+      input.dataset.mergeForecastField = id; input.setAttribute('aria-label', '合并预测' + label); input.value = values[id] || '';
+      cell.append(input); row.append(cell);
+    });
+    field('merge-forecast-rows').append(row); updateMergeForecastControls();
+  }
+  function renderMergeAssets(main) {
+    field('merge-forecast-rows').replaceChildren();
+    (main.forecast || []).forEach((item, index) => appendMergeForecastRow(item, main.code, main.code + ':' + index));
+    if (!main.forecast?.length) appendMergeForecastRow();
+    const select = field('merge-forecast-source'); select.replaceChildren();
+    mergeCandidates.forEach((demand) => (demand.forecast || []).forEach((item, index) => {
+      const option = textNode('option', demand.code + ' / ' + item.market + ' / ' + [item.year1, item.year2, item.year3].join('、'));
+      option.value = demand.code + ':' + index; select.append(option);
+    }));
+    const firstOther = [...select.options].find((option) => !option.value.startsWith(main.code + ':'));
+    if (firstOther) select.value = firstOther.value;
+    field('merge-forecast-import').disabled = select.options.length === 0;
+    field('merge-forecast-feedback').textContent = '';
+    const files = field('merge-files'); files.replaceChildren();
+    fileFieldIds.forEach((id) => {
+      const group = document.createElement('div'); group.className = 'pds-merge-file-group';
+      group.append(textNode('h4', fieldLabel(id) + (Object.hasOwn(requiredFileLabels, id) ? ' *' : '')));
+      mergeCandidates.forEach((demand) => (demand[id + 'Files'] || []).forEach((name) => {
+        const label = document.createElement('label'); const check = document.createElement('input');
+        check.type = 'checkbox'; check.checked = true; check.dataset.mergeFileGroup = id; check.value = name;
+        label.append(check, document.createTextNode(' ' + name + '（' + demand.code + '）')); group.append(label);
+      }));
+      const label = textNode('label', '补充或替换文件'); label.htmlFor = 'pds-merge-upload-' + id;
+      const upload = document.createElement('input'); upload.type = 'file'; upload.multiple = true; upload.id = 'pds-merge-upload-' + id;
+      if (id.endsWith('image')) upload.accept = 'image/*';
+      const names = textNode('p', '未选择新文件', 'pds-empty-note'); names.id = upload.id + '-selected';
+      upload.addEventListener('change', () => names.textContent = [...upload.files].map((file) => file.name).join('、') || '未选择新文件');
+      const clear = textNode('button', '清空新选文件', 'pds-link'); clear.type = 'button';
+      clear.addEventListener('click', () => { upload.value = ''; names.textContent = '未选择新文件'; });
+      group.append(label, upload, names, clear); files.append(group);
+    });
+  }
+  field('merge-forecast-add').addEventListener('click', () => appendMergeForecastRow());
+  field('merge-forecast-all').addEventListener('change', () => {
+    field('merge-forecast-rows').querySelectorAll('[data-merge-row-select]').forEach((check) => check.checked = field('merge-forecast-all').checked);
+    updateMergeForecastControls();
+  });
+  field('merge-forecast-delete').addEventListener('click', () => {
+    [...field('merge-forecast-rows').rows].forEach((row) => { if (row.querySelector('[data-merge-row-select]').checked) row.remove(); });
+    updateMergeForecastControls();
+  });
+  field('merge-forecast-import').addEventListener('click', () => {
+    const key = field('merge-forecast-source').value;
+    if ([...field('merge-forecast-rows').rows].some((row) => row.dataset.sourceKey === key)) {
+      field('merge-forecast-feedback').textContent = '此原始预测行已在下方，可直接编辑；请勿重复引用。'; return;
+    }
+    const [code, index] = key.split(':'); const item = records.get(code)?.forecast?.[Number(index)];
+    if (!item) return;
+    appendMergeForecastRow(item, code, key);
+    field('merge-forecast-feedback').textContent = '已引用 ' + code + ' 的 ' + item.market + ' 预测，请核对是否与现有客户或区域重叠，并手动调整。';
+  });
   field('inbox-merge').addEventListener('click', () => {
     mergeCandidates = [...mergeSelection].map((code) => records.get(code));
     if (mergeCandidates.length < 2 || !mergeCandidates.every(mergeable)) return;
@@ -939,14 +1025,31 @@
     const editors = [...field('merge-conflicts').querySelectorAll('[data-merge-field]')];
     const missing = editors.filter((editor) => (editor.dataset.mergeField === 'name' || Object.hasOwn(requiredFieldLabels, editor.dataset.mergeField)) && !editor.value.trim());
     if (missing.length) { field('merge-feedback').textContent = '请填写合并后必填字段：' + missing.map((editor) => fieldLabel(editor.dataset.mergeField)).join('、') + '。'; missing[0].focus(); return; }
+    const forecast = [...field('merge-forecast-rows').rows].map((row) => ({
+      ...Object.fromEntries(forecastFields.map(([id]) => [id, row.querySelector('[data-merge-forecast-field="' + id + '"]').value.trim()])),
+      originDemand: row.dataset.forecastSource
+    })).filter((item) => forecastFields.some(([id]) => item[id]));
+    const forecastErrors = [];
+    if (!forecast.length) forecastErrors.push('至少保留一条完整的区域预测');
+    forecast.forEach((item, index) => {
+      requiredForecastFields.forEach(([id, label]) => { if (!item[id]) forecastErrors.push('第 ' + (index + 1) + ' 行的' + label); });
+      ['year1', 'year2', 'year3'].forEach((id) => { if (item[id] && (!/^\d+$/.test(item[id]) || !Number.isSafeInteger(Number(item[id])))) forecastErrors.push('第 ' + (index + 1) + ' 行销量应为非负整数'); });
+    });
+    const fileResults = Object.fromEntries(fileFieldIds.map((id) => [id, [...new Set([
+      ...[...field('merge-files').querySelectorAll('[data-merge-file-group="' + id + '"]:checked')].map((check) => check.value),
+      ...[...field('merge-upload-' + id).files].map((file) => file.name)
+    ])]]));
+    Object.entries(requiredFileLabels).forEach(([id, label]) => { if (!fileResults[id].length) forecastErrors.push(label + '至少保留或补充一个文件'); });
+    if (forecastErrors.length) { field('merge-feedback').textContent = '请完善合并结果：' + forecastErrors.join('；') + '。'; return; }
     const snapshots = mergeCandidates.map((demand) => JSON.parse(JSON.stringify({ ...demand, snapshotStatus: taskStatus(demand.code) })));
     editors.forEach((editor) => main[editor.dataset.mergeField] = editor.value.trim());
     main['demand-name'] = main.name;
     main.mergeSnapshots = [...(main.mergeSnapshots || []), ...snapshots];
     const sources = new Map(); mergeCandidates.forEach((demand) => demand.sources.forEach((source) => sources.set(source.id, source)));
     main.sources = [...sources.values()];
-    fileFieldIds.forEach((id) => { main[id + 'Files'] = [...new Set(mergeCandidates.flatMap((demand) => demand[id + 'Files'] || []))]; });
-    const actionText = '合并需求 ' + mergeCandidates.map((demand) => demand.code).join('、') + '；保留主需求 ' + main.code + '；原因：' + reason + '。主需求预测保留，不自动累加。';
+    main.forecast = forecast;
+    fileFieldIds.forEach((id) => { main[id + 'Files'] = fileResults[id]; });
+    const actionText = '合并需求 ' + mergeCandidates.map((demand) => demand.code).join('、') + '；保留主需求 ' + main.code + '；原因：' + reason + '。采用人工确认的 ' + forecast.length + ' 行区域预测及附件清单，不自动累加；原始资料保留快照。';
     mergeCandidates.forEach((demand) => {
       const row = Array.from(demandRows.rows).find((item) => item.querySelector('.pds-code').textContent === demand.code);
       const status = demand === main ? '待初筛' : '已合并';
@@ -961,6 +1064,10 @@
     const mainRow = Array.from(demandRows.rows).find((row) => row.querySelector('.pds-code').textContent === main.code);
     mainRow.querySelector('.pds-demand-name').textContent = main.name;
     mainRow.cells[3].textContent = main.region; mainRow.cells[4].textContent = main.channel;
+    mainRow.cells[5].textContent = ['year1', 'year2', 'year3'].map((id) => forecast.reduce((sum, item) => sum + Number(item[id]), 0).toLocaleString('zh-CN')).join(' / ') + (main.category === '手持工具' ? ' 套' : ' 台');
+    const prices = [...new Set(forecast.filter((item) => item.price).map((item) => (item.currency ? item.currency + ' ' : '') + item.price))];
+    mainRow.cells[6].textContent = prices.length === 1 ? prices[0] : prices.length > 1 ? '分区域见详情' : '待确认';
+    mainRow.cells[6].title = forecast.map((item) => item.market + '：' + item.currency + ' ' + (item.price || '待确认')).join('；');
     currentDemand = main; currentRow = mainRow; reviewCommentCode = '';
     clearMergeSelection(); inboxTab = '待初筛';
     filterRows(); showView('screening'); showToast('合并完成：' + main.code + ' 已回到待我筛选，原始申请与预测快照已保留。');
