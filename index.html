@@ -202,11 +202,9 @@
   <header class="pds-topbar"><span class="pds-brand">Windchill</span><span class="pds-top-item">产品中心</span><span class="pds-top-item">项目</span><span class="pds-top-item">文档</span><span class="pds-top-item">部件</span><span class="pds-user">张工　⌄</span></header>
   <div class="pds-app">
     <aside class="pds-sidebar" aria-label="PDS 需求管理菜单">
-      <button type="button" data-view-target="pool" aria-current="page">需求池</button>
-      <button type="button" data-view-target="screening">我的筛选</button>
+      <button type="button" data-view-target="pool" aria-current="page">产品需求池</button>
+      <button type="button" data-view-target="screening">产品项目</button>
       <button type="button" data-view-target="intelligence">AI 情报</button>
-      <button type="button" data-view-target="oa">OA 审批记录</button>
-      <button type="button" data-view-target="settings">字段与规则</button>
     </aside>
 
     <main class="pds-main">
@@ -226,7 +224,7 @@
       </section>
 
       <section class="pds-view" data-view="intelligence">
-        <div class="pds-heading"><div><h2>AI 情报筛选</h2><p class="pds-sub">从 PDS CRM 情报池多选相似需求，汇总生成一条产品需求</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="pool">返回需求池</button><button class="pds-primary" type="button" data-view-target="form" data-source-mode="manual">＋ 直接填写需求</button></div></div>
+        <div class="pds-heading"><div><h2>AI 情报筛选</h2><p class="pds-sub">从 PDS CRM 情报池多选相似需求，汇总生成一条产品需求</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="pool">返回产品需求池</button><button class="pds-primary" type="button" data-view-target="form" data-source-mode="manual">＋ 直接填写需求</button></div></div>
         <div class="pds-kpis"><div class="pds-kpi">本周新增情报<strong>26</strong></div><div class="pds-kpi">待人工判断<strong>8</strong></div><div class="pds-kpi">可选情报<strong>4</strong></div><div class="pds-kpi">已关联需求<strong>11</strong></div></div>
         <div class="pds-table-card"><div class="pds-table-tools"><h3>情报池</h3><span>AI 负责收录和整理；是否属于同一产品需求由业务人员确认</span></div><div class="pds-table-wrap"><table><thead><tr><th><input class="pds-check-box" type="checkbox" id="pds-select-all" aria-label="全选可见情报"></th><th>情报编号 / 标题</th><th>来源</th><th>市场 / 类别</th><th>数量与金额原话</th><th>负责人</th><th>状态</th></tr></thead><tbody id="pds-intelligence-rows">
           <tr data-id="IN-2026-243" data-title="北美经销商商用割草机需求" data-market="北美" data-category="园林工具" data-owner="李强" data-quote="要 500 台，预算约 200 万美金" data-origin="企微语音" data-attachment="经销商沟通纪要.pdf"><td><input class="pds-check-box pds-intel-select" type="checkbox" aria-label="选择 IN-2026-243"></td><td><span class="pds-demand-name">北美经销商商用割草机需求</span><span class="pds-code">IN-2026-243</span></td><td>企微语音</td><td>北美 / 园林工具</td><td>“要 500 台，预算约 200 万美金”</td><td>李强</td><td><span class="pds-status status-blue">待产品筛选</span></td></tr>
@@ -358,11 +356,11 @@
         </ul></details></div>
         <div class="pds-form-card" style="margin-top:14px"><h3>三年销量预测</h3><p class="pds-empty-note">向右滚动查看各区域价格、配置和上市时间。</p><div class="pds-forecast-wrap"><table class="pds-forecast-table pds-forecast-readonly"><thead><tr><th>序号</th><th>销售区域或国家</th><th>承诺人</th><th>第一年</th><th>第二年</th><th>第三年</th><th>FOB(代理商)</th><th>CFI(RU)</th><th>DDP</th><th>MAP</th><th>MSRP</th><th>产品配置</th><th>上市时间</th><th>目标价格</th><th>币种</th></tr></thead><tbody id="pds-detail-forecast"><tr><td class="pds-forecast-empty" colspan="15">尚未录入</td></tr></tbody></table></div></div>
         <section class="pds-card pds-inline-actions" aria-label="需求筛选操作"><h3>需求筛选</h3><p class="pds-empty-note" id="pds-review-permission"></p><div class="pds-decision"><button class="pds-primary" type="button" id="pds-accept">受理</button><button class="pds-secondary" type="button" id="pds-request-more">退回补充</button><button class="pds-secondary" type="button" id="pds-hold">暂缓</button><button class="pds-secondary" type="button" id="pds-send-oa" disabled>发起 OA 审批</button><span>当前结论：<strong id="pds-screening-result"></strong></span></div></section>
-        <dialog class="pds-review-dialog" id="pds-review-dialog" aria-labelledby="pds-review-dialog-title" aria-describedby="pds-review-dialog-context"><h3 id="pds-review-dialog-title">受理需求</h3><p class="pds-empty-note" id="pds-review-dialog-context"></p><div class="pds-review-note"><label for="pds-review-comment" id="pds-review-comment-label">受理意见（选填）</label><textarea id="pds-review-comment"></textarea></div><div class="pds-control" id="pds-review-date-group" hidden><label for="pds-review-date">复核日期 *</label><input id="pds-review-date" type="date"></div><p class="pds-empty-note" id="pds-review-feedback" role="status"></p><div class="pds-actions"><button class="pds-secondary" type="button" id="pds-review-cancel">取消</button><button class="pds-primary" type="button" id="pds-review-confirm">确认受理</button></div></dialog>
+        <dialog class="pds-review-dialog" id="pds-review-dialog" aria-labelledby="pds-review-dialog-title" aria-describedby="pds-review-dialog-context"><h3 id="pds-review-dialog-title">受理需求</h3><p class="pds-empty-note" id="pds-review-dialog-context"></p><div class="pds-review-note"><label for="pds-review-comment" id="pds-review-comment-label">受理意见（选填）</label><textarea id="pds-review-comment"></textarea></div><div class="pds-control" id="pds-review-date-group" hidden><label for="pds-review-date">复核日期 *</label><input id="pds-review-date" type="text" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD，例如：2026-10-20" autocomplete="off" aria-describedby="pds-review-date-help"><small id="pds-review-date-help">按年-月-日填写，复核日期不得早于今天。</small></div><p class="pds-empty-note" id="pds-review-feedback" role="status"></p><div class="pds-actions"><button class="pds-secondary" type="button" id="pds-review-cancel">取消</button><button class="pds-primary" type="button" id="pds-review-confirm">确认受理</button></div></dialog>
       </section>
 
       <section class="pds-view" data-view="screening">
-        <div class="pds-heading"><div><h2>我的筛选</h2><p class="pds-sub">分配给我的产品需求 · 从企微留言进入，查看完整申请并完成初筛</p></div><div class="pds-control"><label for="pds-inbox-manager">当前产品经理（演示切换）</label><select id="pds-inbox-manager"><option>王琳</option><option>张晨</option></select></div></div>
+        <div class="pds-heading"><div><h2>产品项目</h2><p class="pds-sub">分配给我的产品需求 · 从企微留言进入，查看完整申请并完成初筛</p></div><div class="pds-control"><label for="pds-inbox-manager">当前产品经理（演示切换）</label><select id="pds-inbox-manager"><option>王琳</option><option>张晨</option></select></div></div>
         <div class="pds-kpis"><div class="pds-kpi">待我筛选<strong id="pds-inbox-pending">0</strong></div><div class="pds-kpi">业务待补充<strong id="pds-inbox-supplement">0</strong></div><div class="pds-kpi">已受理待转 OA<strong id="pds-inbox-accepted">0</strong></div><div class="pds-kpi">OA 审批中<strong id="pds-inbox-oa">0</strong></div></div>
         <div class="pds-review-context"><strong id="pds-inbox-owner">王琳的需求待办</strong><p>业务提交申请 → 企微留言提醒对应产品经理 → 打开需求详情 → 记录初筛结论。每条留言都关联具体需求编号。</p></div>
         <div class="pds-workbench-tabs" role="tablist" aria-label="筛选任务范围"><button type="button" role="tab" data-inbox-tab="待初筛" aria-selected="true">待我筛选</button><button type="button" role="tab" data-inbox-tab="待补充" aria-selected="false">待业务补充</button><button type="button" role="tab" data-inbox-tab="processed" aria-selected="false">已处理</button><button type="button" role="tab" data-inbox-tab="all" aria-selected="false">全部分配</button></div>
@@ -1298,7 +1296,7 @@
   function renderDetail() {
     const demand = currentDemand;
     field('detail-back').dataset.viewTarget = detailOrigin;
-    field('detail-back').textContent = detailOrigin === 'screening' ? '返回我的筛选' : '返回需求池';
+    field('detail-back').textContent = detailOrigin === 'screening' ? '返回产品项目' : '返回产品需求池';
     field('detail-assignment').textContent = '对应产品经理：' + (demand.reviewer || defaultReviewer(demand.category)) + ' · 提交时间：' + (demand.submittedAt || demand['created-at'] || '本次演示');
     field('detail-notification').textContent = '企微留言：' + (demand.notification?.state || '待生成') + ' · 要求完成时间：' + (demand.dueAt || '提交后 2 个工作日');
     if (reviewCommentCode !== demand.code) {
@@ -1483,7 +1481,7 @@
     showView('pool');
     field('inbox-manager').value = demand.reviewer;
     inboxTab = '待初筛';
-    showToast('演示：' + code + ' 已提交，已为产品经理 ' + demand.reviewer + ' 生成企微待办留言，可进入“我的筛选”查看。');
+    showToast('演示：' + code + ' 已提交，已为产品经理 ' + demand.reviewer + ' 生成企微待办留言，可进入“产品项目”查看。');
   });
   function setDemandStatus(status, style, details = {}) {
     if (currentDemand.reviewer !== field('inbox-manager').value || !['待初筛', '待补充', '已受理', '已暂缓'].includes(currentRow.dataset.status)) return false;
@@ -1492,7 +1490,13 @@
       field('review-feedback').textContent = '请先填写初筛意见，说明需要补充的资料或处理原因。';
       return false;
     }
-    const reviewDate = details.reviewDate || '';
+    const reviewDate = (details.reviewDate || '').trim();
+    if (status === '已暂缓' && reviewDate) {
+      const parsed = new Date(reviewDate + 'T00:00:00Z');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(reviewDate) || !Number.isFinite(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== reviewDate) {
+        field('review-feedback').textContent = '请按 YYYY-MM-DD 格式填写有效日期，例如：2026-10-20。'; return false;
+      }
+    }
     if (status === '已暂缓' && (!reviewDate || reviewDate < localDate())) {
       field('review-feedback').textContent = '暂缓时请选择今天或之后的复核日期。'; return false;
     }
