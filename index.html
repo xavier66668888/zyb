@@ -196,6 +196,31 @@
     #pds-demand-prototype [hidden] { display: none !important; }
     #pds-demand-prototype .pds-toast { display: none; margin: 0 0 14px; background: var(--green-bg); color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 30%, var(--line)); border-radius: 6px; padding: 10px 12px; font-size: 14px; } #pds-demand-prototype .pds-toast.show { display: block; }
     @media (max-width: 860px) { #pds-demand-prototype { min-width: 0; } #pds-demand-prototype .pds-app { grid-template-columns: 150px minmax(0, 1fr); } #pds-demand-prototype .pds-main { padding: 19px 16px; } #pds-demand-prototype .pds-topbar { padding: 0 18px; } #pds-demand-prototype .pds-brand { margin-right:17px; font-size:25px; } #pds-demand-prototype .pds-topbar .pds-top-item { padding:8px 5px; } #pds-demand-prototype .pds-kpis { grid-template-columns: repeat(2, 1fr); } #pds-demand-prototype .pds-filter { grid-template-columns: 1fr 1fr; } #pds-demand-prototype .pds-detail-grid { grid-template-columns: 1fr; } }
+    #pds-demand-prototype .pds-report-tabs { display:flex; gap:8px; flex-wrap:wrap; margin:16px 0; }
+    #pds-demand-prototype .pds-report-tabs button[aria-selected="true"] { background:var(--ink); color:white; border-color:var(--ink); }
+    #pds-demand-prototype .pds-report-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin:14px 0; }
+    #pds-demand-prototype .pds-report-card { padding:18px; border:1px solid var(--line); border-radius:8px; background:white; min-width:0; }
+    #pds-demand-prototype .pds-report-card h3 { margin-bottom:5px; }
+    #pds-demand-prototype .pds-report-caption { color:var(--muted); font-size:12px; line-height:1.6; margin-bottom:14px; }
+    #pds-demand-prototype .pds-report-bars { display:grid; gap:12px; margin-top:16px; }
+    #pds-demand-prototype .pds-report-bar { display:grid; grid-template-columns:86px minmax(20px,1fr) 65px; align-items:center; gap:10px; font-size:13px; }
+    #pds-demand-prototype .pds-report-track { background:#eef3f8; border-radius:4px; height:13px; overflow:hidden; }
+    #pds-demand-prototype .pds-report-track i { display:block; height:100%; background:var(--blue); border-radius:4px; }
+    #pds-demand-prototype .pds-report-bar button { border:0; background:transparent; color:var(--blue); padding:0; text-align:left; font-size:13px; }
+    #pds-demand-prototype .pds-report-months { display:flex; align-items:stretch; gap:14px; min-height:180px; margin-top:12px; border-bottom:1px solid var(--line); }
+    #pds-demand-prototype .pds-report-month { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:7px; font-size:12px; color:var(--muted); min-width:0; }
+    #pds-demand-prototype .pds-report-column { width:min(42px,80%); background:var(--blue); border-radius:5px 5px 0 0; min-height:0; }
+    #pds-demand-prototype .pds-report-month strong { color:var(--ink); }
+    #pds-demand-prototype .pds-report-kpi-note { display:block; font-size:12px; margin-top:9px; line-height:1.5; }
+    #pds-demand-prototype .pds-report-insight { padding:13px 16px; border-left:3px solid var(--blue); background:var(--blue-soft); border-radius:5px; font-size:13px; line-height:1.7; }
+    #pds-demand-prototype .pds-report-table { min-width:1050px; }
+    #pds-demand-prototype .pds-report-dialog { width:min(760px,92vw); max-height:85vh; overflow:auto; border:1px solid var(--line); border-radius:10px; padding:24px; color:var(--ink); }
+    #pds-demand-prototype .pds-report-dialog::backdrop { background:#16344766; }
+    #pds-demand-prototype .pds-report-dialog p { margin:12px 0; line-height:1.7; }
+    #pds-demand-prototype .pds-report-definitions { margin:18px 0; font-size:13px; color:var(--muted); line-height:1.9; }
+    #pds-demand-prototype #pds-report-review-time { font-size:24px; font-weight:700; margin:22px 0 14px; line-height:1.5; }
+    #pds-demand-prototype .pds-report-table td { white-space:pre-line; line-height:1.65; }
+    @media(max-width:1000px) { #pds-demand-prototype .pds-report-grid { grid-template-columns:1fr; } }
   </style>
 
   <div class="pds-demo-note">业务确认用演示原型｜页面内容均为示例数据；不连接实际 PDS、CRM 或 OA，填写内容仅在当前页面临时展示。</div>
@@ -205,6 +230,7 @@
       <button type="button" data-view-target="pool" aria-current="page">产品需求池</button>
       <button type="button" data-view-target="screening">产品项目</button>
       <button type="button" data-view-target="intelligence">AI 情报</button>
+      <button type="button" data-view-target="reports">管理报表</button>
     </aside>
 
     <main class="pds-main">
@@ -378,6 +404,21 @@
         <section class="pds-card" style="margin-top:14px"><h3>合并后的图片、参考资料与附件</h3><p class="pds-empty-note">勾选要保留的原文件，取消勾选可从合并结果中移除；也可上传新版本。原文件名称及来源仍保留在合并前快照中。原型仅展示文件名称，不上传到实际业务系统。</p><div class="pds-form-grid" id="pds-merge-files"></div></section>
         <section class="pds-card" style="margin-top:14px"><label><input type="checkbox" id="pds-merge-ack"> 我已核对并确认合并后的字段、区域销量、价格及附件，原始申请保留快照。</label><p class="pds-empty-note" id="pds-merge-feedback" role="status"></p></section>
         <section class="pds-card" id="pds-merge-actions" style="margin-top:14px"><p class="pds-empty-note">确认后打开合并后的主需求详情，由产品经理重新初筛；其他申请标记为“已合并”，原始资料仍可追溯，不会自动发起 OA 审批。</p><div class="pds-actions" style="justify-content:flex-end"><button class="pds-secondary" type="button" data-view-target="screening">取消并返回</button><button class="pds-primary" type="button" id="pds-merge-confirm">确认合并</button></div></section>
+      </section>
+
+      <section class="pds-view" data-view="reports">
+        <div class="pds-heading"><div><h2>产品需求管理报表</h2><p class="pds-sub">看清市场机会，跟进需求推进与处理瓶颈</p></div><span class="pds-status status-blue">高层管理视图 · 演示</span></div>
+        <div class="pds-filter"><div class="pds-control"><label for="pds-report-period">申请创建期间</label><select id="pds-report-period"><option value="year">2026 年至今</option><option value="quarter">近三个月（8—10月）</option><option value="month">本月（10月）</option></select></div><div class="pds-control"><label for="pds-report-category">产品类别</label><select id="pds-report-category"><option value="">全部类别</option><option>园林工具</option><option>手持工具</option><option>清洗设备</option></select></div><div class="pds-control"><label for="pds-report-region">主销售市场</label><select id="pds-report-region"><option value="">全部市场</option><option>北美</option><option>欧洲</option><option>澳新</option><option>国内</option></select></div><div class="pds-control"><label>统计截止日</label><span>2026-10-17（演示）</span></div><button class="pds-secondary" type="button" id="pds-report-reset">重置</button></div>
+        <p class="pds-report-caption" id="pds-report-scope"></p>
+        <div class="pds-kpis"><div class="pds-kpi">原始申请数<strong id="pds-report-submitted"></strong><span class="pds-report-kpi-note">按申请编号计数，含已合并申请</span></div><div class="pds-kpi">去重后需求数<strong id="pds-report-effective"></strong><span class="pds-report-kpi-note">排除已合并申请，含各处理状态</span></div><div class="pds-kpi">已合并申请<strong id="pds-report-merged"></strong><span class="pds-report-kpi-note">保留原始资料，不重复计入机会</span></div><div class="pds-kpi">待初筛需求<strong id="pds-report-pending"></strong><span class="pds-report-kpi-note" id="pds-report-overdue"></span></div></div>
+        <div class="pds-report-tabs" role="tablist" aria-label="管理报表类型"><button class="pds-secondary" role="tab" aria-selected="true" data-report-tab="overview" aria-controls="pds-report-panel-overview">需求总览</button><button class="pds-secondary" role="tab" aria-selected="false" data-report-tab="market" aria-controls="pds-report-panel-market">市场分布</button><button class="pds-secondary" role="tab" aria-selected="false" data-report-tab="opportunity" aria-controls="pds-report-panel-opportunity">重点机会</button><button class="pds-secondary" role="tab" aria-selected="false" data-report-tab="efficiency" aria-controls="pds-report-panel-efficiency">处理效率</button></div>
+        <div data-report-panel="overview" id="pds-report-panel-overview" role="tabpanel"><div class="pds-report-insight" id="pds-report-summary"></div><div class="pds-report-grid"><section class="pds-report-card"><h3>新增申请趋势</h3><p class="pds-report-caption">按创建月份统计原始申请数；10月截至17日，非完整月。</p><div class="pds-report-months" id="pds-report-trend"></div></section><section class="pds-report-card"><h3>需求当前状态</h3><p class="pds-report-caption">所选创建期间的去重后需求，按统计截止日当前状态归类；非历史状态快照。</p><div class="pds-report-bars" id="pds-report-status"></div></section></div><div class="pds-report-grid"><section class="pds-report-card"><h3>需求来源</h3><p class="pds-report-caption">去重后需求数；按主需求录入来源归类。</p><div class="pds-report-bars" id="pds-report-source"></div></section><section class="pds-report-card"><h3>审批结果概览</h3><p class="pds-report-caption">OA演示回写结果；不是同一批需求的阶段转化漏斗。</p><div id="pds-report-approval"></div></section></div></div>
+        <div data-report-panel="market" id="pds-report-panel-market" role="tabpanel" hidden><div class="pds-report-grid"><section class="pds-report-card"><h3>主销售市场分布</h3><p class="pds-report-caption">每条需求归属一个主市场，多区域覆盖不重复计数。</p><div class="pds-report-bars" id="pds-report-markets"></div></section><section class="pds-report-card"><h3>产品类别分布</h3><p class="pds-report-caption">以去重后需求为统计单位，点击分类可下钻明细。</p><div class="pds-report-bars" id="pds-report-categories"></div></section><section class="pds-report-card"><h3>品牌需求分布</h3><p class="pds-report-caption">按主需求品牌归类，未填写时单独列为未明确。</p><div class="pds-report-bars" id="pds-report-brands"></div></section><section class="pds-report-card"><h3>销售渠道覆盖</h3><p class="pds-report-caption">一条需求可覆盖多个渠道，各渠道数量不可相加为总需求数。</p><div class="pds-report-bars" id="pds-report-channels"></div></section></div></div>
+        <div data-report-panel="opportunity" id="pds-report-panel-opportunity" role="tabpanel" hidden><div class="pds-report-insight">优先展示已批准、OA审批中、已受理的需求，再展示待初筛和暂缓需求；这不是价值评分。三年销量为预测，不代表订单；不跨单位汇总销量、不将不同币种或不同价格口径混算为收入。</div><div class="pds-table-card" style="margin-top:14px"><div class="pds-table-tools"><h3>产品机会观察清单</h3><span id="pds-report-opportunity-count"></span></div><div class="pds-table-wrap"><table class="pds-report-table"><thead><tr><th>产品需求 / 状态</th><th>主市场 / 类别</th><th>品牌 / 产品经理</th><th>三年销量预测</th><th>区域目标价格</th><th>下一步关注</th><th></th></tr></thead><tbody id="pds-report-opportunity-rows"></tbody></table></div></div></div>
+        <div data-report-panel="efficiency" id="pds-report-panel-efficiency" role="tabpanel" hidden><div class="pds-report-grid"><section class="pds-report-card"><h3>首次初筛耗时</h3><div id="pds-report-review-time"></div><p class="pds-report-caption">首次提交至第一次初筛决定的自然日数；只统计有完整时间记录的申请，含退回和暂缓，不含OA耗时。</p></section><section class="pds-report-card"><h3>当前待办账龄</h3><p class="pds-report-caption">仅待初筛需求，按创建日至截止日的自然日数分组，非超期天数。</p><div class="pds-report-bars" id="pds-report-aging"></div></section></div><div class="pds-table-card"><div class="pds-table-tools"><h3>产品经理处理负荷</h3><span>工作量参考，不作为绩效排名</span></div><div class="pds-table-wrap"><table><thead><tr><th>产品经理</th><th>待初筛</th><th>已超过要求日期</th><th>待业务补充</th><th>暂缓待复核</th><th>首次初筛中位数</th><th>有效耗时样本</th></tr></thead><tbody id="pds-report-efficiency-rows"></tbody></table></div></div><div class="pds-report-card" style="margin-top:14px"><h3>需关注的待处理申请</h3><p class="pds-report-caption">当前待初筛、且要求完成日期早于统计截止日；按要求日期排序。</p><div id="pds-report-exceptions"></div></div></div>
+        <details class="pds-report-definitions" id="pds-report-definitions"><summary>统计口径与数据范围</summary><p>数据来源：当前原型的5条业务样例 + 19条独立报表演示样例，均为虚构数据，不代表公司实际经营。原型内新增和处理现有需求后，重新进入报表可同步当前状态。截止日固定为2026-10-17。</p><p>全局筛选按申请创建日期、产品类别和主销售市场取交集；原始申请数包含已合并记录，去重后需求数排除已合并。状态、市场和机会清单均使用去重后需求。关闭和未批准需求计入历史需求数，但不列入机会清单。</p><p>首次初筛耗时按自然日计算，缺少首次决定日期的记录不参与中位数；不推断为0。超期仅指待初筛且超过要求日期，不将待补充或OA时间记为产品经理超期。正式上线需接入OA结果和完整事件时间。</p><p>不汇总不同单位的销量，不混算不同币种、FOB/DDP/MAP/MSRP价格。当前不提供预计收入、实际销售或研发项目交付指标。</p></details>
+        <button class="pds-secondary" type="button" id="pds-report-show-all">查看当前筛选的申请明细</button><section class="pds-table-card" id="pds-report-detail" style="margin-top:14px" hidden><div class="pds-table-tools"><h3 id="pds-report-detail-title">申请明细</h3><button class="pds-link" type="button" id="pds-report-detail-close">收起明细</button></div><div class="pds-table-wrap"><table><thead><tr><th>编号 / 需求</th><th>创建日期</th><th>市场 / 类别</th><th>来源</th><th>当前状态</th><th></th></tr></thead><tbody id="pds-report-detail-rows"></tbody></table></div></section>
+        <dialog class="pds-report-dialog" id="pds-report-dialog" aria-labelledby="pds-report-dialog-title"><h3 id="pds-report-dialog-title"></h3><div id="pds-report-dialog-body"></div><div class="pds-actions"><button class="pds-secondary" type="button" id="pds-report-dialog-close">关闭</button></div></dialog>
       </section>
 
       <section class="pds-view" data-view="oa">
@@ -813,6 +854,7 @@
     toast.classList.add('show');
   }
   function showView(name) {
+    if (name === 'reports') renderReports();
     if (field('intel-drawer').hasAttribute('open')) closeIntelDrawer(false);
     if (field('review-dialog').hasAttribute('open')) closeReviewDialog(false);
     if (name === 'screening') renderInbox();
@@ -1601,7 +1643,130 @@
   });
   ['已合并', '已暂缓'].forEach((status) => statusFilter.append(textNode('option', status)));
   filterRows();
+  // Synthetic reporting fixtures only; no live company measurements or services.
+  const reportAsOf = '2026-10-17';
+  const reportFixture = [
+    ['001','北美家用割草机轻量化','01-12','园林工具','北美','已批准','王琳',2,'SENIX'],
+    ['002','欧洲锂电修枝机','02-18','园林工具','欧洲','已关闭','王琳',4,'SENIX'],
+    ['003','国内便携清洗设备','03-08','清洗设备','国内','未批准','张晨',3,'YAT'],
+    ['004','北美无刷冲击扳手','04-12','手持工具','北美','已批准','王琳',2,'SENIX'],
+    ['005','澳新庭院清洗套装','05-10','清洗设备','澳新','已批准','张晨',1,'SENIX'],
+    ['006','欧洲低噪声吹风机','06-15','园林工具','欧洲','已批准','王琳',3,'SENIX'],
+    ['007','北美骑乘式割草机','07-02','园林工具','北美','已批准','王琳',2,'SENIX'],
+    ['008','欧洲紧凑型电钻','07-08','手持工具','欧洲','已合并','王琳',2,'SENIX'],
+    ['009','国内轻量冲洗设备','07-20','清洗设备','国内','未批准','张晨',5,'YAT'],
+    ['010','澳新高枝锯套件','08-03','园林工具','澳新','已受理','王琳',2,'SENIX'],
+    ['012','北美多功能工具组合','08-18','手持工具','北美','已批准','王琳',4,'SENIX'],
+    ['013','欧洲专业清洗设备','08-26','清洗设备','欧洲','已暂缓','张晨',3,'SENIX'],
+    ['015','北美商用打草机','09-05','园林工具','北美','OA 审批中','王琳',2,'SENIX'],
+    ['020','欧洲无绳往复锯','09-12','手持工具','欧洲','已受理','王琳',3,'SENIX'],
+    ['021','澳洲户外清洗附件','09-25','清洗设备','澳新','待补充','张晨',4,'SENIX'],
+    ['022','北美商用绿篱机','10-02','园林工具','北美','待初筛','王琳',null,'SENIX'],
+    ['023','国内电动工具入门套装','10-08','手持工具','国内','待补充','王琳',2,'YAT'],
+    ['024','欧洲清洗机收纳升级','10-12','清洗设备','欧洲','待初筛','张晨',null,'SENIX'],
+    ['025','北美园林电池适配需求','10-15','园林工具','北美','已合并','王琳',1,'SENIX']
+  ].map(([code,name,date,category,region,status,manager,reviewDays,brand],i) => {
+    const created='2026-'+date;
+    const plus=(days)=>new Date(Date.parse(created+'T00:00:00Z')+days*86400000).toISOString().slice(0,10);
+    return {code:'RPT-2026-'+code,name,created,category,region,status,manager,brand,reviewDays,
+      firstReview:reviewDays===null?null:plus(reviewDays),due:plus(3),source:i%3===0?'AI 情报合并':'直接填写',
+      channel:i%2===0?'Dealers 经销商':'Retail 零售、E-Comm 电商',positioning:i%2===0?'专业商用':'家用中高端',
+      forecast:[{market:region,year1:String(300+i*70),year2:String(450+i*90),year3:String(650+i*110),price:String(name.includes('割草机')?2300+i*80:category==='清洗设备'?130+i*9:120+i*7),currency:region==='北美'?'USD':region==='欧洲'?'EUR':region==='澳新'?'AUD':'CNY'}],
+      demo:true,unit:category==='手持工具'?'套':'台'};
+  });
+  let reportTab='overview', reportRows=[], reportDrill=null;
+  function reportDays(start,end) { return Math.round((Date.parse(end+'T00:00:00Z')-Date.parse(start+'T00:00:00Z'))/86400000); }
+  function reportAllRows() {
+    const timings={'PD-2026-017':'2026-10-12','PD-2026-014':'2026-10-10','PD-2026-011':'2026-09-28'};
+    return [...reportFixture,...[...records.values()].map(d=>({code:d.code,name:d.name,created:d['created-at'],category:d.category,
+      region:/美国|加拿大|北美/.test(d.region)?'北美':/澳|新西兰/.test(d.region)?'澳新':/德国|法国|比利时|荷兰|欧洲/.test(d.region)?'欧洲':/中国|国内/.test(d.region)?'国内':'未明确',
+      status:taskStatus(d.code),manager:d.reviewer,brand:d.brand||'未明确',source:d.source,channel:d.channel||'未明确',positioning:d.positioning||'未明确',
+      firstReview:timings[d.code]||null,due:d.dueAt,forecast:d.forecast||[],unit:d.category==='手持工具'?'套':'台',demo:false}))];
+  }
+  function reportMedian(rows) {
+    const times=rows.filter(r=>r.firstReview && r.firstReview<=reportAsOf && r.firstReview>=r.created).map(r=>reportDays(r.created,r.firstReview)).sort((a,b)=>a-b);
+    const n=times.length;
+    return {n,value:n?(n%2?times[(n-1)/2]:(times[n/2-1]+times[n/2])/2):null};
+  }
+  function reportTableRow(parent,values,record) {
+    const row=document.createElement('tr'); values.forEach(value=>row.append(textNode('td',value)));
+    if(record) { const cell=document.createElement('td'),button=textNode('button','查看','pds-link');button.type='button';button.dataset.reportPreview=record.code;cell.append(button);row.append(cell); }
+    parent.append(row);
+  }
+  function reportBars(id,groups,denominator,drillField) {
+    const host=field(id);host.replaceChildren();
+    if(!groups.length) {host.append(textNode('p','当前筛选无数据','pds-empty-note'));return;}
+    groups.forEach(([label,count])=>{
+      const row=textNode('div','','pds-report-bar');
+      const name=textNode(drillField?'button':'span',label);
+      if(drillField) {name.type='button';name.dataset.reportDrillField=drillField;name.dataset.reportDrillValue=label;}
+      const track=textNode('span','','pds-report-track'),bar=document.createElement('i');bar.style.width=(denominator?count/denominator*100:0)+'%';track.append(bar);
+      row.append(name,track,textNode('span',count+' 条'));host.append(row);
+    });
+  }
+  function reportGroups(rows,key) {
+    const map=new Map();rows.forEach(r=>map.set(r[key],(map.get(r[key])||0)+1));return [...map].sort((a,b)=>b[1]-a[1]);
+  }
+  function renderReportDetails() {
+    let rows=reportRows;
+    if(reportDrill) rows=rows.filter(r=>r.status!=='已合并' && r[reportDrill.key]===reportDrill.value);
+    field('report-detail-title').textContent=(reportDrill?reportDrill.value+' · ':'')+'申请明细（'+rows.length+'条）';
+    field('report-detail-rows').replaceChildren();
+    rows.forEach(r=>reportTableRow(field('report-detail-rows'),[r.code+'｜'+r.name,r.created,r.region+' / '+r.category,r.source,r.status],r));
+    if(!rows.length) reportTableRow(field('report-detail-rows'),['当前筛选无申请']);
+  }
+  function renderReports() {
+    const start={year:'2026-01-01',quarter:'2026-08-01',month:'2026-10-01'}[field('report-period').value];
+    reportRows=reportAllRows().filter(r=>r.created>=start && r.created<=reportAsOf && (!field('report-category').value||r.category===field('report-category').value) && (!field('report-region').value||r.region===field('report-region').value));
+    const effective=reportRows.filter(r=>r.status!=='已合并'),pending=effective.filter(r=>r.status==='待初筛'),overdue=pending.filter(r=>r.due && r.due<reportAsOf);
+    field('report-submitted').textContent=reportRows.length;field('report-effective').textContent=effective.length;field('report-merged').textContent=reportRows.length-effective.length;field('report-pending').textContent=pending.length;
+    field('report-overdue').textContent='其中 '+overdue.length+' 条已超过要求完成日期';
+    field('report-scope').textContent='演示数据｜'+start+' — '+reportAsOf+' 创建的 '+reportRows.length+' 条申请；含独立报表样例，不与需求池概览占位数字对应。';
+    root.querySelectorAll('[data-report-panel]').forEach(p=>p.hidden=p.dataset.reportPanel!==reportTab);
+    root.querySelectorAll('[data-report-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.reportTab===reportTab)));
+    field('report-summary').textContent=effective.length?'当前有 '+effective.length+' 条去重后需求，'+pending.length+' 条待初筛，其中 '+overdue.length+' 条超过要求完成日期。点击状态或市场条目可查看对应申请。':'当前筛选无需求，请调整期间、产品类别或主销售市场。';
+    const monthStart=Number(start.slice(5,7)),monthly=Array.from({length:11-monthStart},(_,i)=>({month:monthStart+i,count:0}));
+    reportRows.forEach(r=>{const month=monthly.find(m=>m.month===Number(r.created.slice(5,7)));if(month)month.count++;});
+    field('report-trend').replaceChildren();const max=Math.max(1,...monthly.map(m=>m.count));
+    monthly.forEach(m=>{const col=textNode('div','','pds-report-month'),bar=textNode('div','','pds-report-column');bar.style.height=(m.count/max*120)+'px';bar.setAttribute('aria-label',m.month+'月新增'+m.count+'条');col.append(textNode('strong',String(m.count)),bar,textNode('span',m.month+'月'));field('report-trend').append(col);});
+    reportBars('report-status',reportGroups(effective,'status'),effective.length,'status');
+    reportBars('report-source',reportGroups(effective,'source'),effective.length,'source');
+    const approved=effective.filter(r=>r.status==='已批准').length,rejected=effective.filter(r=>r.status==='未批准').length,oa=effective.filter(r=>r.status==='OA 审批中').length;
+    field('report-approval').replaceChildren();
+    [['审批通过',approved+' 条'],['审批未通过',rejected+' 条'],['审批中',oa+' 条'],['已结案审批通过率',approved+rejected?Math.round(approved/(approved+rejected)*100)+'%（'+approved+'/'+(approved+rejected)+'）':'暂无已结案样本']].forEach(([label,value])=>field('report-approval').append(textNode('p',label+'：'+value,'pds-empty-note')));
+    reportBars('report-markets',reportGroups(effective,'region'),effective.length,'region');reportBars('report-categories',reportGroups(effective,'category'),effective.length,'category');reportBars('report-brands',reportGroups(effective,'brand'),effective.length,'brand');
+    const channels=new Map();effective.forEach(r=>new Set(r.channel.split(/[、,，]/).map(s=>s.trim()).filter(Boolean)).forEach(c=>channels.set(c,(channels.get(c)||0)+1)));
+    reportBars('report-channels',[...channels].sort((a,b)=>b[1]-a[1]),effective.length);
+    const opportunities=effective.filter(r=>!['已关闭','未批准'].includes(r.status)).sort((a,b)=>['已批准','OA 审批中','已受理','待初筛','待补充','已暂缓'].indexOf(a.status)-['已批准','OA 审批中','已受理','待初筛','待补充','已暂缓'].indexOf(b.status));
+    field('report-opportunity-count').textContent=opportunities.length+' 条 · 按推进状态排序';field('report-opportunity-rows').replaceChildren();
+    opportunities.forEach(r=>reportTableRow(field('report-opportunity-rows'),[r.code+'｜'+r.name+'\n'+r.status,r.region+' / '+r.category,r.brand+' / '+r.manager,r.forecast.map(f=>f.market+'：'+[f.year1,f.year2,f.year3].join(' / ')+' '+r.unit).join('；')||'待补充',r.forecast.map(f=>f.market+'：'+(f.currency||'币种待确认')+' '+(f.price||'待确认')).join('；')||'待确认',({'已批准':'交接后续立项，尚未关联研发项目','OA 审批中':'等待OA评审结果','已受理':'补齐评审资料，发起OA','待初筛':'产品经理核对申请','待补充':'跟进业务补充资料','已暂缓':'核对复核安排'})[r.status]||'查看处理记录'],r));
+    if(!opportunities.length) reportTableRow(field('report-opportunity-rows'),['当前筛选无可展示机会']);
+    const median=reportMedian(reportRows);field('report-review-time').textContent=(median.value===null?'暂无有效耗时样本':'中位数 '+median.value+' 天')+' · 有效样本 '+median.n+' / '+reportRows.length+' 条';
+    const ages=[['0—2天',0],['3—7天',0],['8—14天',0],['15天及以上',0]];pending.forEach(r=>{const days=reportDays(r.created,reportAsOf);ages[days<=2?0:days<=7?1:days<=14?2:3][1]++;});reportBars('report-aging',ages,pending.length);
+    field('report-efficiency-rows').replaceChildren();
+    [...new Set(effective.map(r=>r.manager))].sort().forEach(manager=>{const rows=effective.filter(r=>r.manager===manager),timed=reportMedian(reportRows.filter(r=>r.manager===manager));reportTableRow(field('report-efficiency-rows'),[manager,rows.filter(r=>r.status==='待初筛').length,rows.filter(r=>r.status==='待初筛'&&r.due&&r.due<reportAsOf).length,rows.filter(r=>r.status==='待补充').length,rows.filter(r=>r.status==='已暂缓').length,timed.value===null?'无有效记录':timed.value+' 天',timed.n+' 条']);});
+    if(!effective.length) reportTableRow(field('report-efficiency-rows'),['当前筛选无产品经理待办数据']);
+    field('report-exceptions').replaceChildren();overdue.sort((a,b)=>a.due.localeCompare(b.due)).forEach(r=>{const p=textNode('p',r.code+'｜'+r.name+' · '+r.manager+' · 要求日期 '+r.due+' ','pds-empty-note'),b=textNode('button','查看','pds-link');b.type='button';b.dataset.reportPreview=r.code;p.append(b);field('report-exceptions').append(p);});
+    if(!overdue.length) field('report-exceptions').append(textNode('p','当前筛选无超过要求日期的待初筛申请。','pds-empty-note'));
+    renderReportDetails();
+  }
+  ['report-period','report-category','report-region'].forEach(id=>field(id).addEventListener('change',()=>{reportDrill=null;renderReports();}));
+  field('report-reset').addEventListener('click',()=>{field('report-period').value='year';field('report-category').value='';field('report-region').value='';reportDrill=null;renderReports();});
+  field('report-show-all').addEventListener('click',()=>{reportDrill=null;renderReportDetails();field('report-detail').hidden=false;field('report-detail').scrollIntoView?.({block:'start'});});
+  field('report-detail-close').addEventListener('click',()=>field('report-detail').hidden=true);
+  field('report-dialog-close').addEventListener('click',()=>{const dialog=field('report-dialog');if(dialog.close)dialog.close();else dialog.removeAttribute('open');});
+  root.querySelector('[data-view="reports"]').addEventListener('click',event=>{
+    const tab=event.target.closest('[data-report-tab]');if(tab){reportTab=tab.dataset.reportTab;renderReports();return;}
+    const drill=event.target.closest('[data-report-drill-field]');if(drill){reportDrill={key:drill.dataset.reportDrillField,value:drill.dataset.reportDrillValue};renderReportDetails();field('report-detail').hidden=false;field('report-detail').scrollIntoView?.({block:'start'});return;}
+    const preview=event.target.closest('[data-report-preview]');if(!preview)return;
+    const r=reportRows.find(row=>row.code===preview.dataset.reportPreview);if(!r)return;
+    field('report-dialog-title').textContent=r.code+'｜'+r.name;const body=field('report-dialog-body');body.replaceChildren();
+    [['样例来源',r.demo?'报表独立扩展样例（虚构），未在需求池生成业务记录':'当前原型业务样例，未接入实际PDS'],['当前状态',r.status],['创建日期',r.created],['市场 / 类别',r.region+' / '+r.category],['品牌 / 产品定位',r.brand+' / '+r.positioning],['产品经理',r.manager],['录入来源 / 渠道',r.source+' / '+r.channel],['首次初筛日期',r.firstReview||'暂无完整记录，不计入耗时'],['要求完成日期',r.due||'未设置'],['三年销量预测',r.forecast.map(f=>f.market+'：'+[f.year1,f.year2,f.year3].join(' / ')+' '+r.unit).join('；')||'待补充'],['区域目标价格',r.forecast.map(f=>f.market+'：'+f.currency+' '+(f.price||'待确认')).join('；')||'待补充']].forEach(([label,value])=>body.append(textNode('p',label+'：'+value)));
+    body.append(textNode('p','预测仅用于机会讨论，不代表实际订单或收入。','pds-empty-note'));
+    const dialog=field('report-dialog');if(dialog.showModal)dialog.showModal();else dialog.setAttribute('open','');
+  });
   const originalId = new URLSearchParams(window.location.search).get('intel');
+  if (!originalId && new URLSearchParams(window.location.search).get('view') === 'reports') showView('reports');
   if (originalId) {
     const record = intelRecords.get(originalId);
     field('original-title').textContent = record ? record.id + '｜' + record.title : '情报记录不存在';
