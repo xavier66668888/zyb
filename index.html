@@ -90,6 +90,7 @@
     #pds-demand-prototype .pds-form-field .pds-multi-option input { width: 16px; height: 16px; min-height: 16px; padding: 0; accent-color: var(--blue); flex: none; }
     #pds-demand-prototype .pds-form-field input[readonly] { background: var(--canvas); color: var(--muted); }
     #pds-demand-prototype .pds-required-mark { color: var(--red); font-weight: 700; }
+    #pds-demand-prototype #pds-forecast-table th:nth-child(12), #pds-demand-prototype #pds-forecast-table td:nth-child(12) { width:220px; }
     #pds-demand-prototype .pds-upload-field input[type="file"] { min-height: 48px; padding: 7px; border-style: dashed; cursor: pointer; }
     #pds-demand-prototype .pds-upload-field input[type="file"]::file-selector-button { border: 0; border-radius: 4px; background: var(--blue-soft); color: var(--blue); padding: 7px 11px; margin-right: 12px; cursor: pointer; }
     #pds-demand-prototype .pds-upload-selected { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; color: var(--muted); font-size: 12px; }
@@ -272,6 +273,7 @@
           <div class="pds-form-field"><label for="pds-applicant">申请人 *</label><input id="pds-applicant" placeholder="例如：李强"></div>
           <div class="pds-form-field"><label for="pds-department">申请部门 *</label><input id="pds-department" placeholder="例如：北美区域公司"></div>
           <div class="pds-form-field"><label for="pds-category">产品类别 *</label><select id="pds-category"><option value="">请选择类别</option><option>园林工具</option><option>手持工具</option><option>清洗设备</option></select></div>
+          <div class="pds-form-field"><label for="pds-sales-market">销售市场 *</label><select id="pds-sales-market"><option value="">请选择销售市场</option><option>国内</option><option>海外</option></select></div>
           <div class="pds-form-field"><label for="pds-reviewer">对应产品经理 *</label><select id="pds-reviewer"><option value="王琳">王琳 · 园林 / 手持工具</option><option value="张晨">张晨 · 清洗设备</option></select><span class="pds-muted-inline">按产品类别带入，可调整；提交后向该产品经理发送企微待办留言（演示）。</span></div>
           <div class="pds-form-field"><label for="pds-region">销售地区 *</label><input id="pds-region" value="北美"></div>
           <div class="pds-form-field"><label for="pds-brand">品牌 *</label><input id="pds-brand" placeholder="例如：SENIX"></div>
@@ -333,6 +335,7 @@
       <section class="pds-view" data-view="detail">
         <div class="pds-heading"><div><h2 id="pds-detail-title">PD-2026-018｜北美商用割草机平台</h2><p class="pds-sub" id="pds-detail-subtitle">当前状态：待初筛　　来源：AI 情报合并</p></div><div class="pds-actions"><button class="pds-secondary" type="button" data-view-target="pool" id="pds-detail-back">返回需求池</button></div></div>
         <div class="pds-review-context"><strong id="pds-detail-assignment"></strong><p id="pds-detail-notification"></p></div>
+        <section class="pds-card" style="margin-bottom:14px"><h3>立项评估安排</h3><p class="pds-empty-note" id="pds-detail-evaluation"></p><p class="pds-empty-note" id="pds-detail-business-feedback"></p><button type="button" class="pds-link" id="pds-evaluation-postpone" disabled>申请延期</button><p class="pds-empty-note">预计日期指产品经理完成评估并提交 OA 的日期，不是 OA 审批完成日期。延期必须说明原因，原承诺日期保留。</p></section>
         <section class="pds-card pds-merge-trace" id="pds-detail-merge-trace" hidden><h3>需求合并与追溯</h3><p id="pds-detail-merge-summary"></p><div id="pds-detail-merge-records"></div></section>
         <div class="pds-flow" aria-label="需求流转状态"><span class="pds-flow-step active" id="pds-detail-origin-step">AI 情报汇总</span><span class="pds-flow-arrow">→</span><span class="pds-flow-step active">产品需求</span><span class="pds-flow-arrow">→</span><span class="pds-flow-step">产品初筛</span><span class="pds-flow-arrow">→</span><span class="pds-flow-step">OA 审批</span></div>
         <div class="pds-detail-grid"><section class="pds-card"><h3>需求信息</h3><ul class="pds-info-list">
@@ -341,6 +344,7 @@
           <li><span>申请人</span><strong id="pds-detail-applicant">李强</strong></li>
           <li><span>申请部门</span><strong id="pds-detail-department">北美区域公司</strong></li>
           <li><span>产品类别</span><strong id="pds-detail-category">园林工具</strong></li>
+          <li><span>销售市场</span><strong id="pds-detail-sales-market">海外</strong></li>
           <li><span>品牌</span><strong id="pds-detail-brand">—</strong></li>
           <li><span>产品定位</span><strong id="pds-detail-positioning">—</strong></li>
           <li><span>销售地区</span><strong id="pds-detail-region">北美</strong></li>
@@ -695,7 +699,7 @@
     row.cells[6].title = demand.forecast.map((item) => item.market + '：' + item.currency + ' ' + item.price).join('；');
   });
   const formFieldIds = [
-    'demand-name', 'created-at', 'applicant', 'department', 'reviewer', 'brand', 'positioning', 'region',
+    'demand-name', 'created-at', 'applicant', 'department', 'reviewer', 'brand', 'positioning', 'region', 'sales-market',
     'channel', 'compliance', 'reason', 'value', 'target-users', 'target-customers', 'scene',
     'environment', 'basic-params', 'basis', 'selling-points', 'accessories',
     'packaging', 'manual', 'warranty', 'special-requirements', 'feature-1', 'feature-2',
@@ -715,7 +719,7 @@
   const requiredFieldLabels = {
     'demand-name': '需求名称', 'created-at': '创建日期', applicant: '申请人',
     department: '申请部门', category: '产品类别', brand: '品牌', channel: '销售渠道',
-    reviewer: '对应产品经理',
+    reviewer: '对应产品经理', 'sales-market': '销售市场',
     region: '销售地区', compliance: '认证要求', positioning: '产品定位',
     reason: '需求原因', value: '商业价值', 'basic-params': '基本参数',
     scene: '使用场景', environment: '使用环境', 'target-users': '目标人群',
@@ -743,14 +747,72 @@
     ['fob', 'FOB(代理商)', 'text'], ['cfi', 'CFI(RU)', 'text'],
     ['ddp', 'DDP', 'text'], ['map', 'MAP', 'text'], ['msrp', 'MSRP', 'text'],
     ['configuration', '产品配置', 'text'], ['launch', '上市时间', 'text'],
-    ['price', '目标价格', 'text'], ['currency', '币种', 'select']
+    ['price', '目标价格', 'text'], ['currency', '币种', 'select'], ['notes', '备注', 'text']
   ];
+
+  function forecastRequiredFor(market) {
+    return market === '国内' ? requiredForecastFields.filter(([id]) => !['fob','cfi','ddp','map'].includes(id)).concat([['currency','币种']]) : requiredForecastFields;
+  }
+  function filesRequiredFor(market) {
+    return Object.entries(requiredFileLabels).filter(([id]) => market !== '国内' || id !== 'attachment');
+  }
+  function syncForecastHeaders(table, offset, market, readonly = false) {
+    const header = table.tHead.rows[0];
+    while (header.cells.length > offset) header.deleteCell(offset);
+    const required = new Set(forecastRequiredFor(market).map(([id]) => id));
+    forecastFields.forEach(([id,label]) => {
+      const th = document.createElement('th');
+      th.textContent = (id === 'msrp' ? 'MSRP（市场零售价）' : label) + (!readonly && required.has(id) ? ' *' : '');
+      header.append(th);
+    });
+  }
+  function syncMarketRules() {
+    const market = field('sales-market').value;
+    const required = new Set(forecastRequiredFor(market).map(([id]) => id));
+    syncForecastHeaders(field('forecast-table'),2,market);
+    field('forecast-rows').querySelectorAll('[data-forecast-field]').forEach(input => input.setAttribute('aria-required',String(required.has(input.dataset.forecastField))));
+    const attachmentRequired = market !== '国内';
+    root.querySelector('label[for="pds-attachment"]').textContent = '上传需求附件' + (attachmentRequired ? ' *' : '（选填）');
+    field('attachment').setAttribute('aria-required',String(attachmentRequired));
+  }
+  field('sales-market').addEventListener('change',syncMarketRules);
+  ['category','category-filter','inbox-category','report-category'].forEach(id => ['电动工具','其他'].forEach(value => field(id).append(textNode('option',value))));
+  ['CCC','无需认证'].forEach(value => {
+    const label=textNode('label','','pds-multi-option'),input=document.createElement('input');
+    input.type='checkbox'; input.value=value; label.append(input,document.createTextNode(value));field('compliance-menu').append(label);
+  });
+  field('compliance-menu').addEventListener('change',event => {
+    const selected=event.target;
+    if (selected.checked) field('compliance-menu').querySelectorAll('input').forEach(input => {
+      if (selected.value === '无需认证' && input !== selected || selected.value !== '无需认证' && input.value === '无需认证') input.checked=false;
+    });
+    renderMulti('compliance');
+  });
+  records.forEach(demand => { demand['sales-market'] = demand['sales-market'] || '海外'; });
 
   function textNode(tag, text, className) {
     const node = document.createElement(tag);
     node.textContent = text;
     if (className) node.className = className;
     return node;
+  }
+  const evaluationGroup = textNode('div','','pds-control'); evaluationGroup.id='pds-evaluation-date-group'; evaluationGroup.hidden=true;
+  const evaluationLabel=textNode('label','预计立项评估完成日期 *'); evaluationLabel.htmlFor='pds-evaluation-date';
+  const evaluationInput=document.createElement('input'); evaluationInput.id='pds-evaluation-date'; evaluationInput.type='text'; evaluationInput.placeholder='YYYY-MM-DD，例如：2026-10-30'; evaluationInput.maxLength=10;
+  const evaluationOwner=textNode('p','','pds-empty-note'); evaluationOwner.id='pds-evaluation-owner';
+  evaluationGroup.append(evaluationLabel,evaluationInput,evaluationOwner,textNode('p','指产品经理完成评估并提交 OA 的日期；不早于今天，不代表 OA 审批完成。','pds-empty-note'));
+  field('review-feedback').before(evaluationGroup);
+  const evaluationHeader=textNode('th','预计评估完成 / 实际提交');
+  const inboxHeader=field('inbox-rows').closest('table').tHead.rows[0]; inboxHeader.insertBefore(evaluationHeader,inboxHeader.cells[6]);
+  Object.assign(records.get('PD-2026-014'),{evaluationDue:'2026-10-23',evaluationOriginalDue:'2026-10-23',evaluationOwner:'张晨'});
+  Object.assign(records.get('PD-2026-011'),{evaluationDue:'2026-10-01',evaluationOriginalDue:'2026-10-01',evaluationOwner:'王琳',evaluationCompletedAt:'2026-09-29T09:30:00+08:00'});
+  function validEvaluationDate(value) {
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const date=new Date(value+'T00:00:00Z');return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===value;
+  }
+  function evaluationTime(value) { return new Date(value).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false}); }
+  function evaluationFeedback(demand,postponed=false) {
+    demand.businessFeedback='发给 '+demand.applicant+'：需求 '+demand.code+(postponed?' 的评估安排已延期':' 已受理')+'，产品经理 '+(demand.evaluationOwner||demand.reviewer)+' 预计于 '+demand.evaluationDue+' 完成评估并提交 OA。'+(postponed?'延期原因：'+demand.evaluationDelayReason+'。':'')+'企微反馈已生成（演示，未实际发送）。';
   }
   function originalIntelHref(id) {
     try { const url = new URL(window.location.href); url.search = ''; url.hash = ''; url.searchParams.set('intel', id); return url.href; }
@@ -901,6 +963,9 @@
         cell.append(textNode('strong', primary), textNode('span', secondary, 'pds-code'));
         row.append(cell);
       });
+      const evaluationCell=document.createElement('td');
+      evaluationCell.append(textNode('strong',demand.evaluationDue||'受理时确认'),textNode('span',demand.evaluationCompletedAt?'已提交 '+evaluationTime(demand.evaluationCompletedAt):demand.evaluationDue?(status==='已受理'&&demand.evaluationDue<localDate()?'评估已超期，需跟进':'尚未提交 OA'):'尚未受理承诺','pds-code'));
+      row.append(evaluationCell);
       const statusCell = document.createElement('td');
       statusCell.append(textNode('span', status, 'pds-status ' + (status === '待补充' ? 'status-amber' : status === '已受理' ? 'status-green' : 'status-blue')));
       row.append(statusCell);
@@ -916,7 +981,7 @@
     });
     if (!filtered.length) {
       const cell = textNode('td', '当前条件下暂无分配给 ' + manager + ' 的需求，可切换任务范围或重置筛选。', 'pds-forecast-empty');
-      cell.colSpan = 9; const row = document.createElement('tr'); row.append(cell); body.append(row);
+      cell.colSpan = 10; const row = document.createElement('tr'); row.append(cell); body.append(row);
     }
     updateMergeSelection();
   }
@@ -961,7 +1026,8 @@
       editor.dataset.mergeField = id; editor.value = main[id] || '';
       editor.setAttribute('aria-label', '合并采用的' + fieldLabel(id));
       editor.placeholder = '可引用上方原值，再手工合并、补充或重新定义';
-      select.addEventListener('change', () => { editor.value = select.value; });
+      select.addEventListener('change', () => { editor.value = select.value; if(id==='sales-market') syncMergeMarketRules(); });
+      if(id==='sales-market') editor.addEventListener('input',syncMergeMarketRules);
       cell.append(select, editor, textNode('span', '下拉引用原值；下方可直接编辑最终内容。', 'pds-code'));
       row.append(cell); conflicts.append(row);
     });
@@ -993,9 +1059,20 @@
       input.dataset.mergeForecastField = id; input.setAttribute('aria-label', '合并预测' + label); input.value = values[id] || '';
       cell.append(input); row.append(cell);
     });
-    field('merge-forecast-rows').append(row); updateMergeForecastControls();
+    field('merge-forecast-rows').append(row); updateMergeForecastControls(); syncMergeMarketRules();
+  }
+  function syncMergeMarketRules() {
+    const market = root.querySelector('[data-merge-field="sales-market"]')?.value.trim() || records.get(field('merge-main').value)?.['sales-market'];
+    syncForecastHeaders(field('merge-forecast-table'),3,market);
+    const required = new Set(forecastRequiredFor(market).map(([id])=>id));
+    field('merge-forecast-rows').querySelectorAll('[data-merge-forecast-field]').forEach(input=>input.setAttribute('aria-required',String(required.has(input.dataset.mergeForecastField))));
+    fileFieldIds.forEach(id=>{
+      const upload=field('merge-upload-'+id);
+      if(upload) upload.closest('.pds-merge-file-group').querySelector('h4').textContent=fieldLabel(id)+(filesRequiredFor(market).some(([key])=>key===id)?' *':'（选填）');
+    });
   }
   function renderMergeAssets(main) {
+    syncForecastHeaders(field('merge-forecast-table'),3,main['sales-market']);
     field('merge-forecast-rows').replaceChildren();
     (main.forecast || []).forEach((item, index) => appendMergeForecastRow(item, main.code, main.code + ':' + index));
     if (!main.forecast?.length) appendMergeForecastRow();
@@ -1011,7 +1088,7 @@
     const files = field('merge-files'); files.replaceChildren();
     fileFieldIds.forEach((id) => {
       const group = document.createElement('div'); group.className = 'pds-merge-file-group';
-      group.append(textNode('h4', fieldLabel(id) + (Object.hasOwn(requiredFileLabels, id) ? ' *' : '')));
+      group.append(textNode('h4', fieldLabel(id) + (filesRequiredFor(main['sales-market']).some(([key])=>key===id) ? ' *' : '（选填）')));
       mergeCandidates.forEach((demand) => (demand[id + 'Files'] || []).forEach((name) => {
         const label = document.createElement('label'); const check = document.createElement('input');
         check.type = 'checkbox'; check.checked = true; check.dataset.mergeFileGroup = id; check.value = name;
@@ -1073,14 +1150,17 @@
     const forecastErrors = [];
     if (!forecast.length) forecastErrors.push('至少保留一条完整的区域预测');
     forecast.forEach((item, index) => {
-      requiredForecastFields.forEach(([id, label]) => { if (!item[id]) forecastErrors.push('第 ' + (index + 1) + ' 行的' + label); });
+      const adoptedMarket = editors.find(editor=>editor.dataset.mergeField==='sales-market')?.value.trim() || main['sales-market'];
+      forecastRequiredFor(adoptedMarket).forEach(([id, label]) => { if (!item[id]) forecastErrors.push('第 ' + (index + 1) + ' 行的' + label); });
       ['year1', 'year2', 'year3'].forEach((id) => { if (item[id] && (!/^\d+$/.test(item[id]) || !Number.isSafeInteger(Number(item[id])))) forecastErrors.push('第 ' + (index + 1) + ' 行销量应为非负整数'); });
     });
     const fileResults = Object.fromEntries(fileFieldIds.map((id) => [id, [...new Set([
       ...[...field('merge-files').querySelectorAll('[data-merge-file-group="' + id + '"]:checked')].map((check) => check.value),
       ...[...field('merge-upload-' + id).files].map((file) => file.name)
     ])]]));
-    Object.entries(requiredFileLabels).forEach(([id, label]) => { if (!fileResults[id].length) forecastErrors.push(label + '至少保留或补充一个文件'); });
+    const adoptedMarket = editors.find(editor=>editor.dataset.mergeField==='sales-market')?.value.trim() || main['sales-market'];
+    if (!['国内','海外'].includes(adoptedMarket)) forecastErrors.push('销售市场请选择国内或海外');
+    filesRequiredFor(adoptedMarket).forEach(([id, label]) => { if (!fileResults[id].length) forecastErrors.push(label + '至少保留或补充一个文件'); });
     if (forecastErrors.length) { field('merge-feedback').textContent = '请完善合并结果：' + forecastErrors.join('；') + '。'; return; }
     const snapshots = mergeCandidates.map((demand) => JSON.parse(JSON.stringify({ ...demand, snapshotStatus: taskStatus(demand.code) })));
     editors.forEach((editor) => main[editor.dataset.mergeField] = editor.value.trim());
@@ -1101,6 +1181,7 @@
       if (demand !== main) { demand.mergedInto = main.code; demand.next = '已合并至 ' + main.code + '，原申请和附件继续保留。'; }
     });
     main.reviewComment = ''; main.reviewDate = ''; main.viewed = false;
+    main.evaluationDue=''; main.evaluationOriginalDue=''; main.evaluationCompletedAt=''; main.businessFeedback=''; main.evaluationDelayReason=''; main.evaluationOwner='';
     main.next = '合并后待重新初筛；核对各来源区域预测和价格，确认是否存在客户或渠道重叠。';
     const mainRow = Array.from(demandRows.rows).find((row) => row.querySelector('.pds-code').textContent === main.code);
     mainRow.querySelector('.pds-demand-name').textContent = main.name;
@@ -1216,7 +1297,7 @@
       if (type !== 'select') input.type = type;
       input.dataset.forecastField = name;
       input.setAttribute('aria-label', label);
-      if (requiredForecastFields.some(([id]) => id === name)) input.setAttribute('aria-required', 'true');
+      input.setAttribute('aria-required', String(forecastRequiredFor(field('sales-market').value).some(([id]) => id === name)));
       if (type === 'number') { input.min = '0'; input.step = '1'; input.inputMode = 'numeric'; }
       if (type === 'select') {
         [['', '请选择'], ['USD', 'USD'], ['EUR', 'EUR'], ['CNY', 'CNY'], ['AUD', 'AUD'], ['CAD', 'CAD']].forEach(([value, text]) => {
@@ -1230,6 +1311,7 @@
       row.append(cell);
     });
     forecastRows.append(row);
+    syncMarketRules();
     renumberForecastRows();
   }
   function resetForecastRows() {
@@ -1340,6 +1422,7 @@
   field('form-back').addEventListener('click', () => showView(formMode === 'ai' ? 'intelligence' : 'pool'));
   function renderDetail() {
     const demand = currentDemand;
+    syncForecastHeaders(field('detail-forecast').closest('table'),1,demand['sales-market'],true);
     field('detail-back').dataset.viewTarget = detailOrigin;
     field('detail-back').textContent = detailOrigin === 'screening' ? '返回产品项目' : '返回产品需求池';
     field('detail-assignment').textContent = '对应产品经理：' + (demand.reviewer || defaultReviewer(demand.category)) + ' · 提交时间：' + (demand.submittedAt || demand['created-at'] || '本次演示');
@@ -1353,6 +1436,12 @@
     const isOwner = demand.reviewer === field('inbox-manager').value;
     const canReview = isOwner && ['待初筛', '待补充', '已受理', '已暂缓'].includes(currentRow.dataset.status);
     ['accept', 'request-more', 'hold'].forEach((id) => field(id).disabled = !canReview);
+    field('accept').disabled = !canReview || currentRow.dataset.status === '已受理';
+    field('evaluation-postpone').disabled = !isOwner || currentRow.dataset.status !== '已受理' || !demand.evaluationDue || !!demand.evaluationCompletedAt;
+    field('detail-evaluation').textContent = demand.evaluationDue
+      ? '评估负责人：'+(demand.evaluationOwner||demand.reviewer)+'；原承诺日期：'+(demand.evaluationOriginalDue||demand.evaluationDue)+'；预计立项评估完成日期：'+demand.evaluationDue+'；'+(demand.evaluationCompletedAt?'实际评估提交时间：'+evaluationTime(demand.evaluationCompletedAt)+'；OA 审批尚未完成。':'尚未提交 OA。')
+      : '尚未确认评估安排，受理时由产品经理填写预计完成日期。';
+    field('detail-business-feedback').textContent = demand.businessFeedback || '受理或延期后生成给申请人的企微反馈（演示）。';
     field('review-comment').disabled = !canReview;
     field('review-date').disabled = !canReview;
     field('review-date').min = localDate();
@@ -1410,7 +1499,7 @@
     if (!demand.forecast?.length) {
       const row = document.createElement('tr');
       const cell = textNode('td', '尚未录入', 'pds-forecast-empty');
-      cell.colSpan = 15;
+      cell.colSpan = forecastFields.length + 1;
       row.append(cell);
       detailForecast.append(row);
     } else {
@@ -1459,12 +1548,12 @@
     const missing = Object.entries(requiredFieldLabels)
       .filter(([id]) => ['channel', 'compliance'].includes(id) ? selectedOptions(id).length === 0 : !field(id).value.trim())
       .map(([, label]) => label);
-    Object.entries(requiredFileLabels).forEach(([id, label]) => {
+    filesRequiredFor(field('sales-market').value).forEach(([id, label]) => {
       if (!selectedFileNames(id).length) missing.push(label);
     });
     const forecast = collectForecastRows();
     if (!forecast.length) missing.push('三年销量预测');
-    forecast.forEach((row, index) => requiredForecastFields.forEach(([id, label]) => {
+    forecast.forEach((row, index) => forecastRequiredFor(field('sales-market').value).forEach(([id, label]) => {
       if (!row[id]) missing.push('销量第 ' + (index + 1) + ' 行的 ' + label);
     }));
     if (missing.length) {
@@ -1531,6 +1620,19 @@
   function setDemandStatus(status, style, details = {}) {
     if (currentDemand.reviewer !== field('inbox-manager').value || !['待初筛', '待补充', '已受理', '已暂缓'].includes(currentRow.dataset.status)) return false;
     const comment = (details.comment ?? currentDemand.reviewComment ?? '').trim();
+    if(status === '已受理') {
+      const due=(details.evaluationDue||'').trim();
+      if(currentRow.dataset.status==='已受理') {field('review-feedback').textContent='已受理需求请通过申请延期调整日期。';return false;}
+      if(!validEvaluationDate(due)||due<localDate()) {field('review-feedback').textContent='请填写今天或之后的有效预计立项评估完成日期（YYYY-MM-DD）。';return false;}
+      currentDemand.evaluationDue=due;
+      currentDemand.evaluationOriginalDue=currentDemand.evaluationOriginalDue||due;
+      currentDemand.evaluationOwner=currentDemand.reviewer;
+      evaluationFeedback(currentDemand);
+    }
+    if(status === 'OA 审批中') {
+      if(!currentDemand.evaluationDue) {showToast('请先确认预计立项评估完成日期。');return false;}
+      currentDemand.evaluationCompletedAt=new Date().toISOString();
+    }
     if (['待补充', '已暂缓', '已关闭'].includes(status) && !comment) {
       field('review-feedback').textContent = '请先填写初筛意见，说明需要补充的资料或处理原因。';
       return false;
@@ -1556,6 +1658,8 @@
     field('send-oa').disabled = status !== '已受理';
     currentDemand.history = currentDemand.history || [];
     currentDemand.history.push(['本次演示', (currentDemand.reviewer || '产品经理') + ' · 状态更新为“' + status + '”。' + (comment ? '初筛意见：' + comment : '') + (status === '已暂缓' ? '；复核日期：' + reviewDate : '')]);
+    if(status==='已受理') currentDemand.history.push(['本次演示','评估负责人：'+currentDemand.evaluationOwner+'；预计立项评估完成日期：'+currentDemand.evaluationDue+'；已生成给申请人的企微反馈（演示）。']);
+    if(status==='OA 审批中') currentDemand.history.push(['本次演示','产品经理已完成评估并提交 OA，实际评估提交时间：'+evaluationTime(currentDemand.evaluationCompletedAt)+'；此时间不是 OA 审批完成时间。']);
     currentDemand.next = status === '已暂缓' ? '暂缓原因：' + comment + '；计划于 ' + reviewDate + ' 复核。' : ({ '已受理': '下一步：需求负责人发起 OA 审批。', '待补充': '待申请人补充资料后重新提交初筛。', 'OA 审批中': '等待 OA 端评审，审批结果及完成时间回写 PDS。' })[status] || '请查看最新处理记录。';
     renderDetail();
     filterRows();
@@ -1566,6 +1670,7 @@
     if (typeof dialog.close === 'function') dialog.close(); else dialog.removeAttribute('open');
     pendingReview = null;
     field('review-comment').value = ''; field('review-date').value = ''; field('review-feedback').textContent = '';
+    field('evaluation-date').value='';
     if (restoreFocus && reviewTrigger && !reviewTrigger.disabled) reviewTrigger.focus();
     reviewTrigger = null;
   }
@@ -1574,10 +1679,11 @@
     const configs = {
       accept: { status: '已受理', style: 'status-green', title: '受理需求', label: '受理意见（选填）', placeholder: '可填写受理建议或后续评审关注事项。', confirm: '确认受理' },
       more: { status: '待补充', style: 'status-amber', title: '退回补充', label: '需补充的事项 *', placeholder: '请逐项列明缺少的资料或需要业务确认的内容。', confirm: '确认退回' },
-      hold: { status: '已暂缓', style: 'status-amber', title: '暂缓需求', label: '暂缓原因 *', placeholder: '请说明暂缓原因、待解决条件及复核安排。', confirm: '确认暂缓' }
+      hold: { status: '已暂缓', style: 'status-amber', title: '暂缓需求', label: '暂缓原因 *', placeholder: '请说明暂缓原因、待解决条件及复核安排。', confirm: '确认暂缓' },
+      postpone: {status:'已受理',style:'status-green',title:'调整评估完成日期',label:'延期原因 *',placeholder:'说明延期原因、当前进展及后续安排。',confirm:'确认延期'}
     };
     const config = configs[action];
-    pendingReview = { ...config, code: currentDemand.code }; reviewTrigger = trigger;
+    pendingReview = { ...config, action, code: currentDemand.code }; reviewTrigger = trigger;
     field('review-dialog-title').textContent = config.title;
     field('review-dialog-context').textContent = currentDemand.code + '｜' + currentDemand.name;
     field('review-comment-label').textContent = config.label;
@@ -1585,18 +1691,32 @@
     field('review-comment').required = action !== 'accept';
     field('review-date-group').hidden = action !== 'hold';
     field('review-date').value = ''; field('review-date').min = localDate(); field('review-date').required = action === 'hold';
+    field('evaluation-date-group').hidden=!['accept','postpone'].includes(action);
+    field('evaluation-date').value=action==='postpone'?currentDemand.evaluationDue||'':'';
+    field('evaluation-date').required=['accept','postpone'].includes(action);
+    field('evaluation-owner').textContent='评估负责人：'+currentDemand.reviewer+'（当前产品经理）'+(action==='postpone'?'；当前承诺日期：'+currentDemand.evaluationDue:'');
     field('review-feedback').textContent = ''; field('review-confirm').textContent = config.confirm;
     const dialog = field('review-dialog');
     if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open', '');
     field('review-comment').focus();
   }
   [['accept', 'accept'], ['request-more', 'more'], ['hold', 'hold']].forEach(([id, action]) => field(id).addEventListener('click', () => openReviewDialog(action, field(id))));
+  field('evaluation-postpone').addEventListener('click',()=>openReviewDialog('postpone',field('evaluation-postpone')));
   field('review-cancel').addEventListener('click', () => closeReviewDialog());
   field('review-dialog').addEventListener('cancel', (event) => { event.preventDefault(); closeReviewDialog(); });
   field('review-confirm').addEventListener('click', () => {
     if (!pendingReview || pendingReview.code !== currentDemand.code) return;
     const action = pendingReview;
-    if (!setDemandStatus(action.status, action.style, { comment: field('review-comment').value, reviewDate: field('review-date').value })) return;
+    if(action.action==='postpone') {
+      if(field('evaluation-postpone').disabled) return;
+      const reason=field('review-comment').value.trim(),due=field('evaluation-date').value.trim(),old=currentDemand.evaluationDue;
+      if(!reason){field('review-feedback').textContent='请填写延期原因。';return;}
+      if(!validEvaluationDate(due)||due<localDate()||due<=old){field('review-feedback').textContent='延期日期须为有效日期，不早于今天且晚于当前承诺日期。';return;}
+      currentDemand.evaluationDelayReason=reason;currentDemand.evaluationDue=due;
+      currentDemand.history.push(['本次演示',currentDemand.reviewer+' · 评估延期：'+old+' → '+due+'；延期原因：'+reason+'；原承诺日期保留。']);
+      evaluationFeedback(currentDemand,true);renderDetail();closeReviewDialog();showToast('评估日期已延期，变更记录及给申请人的反馈已生成（演示）。');return;
+    }
+    if (!setDemandStatus(action.status, action.style, { comment: field('review-comment').value, reviewDate: field('review-date').value, evaluationDue:field('evaluation-date').value })) return;
     closeReviewDialog();
     showToast('演示：' + currentDemand.code + ' 已更新为“' + action.status + '”，处理记录已保存。');
   });
@@ -1679,7 +1799,7 @@
   function reportAllRows() {
     const timings={'PD-2026-017':'2026-10-12','PD-2026-014':'2026-10-10','PD-2026-011':'2026-09-28'};
     return [...reportFixture,...[...records.values()].map(d=>({code:d.code,name:d.name,created:d['created-at'],category:d.category,
-      region:/美国|加拿大|北美/.test(d.region)?'北美':/澳|新西兰/.test(d.region)?'澳新':/德国|法国|比利时|荷兰|欧洲/.test(d.region)?'欧洲':/中国|国内/.test(d.region)?'国内':'未明确',
+      region:d['sales-market']==='国内'?'国内':/美国|加拿大|北美/.test(d.region)?'北美':/澳|新西兰/.test(d.region)?'澳新':/德国|法国|比利时|荷兰|欧洲/.test(d.region)?'欧洲':/中国|国内/.test(d.region)?'国内':'未明确',
       status:taskStatus(d.code),manager:d.reviewer,brand:d.brand||'未明确',source:d.source,channel:d.channel||'未明确',positioning:d.positioning||'未明确',
       firstReview:timings[d.code]||null,due:d.dueAt,forecast:d.forecast||[],unit:d.category==='手持工具'?'套':'台',demo:false}))];
   }
