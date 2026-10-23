@@ -126,6 +126,10 @@
     #pds-demand-prototype .pds-inbox-table { min-width:1100px; }
     #pds-demand-prototype .pds-inbox-table td { vertical-align:top; }
     #pds-demand-prototype .pds-inbox-table .pds-link { display:block; margin:0 0 8px; white-space:nowrap; }
+    #pds-demand-prototype .pds-merge-relations { margin-top:8px; font-size:12px; line-height:1.6; color:var(--muted); }
+    #pds-demand-prototype .pds-merge-relations > span { display:block; white-space:nowrap; }
+    #pds-demand-prototype .pds-merge-relations .pds-link { display:block; margin:4px 0 0; font-size:12px; white-space:nowrap; }
+    #pds-demand-prototype .pds-merge-relations summary { cursor:pointer; color:var(--blue); margin-top:6px; white-space:nowrap; }
     #pds-demand-prototype .pds-review-note { margin:14px 0; }
     #pds-demand-prototype .pds-inline-actions { margin:16px 0; border-top:3px solid var(--blue); }
     #pds-demand-prototype .pds-review-dialog { width:min(560px, calc(100vw - 48px)); box-sizing:border-box; padding:24px; border:1px solid var(--line); border-radius:12px; background:var(--surface); color:var(--ink); box-shadow:0 20px 70px #173f6033; max-height:85vh; overflow:auto; }
@@ -968,6 +972,7 @@
       row.append(evaluationCell);
       const statusCell = document.createElement('td');
       statusCell.append(textNode('span', status, 'pds-status ' + (status === '待补充' ? 'status-amber' : status === '已受理' ? 'status-green' : 'status-blue')));
+      const relations = mergeRelations(demand); if (relations) statusCell.append(relations);
       row.append(statusCell);
       const reminderCell = document.createElement('td');
       reminderCell.append(textNode('span', '企微留言已生成', 'pds-code'), textNode('span', demand.viewed ? '已查看' : '未查看', 'pds-status ' + (demand.viewed ? 'status-green' : 'status-blue')));
@@ -986,6 +991,35 @@
     updateMergeSelection();
   }
   function clearMergeSelection() { mergeSelection.clear(); }
+  function finalMergeCode(demand) {
+    let code = demand.code; const seen = new Set();
+    while (records.get(code)?.mergedInto && !seen.has(code)) {
+      seen.add(code); code = records.get(code).mergedInto;
+    }
+    return code;
+  }
+  function mergeRelations(demand) {
+    const destination = demand.mergedInto ? finalMergeCode(demand) : '';
+    const sources = destination ? [] : [...records.values()].filter(item => item.code !== demand.code && item.mergedInto && finalMergeCode(item) === demand.code);
+    if (!destination && !sources.length) return null;
+    const block = document.createElement('div'); block.className = 'pds-merge-relations'; block.dataset.mergeRelations = '';
+    block.append(textNode('span', destination ? '已合并至：' : '已合并 ' + sources.length + ' 条需求'));
+    const addLink = (container, code) => {
+      const link = textNode('button', code, 'pds-link'); link.type = 'button'; link.dataset.mergeRelatedCode = code;
+      link.title = records.get(code)?.name || code;
+      link.setAttribute('aria-label', '查看关联需求 ' + code + ' ' + (records.get(code)?.name || ''));
+      link.disabled = !records.has(code); container.append(link);
+    };
+    if (destination) addLink(block, destination);
+    else {
+      sources.slice(0, 2).forEach(item => addLink(block, item.code));
+      if (sources.length > 2) {
+        const more = document.createElement('details'); more.append(textNode('summary', '查看全部（' + sources.length + ' 条）'));
+        sources.slice(2).forEach(item => addLink(more, item.code)); block.append(more);
+      }
+    }
+    return block;
+  }
   function updateMergeSelection() {
     const visible = [...field('inbox-rows').querySelectorAll('[data-merge-code]:not(:disabled)')];
     for (const code of mergeSelection) if (!visible.some((input) => input.dataset.mergeCode === code)) mergeSelection.delete(code);
@@ -1245,6 +1279,18 @@
     field('inbox-message').hidden = false;
   }
   root.addEventListener('click', (event) => {
+    const related = event.target.closest('[data-merge-related-code]');
+    if (related) {
+      const code = related.dataset.mergeRelatedCode;
+      if (related.closest('#pds-inbox-rows')) openTask(code);
+      else {
+        const demand = records.get(code);
+        const row = [...demandRows.rows].find(item => item.querySelector('.pds-code')?.textContent === code);
+        if (demand && row) { currentDemand = demand; currentRow = row; detailOrigin = 'pool'; showView('detail'); }
+      }
+      root.scrollIntoView?.({ block: 'start' });
+      return;
+    }
     const task = event.target.closest('[data-task-code]');
     const message = event.target.closest('[data-message-code]');
     const tab = event.target.closest('[data-inbox-tab]');
@@ -1761,6 +1807,9 @@
     const query = search.value.trim().toLowerCase();
     let visible = 0;
     Array.from(demandRows.querySelectorAll('tr')).forEach((row) => {
+      row.cells[7].querySelector('[data-merge-relations]')?.remove();
+      const demand = records.get(row.querySelector('.pds-code')?.textContent);
+      if (demand) { const relations = mergeRelations(demand); if (relations) row.cells[7].append(relations); }
       const match = (!query || row.textContent.toLowerCase().includes(query))
         && (!statusFilter.value || row.dataset.status === statusFilter.value)
         && (!sourceFilter.value || row.dataset.source === sourceFilter.value)
