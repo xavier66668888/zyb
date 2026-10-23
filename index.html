@@ -670,6 +670,59 @@
     { ...mergeDemo.forecast[1], market: '比利时', owner: '徐凯', year1: '300', year2: '500', year3: '700' }
   ];
   sampleDemands.push(mergeDemo);
+  // 新增业务演示场景；全部为虚构数据，日期固定，刷新恢复。
+  const presentationSeeds = [
+    ['030','国内20V无刷电钻渠道套装','电动工具','国内','待初筛','何静','国内销售部','华东、华中','Retail 零售','双速无刷；60Nm；13mm夹头；2.0Ah双电池','建材门店安装及家装维修','CNY','699',800,1200,1800],
+    ['031','国内20V无刷冲击扳手组合','电动工具','国内','待初筛','蒋峰','国内大客户部','华东、华南','Dealers 经销商','350Nm；三档扭矩；半英寸方头；4.0Ah双电池','汽修门店及钢结构安装','CNY','899',500,850,1200],
+    ['032','国内便携高压清洗机升级','清洗设备','国内','待补充','唐悦','国内电商部','华南、西南','E-Comm 电商','1800W；额定压力100bar；8米软管；快接泡沫壶','家庭庭院及小型车辆清洁','CNY','1099',600,900,1400],
+    ['033','欧洲低噪音锂电修枝机','园林工具','海外','已受理','苏珊','欧洲区域公司','德国、法国','Dealers 经销商','40V平台；60cm双刃；切割间距28mm；低振动手柄','社区绿篱及专业园林养护','EUR','189',350,550,850],
+    ['034','澳洲无线便携清洗机','清洗设备','海外','已暂缓','郑悦','澳洲区域公司','澳大利亚、新西兰','Retail 零售','20V；自吸式；额定压力24bar；多喷型喷嘴','露营装备及户外轻清洁','AUD','229',450,700,1000],
+    ['035','北美商用背负吹风机','园林工具','海外','OA 审批中','高磊','北美区域公司','美国、加拿大','Dealers 经销商','80V双电池；目标风量1500m³/h；背负减振结构','落叶集中清理及市政道路维护','USD','599',300,600,950],
+    ['036','国内物业园林养护组合平台','园林工具','国内','待初筛','许佳','国内销售部','华东、华南','Dealers 经销商','40V共用电池；割草机＋修枝机＋吹风机；统一充电系统','物业园区一体化绿化养护','CNY','2999',400,700,1100],
+    ['037','华东物业园林工具组合需求','园林工具','国内','已合并','陆晨','华东业务部','华东','Dealers 经销商','40V平台；割草机及修枝机；双电池统一配置','华东物业园区季节性养护','CNY','2899',250,400,650],
+    ['038','华南园林养护套装补充需求','园林工具','国内','已合并','吴敏','华南业务部','华南','Dealers 经销商','40V平台；修枝机及吹风机；加强防潮收纳','华南社区绿篱修剪及道路清理','CNY','3099',150,300,450],
+    ['039','日本紧凑型电动起子','电动工具','海外','待初筛','林浩','亚太区域公司','日本','Retail 零售','12V；机身长度150mm以内；两档调速；快换夹头','狭窄空间装配及家用家具安装','JPY','12980',800,1300,2000],
+    ['040','国内模块化工具收纳箱','其他','国内','已受理','邵宁','国内渠道部','华北、华东','Retail 零售','可叠放箱体；快锁扣；IP54防护目标；承重25kg','维修人员工具运输及门店组合销售','CNY','299',1200,1800,2600],
+    ['041','德国商用冷水高压清洗机','清洗设备','海外','待初筛','陈亮','欧洲工程渠道部','德国、奥地利','Dealers 经销商','3000W；三相电；黄铜泵头；钢编高压管；连续作业设计','工厂车间及专业设备清洗','EUR','899',180,320,500]
+  ];
+  presentationSeeds.forEach((seed,index)=>{
+    const [suffix,name,category,market,status,applicant,department,region,channel,params,scene,currency,msrp,y1,y2,y3]=seed;
+    const demand=JSON.parse(JSON.stringify(sampleDemands[category==='清洗设备'?2:category==='园林工具'?0:1]));
+    const created='2026-10-'+String(5+index).padStart(2,'0');
+    Object.assign(demand,{code:'PD-2026-'+suffix,name,'demand-name':name,'created-at':created,category,'sales-market':market,
+      applicant,department,region,channel,brand:category==='其他'?'YAT':'SENIX',positioning:market==='国内'?'专业实用型':'专业中高端',
+      compliance:market==='国内'?(category==='其他'?'无需认证':'CCC'):currency==='USD'?'UL、CSA':currency==='AUD'?'RCM':currency==='JPY'?'PSE':'CE、RoHS',
+      'basic-params':params,scene,environment:scene+'；需验证温升、振动、运输和储存环境适应性。',
+      'target-users':scene+'的采购及实际作业人员','target-customers':region+'渠道客户（虚构演示客户）',
+      reason:department+'反馈现有产品在'+scene+'方面存在配置缺口，申请对“'+name+'”开展统一评估。',
+      value:'先在'+region+'试点销售，以配置完整度和平台通用性提升渠道覆盖；销量预测为演示假设，不代表真实订单。',
+      basis:'按两个试点区域的客户意向估算；第一年验证渠道，第二年扩点，第三年稳定推广。区域重叠须人工核对，未经客户回签不视为承诺订单。',
+      'selling-points':params+'；包装、配件和售后标准统一。',accessories:'主机、适配配件、使用说明及维修备件清单。',
+      'special-requirements':'型号、认证范围及上市配置需经产品经理和技术部门确认。','feature-1':'关键配置适配目标使用场景。','feature-2':'共用平台降低渠道维护复杂度。',
+      packaging:'加固彩箱及防护内衬，标注配件清单和运输标识。',manual:market==='国内'?'中文说明书及安全警示':'当地语言说明书及安全警示',warranty:'拟定整机2年，耗材除外（演示）',
+      'competitor-brand':'虚构对标品牌 DemoWorks','competitor-model':'DW-'+suffix,'competitor-price':currency+' '+msrp+'（演示对标价）',
+      'competitor-configuration':params,'competitor-specs':params,'competitor-channel':channel,'competitor-warranty':'2年（演示）','sample-available':'待采购样机',
+      'competitor-link':'https://example.com/demo/'+suffix,'competitor-advantages':'对标渠道覆盖成熟，本需求拟突出平台通用性与售后便利。',
+      'product-imageFiles':[name+'_外观示意.png'],'competitor-imageFiles':['DW-'+suffix+'_对标示意.jpg'],
+      referenceFiles:[name+'_渠道访谈.pdf'],attachmentFiles:suffix==='032'?[]:[name+'_需求说明.docx'],sources:[],source:'直接填写',
+      forecast:[region.split('、')[0],region.split('、')[1]||region.split('、')[0]+'试点渠道'].map((area,i)=>({
+        market:area,owner:i===0?applicant:'区域负责人（演示）',year1:String(i?Math.round(y1*.4):Math.round(y1*.6)),
+        year2:String(i?Math.round(y2*.4):Math.round(y2*.6)),year3:String(i?Math.round(y3*.4):Math.round(y3*.6)),
+        fob:market==='国内'?'':String(Math.round(Number(msrp)*.5)),cfi:market==='国内'?'':'不适用',ddp:market==='国内'?'':String(Math.round(Number(msrp)*.65)),
+        map:market==='国内'?'':String(Math.round(Number(msrp)*.9)),msrp,configuration:params,launch:'2027-03',price:'',currency,notes:'虚构预测；渠道回签后确认，勿自动累加重叠机会。'
+      })),
+      history:[[created+' 14:30',applicant+' · 提交'+name+'，分配产品经理初筛。']],seedStatus:status,
+      next:status==='待初筛'?'待产品经理核对完整性、平台匹配及市场预测。':'按当前处理结论跟进；正式审批仍在OA。'
+    });
+    if(status!=='待初筛') { demand.firstReview=created.slice(0,8)+String(7+index).padStart(2,'0'); demand.history.push([demand.firstReview+' 10:00','产品经理 · '+status+'（演示），核对产品参数及区域预测。']); }
+    if(status==='已受理'||status==='OA 审批中')Object.assign(demand,{evaluationOwner:defaultReviewer(category),evaluationDue:status==='OA 审批中'?'2026-10-20':suffix==='033'?'2026-10-28':'2026-10-30',evaluationOriginalDue:suffix==='033'?'2026-10-22':'2026-10-30'});
+    if(suffix==='033'){demand.evaluationDelayReason='等待实验室低噪音测试结果';demand.history.push(['2026-10-21 16:00','王琳 · 申请延期至2026-10-28：等待实验室低噪音测试结果；原承诺2026-10-22。']);}
+    if(suffix==='035'){demand.evaluationCompletedAt='2026-10-19T10:30:00+08:00';demand.evaluationOriginalDue='2026-10-20';demand.next='OA演示单号 OA-2026-1035，等待评审结果回写。';}
+    if(suffix==='032'){demand.reviewComment='请补充客户首年销量回签及电商促销计划。';demand.next=demand.reviewComment;}
+    if(suffix==='034'){demand.reviewComment='待渠道完成无线机型与有线机型定位比较。';demand.reviewDate='2026-11-06';demand.next='2026-11-06复核渠道定位及价格带。';}
+    if(['037','038'].includes(suffix)){demand.mergedInto='PD-2026-036';demand.history.push(['2026-10-18 15:00','王琳 · 合并至PD-2026-036，原始资料保留快照。']);demand.next='已合并至PD-2026-036，请在主需求统一评估。';}
+    sampleDemands.push(demand);
+  });
   sampleDemands.forEach((demand) => {
     demand.sources.forEach((source) => { source.snapshot = sourceSnapshot(source, demand); });
     demand.reviewer = defaultReviewer(demand.category);
@@ -688,6 +741,19 @@
   mergeDemoRow.cells[1].textContent = mergeDemo.source;
   mergeDemoRow.cells[2].textContent = mergeDemo.applicant;
   demandRows.append(mergeDemoRow);
+  sampleDemands.filter(d=>d.seedStatus).forEach(demand=>{
+    const row=demandRows.rows[0].cloneNode(true);row.dataset.status=demand.seedStatus;row.dataset.source=demand.source;row.dataset.category=demand.category;
+    row.querySelector('.pds-code').textContent=demand.code;row.querySelector('.pds-demand-name').textContent=demand.name;
+    row.cells[1].textContent=demand.source;row.cells[2].textContent=demand.applicant;
+    const badge=row.querySelector('.pds-status');badge.textContent=demand.seedStatus;badge.className='pds-status '+(demand.seedStatus==='已受理'?'status-green':['待补充','已暂缓'].includes(demand.seedStatus)?'status-amber':'status-blue');
+    demandRows.append(row);
+  });
+  const presentationMain=records.get('PD-2026-036');
+  presentationMain.mergeSnapshots=['PD-2026-036','PD-2026-037','PD-2026-038'].map(code=>{
+    const snapshot=JSON.parse(JSON.stringify(records.get(code)));delete snapshot.mergeSnapshots;delete snapshot.mergedInto;
+    snapshot.snapshotStatus='待初筛';return snapshot;
+  });
+  presentationMain.history.push(['2026-10-18 15:00','王琳 · 合并PD-2026-037、PD-2026-038，保留主需求PD-2026-036；人工确认区域预测，返回待初筛。']);
   // 列表展示与详情使用同一组样例预测，避免跨币种合计。
   Array.from(demandRows.querySelectorAll('tr')).forEach((row) => {
     const demand = records.get(row.querySelector('.pds-code').textContent);
@@ -1624,6 +1690,7 @@
       formError.classList.add('show');
       return;
     }
+    while(records.has('PD-2026-'+String(nextNumber).padStart(3,'0')))nextNumber++;
     const code = 'PD-2026-' + String(nextNumber++).padStart(3, '0');
     const demand = Object.fromEntries(formFieldIds.map((id) => [id, field(id).value.trim()]));
     demand.channel = selectedOptions('channel').join('、');
@@ -1804,6 +1871,9 @@
   const categoryFilter = field('category-filter');
   const count = field('result-count');
   function filterRows() {
+    ['待初筛','待补充','已受理','OA 审批中'].forEach((status,index)=>{
+      root.querySelector('[data-view="pool"] .pds-kpis').children[index].querySelector('strong').textContent=[...demandRows.rows].filter(row=>row.dataset.status===status).length;
+    });
     const query = search.value.trim().toLowerCase();
     let visible = 0;
     Array.from(demandRows.querySelectorAll('tr')).forEach((row) => {
@@ -1830,7 +1900,9 @@
   ['已合并', '已暂缓'].forEach((status) => statusFilter.append(textNode('option', status)));
   filterRows();
   // Synthetic reporting fixtures only; no live company measurements or services.
-  const reportAsOf = '2026-10-17';
+  const reportAsOf = '2026-10-23';
+  root.querySelector('[data-view="reports"] .pds-filter .pds-control:last-of-type span').textContent=reportAsOf+'（演示）';
+  field('report-definitions').querySelector('p').textContent='数据来源：当前原型17条业务样例及19条独立历史报表样例，均为虚构数据，不代表公司实际经营。新增和处理需求后重新进入报表可同步当前状态；统计截止日固定为'+reportAsOf+'，之后创建的申请不纳入此历史报表。';
   const reportFixture = [
     ['001','北美家用割草机轻量化','01-12','园林工具','北美','已批准','王琳',2,'SENIX'],
     ['002','欧洲锂电修枝机','02-18','园林工具','欧洲','已关闭','王琳',4,'SENIX'],
@@ -1867,7 +1939,7 @@
     return [...reportFixture,...[...records.values()].map(d=>({code:d.code,name:d.name,created:d['created-at'],category:d.category,
       region:d['sales-market']==='国内'?'国内':/美国|加拿大|北美/.test(d.region)?'北美':/澳|新西兰/.test(d.region)?'澳新':/德国|法国|比利时|荷兰|欧洲/.test(d.region)?'欧洲':/中国|国内/.test(d.region)?'国内':'未明确',
       status:taskStatus(d.code),manager:d.reviewer,brand:d.brand||'未明确',source:d.source,channel:d.channel||'未明确',positioning:d.positioning||'未明确',
-      firstReview:timings[d.code]||null,due:d.dueAt,forecast:d.forecast||[],unit:d.category==='手持工具'?'套':'台',demo:false}))];
+      firstReview:d.firstReview||timings[d.code]||null,due:d.dueAt,forecast:d.forecast||[],unit:d.category==='手持工具'?'套':'台',demo:false}))];
   }
   function reportMedian(rows) {
     const times=rows.filter(r=>r.firstReview && r.firstReview<=reportAsOf && r.firstReview>=r.created).map(r=>reportDays(r.created,r.firstReview)).sort((a,b)=>a-b);
@@ -1907,7 +1979,7 @@
     const effective=reportRows.filter(r=>r.status!=='已合并'),pending=effective.filter(r=>r.status==='待初筛'),overdue=pending.filter(r=>r.due && r.due<reportAsOf);
     field('report-submitted').textContent=reportRows.length;field('report-effective').textContent=effective.length;field('report-merged').textContent=reportRows.length-effective.length;field('report-pending').textContent=pending.length;
     field('report-overdue').textContent='其中 '+overdue.length+' 条已超过要求完成日期';
-    field('report-scope').textContent='演示数据｜'+start+' — '+reportAsOf+' 创建的 '+reportRows.length+' 条申请；含独立报表样例，不与需求池概览占位数字对应。';
+    field('report-scope').textContent='演示数据｜'+start+' — '+reportAsOf+' 创建的 '+reportRows.length+' 条申请；含19条独立历史报表样例，范围与需求池不同，均非真实经营数据。';
     root.querySelectorAll('[data-report-panel]').forEach(p=>p.hidden=p.dataset.reportPanel!==reportTab);
     root.querySelectorAll('[data-report-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.reportTab===reportTab)));
     field('report-summary').textContent=effective.length?'当前有 '+effective.length+' 条去重后需求，'+pending.length+' 条待初筛，其中 '+overdue.length+' 条超过要求完成日期。点击状态或市场条目可查看对应申请。':'当前筛选无需求，请调整期间、产品类别或主销售市场。';
